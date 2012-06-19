@@ -18,6 +18,12 @@ chsh -s zsh
 cd ~/.vim/resources/java
 tar -xvf api.tar.gz
 cd
+
+# Install Vundle
+git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+
+# Create backup and swap file directories for Vim
+mkdir -p ~/.vim/tmp/backup
 ```
 
 After that, make sure that when your .vimrc is being loaded, the HOME environment variable is defined, because vim uses it to find other files.

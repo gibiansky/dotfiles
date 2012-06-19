@@ -38,19 +38,6 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " Include bundles "
-Bundle 'cespare/vjde'
-
-Bundle 'snipMate'
-
-let g:browser="firefox"
-let g:javadoc_path=g:home."/.vim/resources/java/api"
-Bundle 'silveryllium/java_apidoc.vim'
-map <C-S-o> :call OpenJavadoc()<CR>
-imap <C-S-o> <ESC>:call OpenJavadoc()<CR>
-
-Bundle 'Raimondi/delimitMate'
-
-
 let g:indexer_lookForProjectDir=0
 let g:indexer_indexerListFilename=g:home."/.vim/indexer.list"
 let g:indexer_tagsDirname=g:home."/.vim/tags"
@@ -65,6 +52,9 @@ let g:tex_flavor='latex'
 
 " Tab = Four Spaces "
 call TabBehaviour()
+
+" Disable Arrow Keys and Add Useful Mappings
+call DisableArrowKeys()
 
 " Traditional search "
 call SearchBehaviour()
@@ -183,7 +173,7 @@ function! DisableArrowKeys()
     map <S-j> 10j
     map <S-k> 10k
     map <S-h> 10h
-    map <S-l> 10h
+    map <S-l> 10l
 endfunction
 
 
