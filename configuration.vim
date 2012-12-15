@@ -43,12 +43,17 @@ let g:indexer_indexerListFilename=g:home."/.vim/indexer.list"
 let g:indexer_tagsDirname=g:home."/.vim/tags"
 Bundle 'shemerey/vim-indexer'
 
+Bundle 'Raimondi/delimitMate'
+
+Bundle 'JuliaLang/julia-vim'
+
 " Required for vundle "
 filetype plugin indent on
 
 " LaTeX stuff "
 set grepprg=grep\ -nH\ $*
 let g:tex_flavor='latex'
+let g:Tex_CompileRule_pdf='pdflatex -shell-escape -interaction=nonstopmode $*'
 
 " Tab = Four Spaces "
 call TabBehaviour()
@@ -81,10 +86,11 @@ autocmd GUIEnter * set visualbell t_vb=
 " Custom language settings "
 au! BufNewFile,BufRead *.java so ~/.vim/languages/Java.vim
 au! BufNewFile,BufRead *.tex so ~/.vim/languages/Latex.vim
+au! BufNewFile,BufRead *.hs so ~/.vim/languages/Haskell.vim
 let g:Tex_DefaultTargetFormat='pdf'
 
 " Ignore these files with these extensions when auto-completing files "
-set wildignore=*.o,*.obj,*.exe,*.jpg,*.gif,*.png,*.class
+set wildignore=*.o,*.obj,*.exe,*.jpg,*.gif,*.png,*.class,*.hi
 
 " Use shell-like autocompletion "
 set wildmode=longest:list
@@ -94,6 +100,10 @@ set wildmode=longest:list
 " Press space to enter ex command mode "
 map <Space> :
 imap <Nop> <ESC>hli
+
+map ' `
+
+noremap <S-u> <C-a>
 
 " Heresy
 imap <C-e> <ESC>$a

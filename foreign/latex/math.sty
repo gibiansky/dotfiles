@@ -1,0 +1,54 @@
+\ProvidesPackage{math}
+
+\usepackage[margin=2.0cm]{geometry} 
+\usepackage{puremath}
+\usepackage{enumitem}
+
+% Define types of lists
+\newenvironment{(a)}{
+    \begin{enumerate}[label=(\alph{*})]
+}{
+    \end{enumerate}
+}
+
+\newenvironment{a)}{
+    \begin{enumerate}[label=\alph{*})]
+}{
+    \end{enumerate}
+}
+
+\newenvironment{a.}{
+    \begin{enumerate}[label=\alph{*}.]
+}{
+    \end{enumerate}
+}
+
+\newenvironment{bold-a.}{
+    \begin{enumerate}[label=\textbf{\alph{*}.}]
+}{
+    \end{enumerate}
+}
+
+\newenvironment{bold-(a)}{
+    \begin{enumerate}[label=\textbf{(\alph{*})}]
+}{
+    \end{enumerate}
+}
+
+\newenvironment{(1)}{
+    \begin{enumerate}[label=(\arabic{*})]
+}{
+    \end{enumerate}
+}
+
+\newenvironment{1)}{
+    \begin{enumerate}[label=\arabic{*})]
+}{
+    \end{enumerate}
+}
+
+\newenvironment{1.}{
+    \begin{enumerate}[label=\arabic{*}.]
+}{
+    \end{enumerate}
+}
