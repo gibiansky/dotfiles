@@ -1,13 +1,13 @@
-\ProvidesPackage{puremath}
+\ProvidesPackage{mathematics}
 
-\usepackage{amsmath,amssymb,amsthm, amsfonts, palatino, mathpazo, array} 
-\usepackage{parskip, graphicx, subfig, framed, cancel, commath}
-\usepackage{nicefrac}
+\usepackage{amsmath, amssymb, amsthm, amsfonts, nicefrac}
+\usepackage{cancel, array} 
 
-% Math environments
+% Matrices environments
 \newcommand{\bmatr}[1] {\begin{bmatrix} #1 \end{bmatrix}}
 \newcommand{\pmatr}[1] {\left( \begin{matrix} #1 \end{matrix}\right)}
 \newcommand{\matr}[1] {\begin{array}{ccc} #1 \end{array}}
+
 \newcommand{\piecewise}[1] { \left\{ \begin{array}{cl} #1 \end{array} \right.}
 \newcommand{\tab}[0] {\hspace*{24pt}}
 \newcommand{\e}[1] {\ensuremath{\times 10^{#1}}}
@@ -16,17 +16,7 @@
 \newcommand{\inv}[1] {\frac{1}{#1}}
 \newcommand{\invnice}[1] {\nicefrac{1}{#1}}
 
-% Image displaying
-\newcommand{\gfx}[2]{
-    \includegraphics[scale=#2]{#1}
-}
-\newcommand{\cgfx}[2]{
-    \begin{center}
-        \gfx{#1}{#2}
-    \end{center}
-}
-
-% Math definitions
+% Common sets
 \newcommand{\N}{\ensuremath{\mathbb{N}}}
 \newcommand{\Z}{\ensuremath{\mathbb{Z}}}
 \newcommand{\Q}{\ensuremath{\mathbb{Q}}}
@@ -40,8 +30,17 @@
 \newcommand{\cB}{\ensuremath{\mathcal{B}}}
 \newcommand{\cP}{\ensuremath{\mathcal{P}}}
 \newcommand{\cO}{\ensuremath{\mathcal{O}}}
-\newcommand{\image}{\ensuremath{\text{image }}}
-\newcommand{\range}{\ensuremath{\text{range }}}
-\newcommand{\textnull}{\ensuremath{\text{null }}}
-\newcommand{\dd}{\ensuremath{\:\text{d}}}
+
+% Math operators not included in other packages
+\DeclareMathOperator{\image}{image}
+\DeclareMathOperator{\range}{range}
+\DeclareMathOperator{\nullspace}{null}
 \DeclareMathOperator{\Tr}{Tr}
+\newcommand{\dd}{\ensuremath{\:\text{d}}}
+
+% Common fractions
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\quarter}{\frac{1}{4}}
+\newcommand{\third}{\frac{1}{3}}
+\newcommand{\twothirds}{\frac{2}{3}}
+\newcommand{\eighth}{\frac{1}{8}}

@@ -38,20 +38,30 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " Include bundles "
-let g:indexer_lookForProjectDir=0
-let g:indexer_indexerListFilename=g:home."/.vim/indexer.list"
-let g:indexer_tagsDirname=g:home."/.vim/tags"
-Bundle 'shemerey/vim-indexer'
-
 Bundle 'Raimondi/delimitMate'
+Bundle 'jnwhiteh/vim-golang'
+Bundle 'Haskell-Conceal'
+Bundle 'indenthaskell.vim'
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-repeat'
 
-Bundle 'JuliaLang/julia-vim'
+" Syntastic configurations - open error window automatically with size 4
+Bundle 'Syntastic'
+let g:syntastic_auto_loc_list=1
+let g:syntastic_loc_list_height=4
+
+" Haskell mode
+Bundle 'lukerandall/haskellmode-vim'
+let g:haddock_indexfiledir=g:home."/.vim/resources/haskell/"
+let g:haddock_docdir="/home/silver/.cabal/share/doc"
+let g:haddock_browser="/usr/bin/firefox"
 
 " Required for vundle "
 filetype plugin indent on
 
 " LaTeX stuff "
 set grepprg=grep\ -nH\ $*
+let g:Tex_DefaultTargetFormat='pdf'
 let g:tex_flavor='latex'
 let g:Tex_CompileRule_pdf='pdflatex -shell-escape -interaction=nonstopmode $*'
 
@@ -84,10 +94,14 @@ set vb t_vb=
 autocmd GUIEnter * set visualbell t_vb=
 
 " Custom language settings "
-au! BufNewFile,BufRead *.java so ~/.vim/languages/Java.vim
-au! BufNewFile,BufRead *.tex so ~/.vim/languages/Latex.vim
-au! BufNewFile,BufRead *.hs so ~/.vim/languages/Haskell.vim
-let g:Tex_DefaultTargetFormat='pdf'
+au! BufEnter,BufNewFile,BufRead *.java so ~/.vim/languages/Java.vim
+au! BufEnter,BufNewFile,BufRead *.tex so ~/.vim/languages/Latex.vim
+au! BufEnter,BufNewFile,BufRead *.hs so ~/.vim/languages/Haskell.vim
+au! BufEnter,BufNewFile,BufRead *.py so ~/.vim/languages/Python.vim
+
+" Recompile LaTeX files every time I save
+au! BufWritePost *.tex call Tex_CompileMultipleTimes()
+au! BufUnload *.tex !latexclean
 
 " Ignore these files with these extensions when auto-completing files "
 set wildignore=*.o,*.obj,*.exe,*.jpg,*.gif,*.png,*.class,*.hi
@@ -203,8 +217,11 @@ function! SyntaxHighlighting()
     syntax on
 
     " Use a colorscheme so that not everything has to be hand-set "
-    " Source: vimcolorschemetest.googlecode.com/svn/colors/af.vim
-    source ~/.vim/colorscheme.vim
+    if has("gui_running")
+        source ~/.vim/rdark.vim
+    else
+        colorscheme darkblue
+    endif
 endfunction
 
 

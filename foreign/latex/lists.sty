@@ -1,0 +1,24 @@
+\ProvidesPackage{lists}
+
+\usepackage{enumitem}
+
+% Helper command to define list types
+\newcommand\deflist[2]{
+    \newenvironment{#1}{
+        \begin{enumerate}[label=#2]
+    }{
+        \end{enumerate}
+    }
+}
+
+% Define types of lists
+\deflist{a)}{\alph{*})}
+\deflist{a.}{\alph{*}.}
+\deflist{bold-a.}{\textbf{\alph{*}.}}
+\deflist{bold-(a)}{\textbf{(\alph{*})}}
+\deflist{(i)}{(\roman{*})}
+\deflist{(I)}{(\Roman{*})}
+\deflist{(a)}{(\alph{*})}
+\deflist{(1)}{(\arabic{*})}
+\deflist{1)}{\arabic{*})}
+\deflist{1.}{\arabic{*}.}

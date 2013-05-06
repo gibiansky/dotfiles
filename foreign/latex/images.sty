@@ -1,0 +1,11 @@
+\ProvidesPackage{images}
+
+% Image displaying
+\newcommand{\gfx}[2]{
+    \includegraphics[scale=#2]{#1}
+}
+\newcommand{\cgfx}[2]{
+    \begin{center}
+        \gfx{#1}{#2}
+    \end{center}
+}

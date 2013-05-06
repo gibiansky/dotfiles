@@ -1,4 +1,16 @@
-map <F2> <ESC>:!ghc -package parsec -package hashmap -o Main Assembly/*.hs Simple/*.hs Main.hs<CR>
+" Required for Haskell mode
+compiler ghc
+
+set makeprg=ghc\ -odir\ tmp\ -hidir\ tmp\ %
+
+set shiftwidth=2
+set tabstop=2
+set softtabstop=2
+
+map <F2> <ESC>:make<CR>
 imap <F2> <ESC><F2>
-map <F3> <ESC>:!./Main input.c<CR>
+map <F3> <ESC>:!./Main<Space>
 imap <F3> <ESC><F3>
+
+set foldmethod=marker
+set foldmarker={,}
