@@ -31,6 +31,9 @@ set guioptions-=m
 " Remove toolbar
 set guioptions-=T
 
+" Automatically swith directories per tab
+set autochdir
+
 " Vundle "
 filetype off
 set rtp+=~/.vim/bundle/vundle/
@@ -45,10 +48,28 @@ Bundle 'indenthaskell.vim'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-repeat'
 
+Bundle 'hynek/vim-python-pep8-indent'
+Bundle 'gaving/vim-textobj-argument'
+Bundle 'kchmck/vim-coffee-script'
+
+" Ctrl-P file finder
+Bundle 'kien/ctrlp.vim'
+let g:ctrlp_extensions = ['line', 'mixed']
+map <c-p> :CtrlPMixed<CR>
+imap <c-p> <ESC><c-p>
+map <c-b> :CtrlPLine<CR>
+imap <c-b> <ESC><c-/>
+
 " Syntastic configurations - open error window automatically with size 4
 Bundle 'Syntastic'
 let g:syntastic_auto_loc_list=1
 let g:syntastic_loc_list_height=4
+let g:syntastic_check_on_open=1
+let g:syntastic_python_checker="flake8"
+let g:syntastic_always_populate_loc_list=1
+
+map gn :ll<Space>\|<Space>lnext<CR>
+map gN :ll<Space>\|<Space>lprev<CR>
 
 " Haskell mode
 Bundle 'lukerandall/haskellmode-vim'
@@ -129,6 +150,8 @@ map  <C-e>  <ESC>$
 map  <C-a> <ESC>^
 map <C-k> D
 imap <C-k> <ESC>Da
+vmap <C-a> ^
+vmap <C-e> $
 
 " Tabs "
 map <C-t> <ESC>:tabnew 
