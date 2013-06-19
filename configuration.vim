@@ -80,6 +80,9 @@ call DisableArrowKeys()
 " Hide annoying files "
 call BackupAndSwapFiles()
 
+" Use tag jumping
+call SetupTags()
+
 " Syntax and highlighting "
 call SyntaxHighlighting()
 
@@ -209,6 +212,15 @@ function! BackupAndSwapFiles()
 
     " Put swap files (.swo, .swp) in .vim/tmp "
     set directory=~/.vim/tmp
+endfunction
+
+" Setup Tags: Enable ctags and create mappings for jumping around. "
+function! SetupTags()
+    " ctags file "
+    set tags=~/.vim/tmp/tags
+
+    map <C-\> :pop<CR>
+    imap <C-\> <ESC>:pop<CR>
 endfunction
 
 " Syntax Highlighting: enabled, color-themed, and customized "
