@@ -45,6 +45,8 @@ Bundle 'indenthaskell.vim'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-repeat'
 
+Bundle 'FredKSchott/CoVim'
+
 " Syntastic configurations - open error window automatically with size 4
 Bundle 'Syntastic'
 let g:syntastic_auto_loc_list=1
