@@ -1,7 +1,7 @@
 c = get_config()  # noqa
 
 c.TerminalIPythonApp.display_banner = False
-c.InteractiveShellApp.log_level = 20
+c.InteractiveShellApp.log_level = 30
 c.InteractiveShellApp.extensions = []
 c.InteractiveShellApp.exec_lines = [
     'import numpy',
