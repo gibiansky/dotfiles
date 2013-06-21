@@ -122,6 +122,7 @@ au! BufEnter,BufNewFile,BufRead *.java so ~/.vim/languages/Java.vim
 au! BufEnter,BufNewFile,BufRead *.tex so ~/.vim/languages/Latex.vim
 au! BufEnter,BufNewFile,BufRead *.hs so ~/.vim/languages/Haskell.vim
 au! BufEnter,BufNewFile,BufRead *.py so ~/.vim/languages/Python.vim
+au! BufEnter,BufNewFile,BufRead *.html so ~/.vim/languages/Html.vim
 
 " Recompile LaTeX files every time I save
 au! BufWritePost *.tex call Tex_CompileMultipleTimes()
