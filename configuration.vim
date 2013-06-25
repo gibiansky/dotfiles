@@ -55,10 +55,14 @@ Bundle 'kchmck/vim-coffee-script'
 " Ctrl-P file finder
 Bundle 'kien/ctrlp.vim'
 let g:ctrlp_extensions = ['line', 'mixed']
-map <c-p> :CtrlPMixed<CR>
-imap <c-p> <ESC><c-p>
+let g:ctrlp_map = '<c-n>'
+let g:ctrlp_cmd = 'CtrlPMixed'
 map <c-b> :CtrlPLine<CR>
 imap <c-b> <ESC><c-/>
+
+let g:ctrlp_prompt_mappings = {
+    \ 'AcceptSelection("h")': ['<c-g>'],
+    \ }
 
 " Syntastic configurations - open error window automatically with size 4
 Bundle 'Syntastic'
