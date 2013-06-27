@@ -3,12 +3,7 @@ c = get_config()  # noqa
 c.TerminalIPythonApp.display_banner = False
 c.InteractiveShellApp.log_level = 30
 c.InteractiveShellApp.extensions = []
-c.InteractiveShellApp.exec_lines = [
-    'import numpy',
-    'import scipy',
-    'from math import *',
-    'from __future__ import division',
-]
+c.InteractiveShellApp.exec_lines = [] # These are in /startup
 c.InteractiveShellApp.exec_files = []
 c.InteractiveShell.autoindent = True
 c.InteractiveShell.colors = 'LightBG'
