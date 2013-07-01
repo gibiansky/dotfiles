@@ -43,8 +43,6 @@ Bundle 'gmarik/vundle'
 " Include bundles "
 Bundle 'Raimondi/delimitMate'
 Bundle 'jnwhiteh/vim-golang'
-Bundle 'Haskell-Conceal'
-Bundle 'indenthaskell.vim'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-repeat'
 
@@ -78,6 +76,9 @@ map gn :ll<Space>\|<Space>lnext<CR>
 map gN :ll<Space>\|<Space>lprev<CR>
 
 " Haskell mode
+Bundle 'Haskell-Conceal'
+Bundle 'indenthaskell.vim'
+Bundle 'bitc/vim-hdevtools'
 Bundle 'lukerandall/haskellmode-vim'
 let g:haddock_indexfiledir=g:home."/.vim/resources/haskell/"
 let g:haddock_docdir="/home/silver/.cabal/share/doc"
