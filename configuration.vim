@@ -31,6 +31,12 @@ set guioptions-=m
 " Remove toolbar
 set guioptions-=T
 
+" Display a statusline always
+set laststatus=2
+set statusline=%10f:        " Filename (padded to 10 characters)
+set statusline+=\ %4l/%.4L  " Current line / Total lines (padded to 4 chars)
+set statusline+=\ -\ %2c    " Current character number
+
 " Automatically swith directories per tab
 set autochdir
 
@@ -126,7 +132,7 @@ autocmd GUIEnter * set visualbell t_vb=
 
 " Custom language settings "
 au! BufEnter,BufNewFile,BufRead *.java so ~/.vim/languages/Java.vim
-au! BufEnter,BufNewFile,BufRead *.tex so ~/.vim/languages/Latex.vim
+"au! BufEnter,BufNewFile,BufRead *.tex so ~/.vim/languages/Latex.vim
 au! BufEnter,BufNewFile,BufRead *.hs so ~/.vim/languages/Haskell.vim
 au! BufEnter,BufNewFile,BufRead *.py so ~/.vim/languages/Python.vim
 au! BufEnter,BufNewFile,BufRead *.html so ~/.vim/languages/Html.vim
