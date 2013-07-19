@@ -56,6 +56,12 @@ Bundle 'hynek/vim-python-pep8-indent'
 Bundle 'gaving/vim-textobj-argument'
 Bundle 'kchmck/vim-coffee-script'
 
+Bundle "MarcWeber/vim-addon-mw-utils"
+Bundle "tomtom/tlib_vim"
+Bundle "garbas/vim-snipmate"
+Bundle 'honza/vim-snippets'
+
+
 " Ctrl-P file finder
 Bundle 'kien/ctrlp.vim'
 let g:ctrlp_extensions = ['line', 'mixed']
@@ -160,12 +166,19 @@ noremap <S-u> <C-a>
 " Heresy
 imap <C-e> <ESC>$a
 imap <C-a> <ESC>^i
-map  <C-e>  <ESC>$
-map  <C-a> <ESC>^
-map <C-k> D
 imap <C-k> <ESC>Da
+
+nmap  <C-e>  <ESC>$
+nmap  <C-a> <ESC>^
+nmap <C-k> D
+
 vmap <C-a> ^
 vmap <C-e> $
+
+cmap <C-a> <C-b>
+cmap <C-n> <Down>
+cmap <C-p> <Up>
+cmap <C-r><C-r> <C-r>"
 
 " Tabs "
 map <C-t> <ESC>:tabnew 
