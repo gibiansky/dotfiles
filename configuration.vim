@@ -56,6 +56,8 @@ Bundle 'hynek/vim-python-pep8-indent'
 Bundle 'gaving/vim-textobj-argument'
 Bundle 'kchmck/vim-coffee-script'
 
+Bundle 'Floobits/floobits-vim'
+
 " Ctrl-P file finder
 Bundle 'kien/ctrlp.vim'
 let g:ctrlp_extensions = ['line', 'mixed']
