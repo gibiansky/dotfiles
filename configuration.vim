@@ -192,8 +192,6 @@ set scrolloff=5
 
 command! Reload call VimSetup()
 
-exec("source " . g:home . "/.vim/current-projects.vim")
-
 " **********************   End Quick Config   ********************************** "
 endfunction
 
