@@ -56,12 +56,11 @@ Bundle 'hynek/vim-python-pep8-indent'
 Bundle 'gaving/vim-textobj-argument'
 Bundle 'kchmck/vim-coffee-script'
 
+Bundle 'Floobits/floobits-vim'
 Bundle "MarcWeber/vim-addon-mw-utils"
 Bundle "tomtom/tlib_vim"
 Bundle "garbas/vim-snipmate"
 Bundle 'honza/vim-snippets'
-
-
 " Ctrl-P file finder
 Bundle 'kien/ctrlp.vim'
 let g:ctrlp_extensions = ['line', 'mixed']
@@ -192,8 +191,6 @@ imap <C-l> <ESC>:tabn<CR>
 set scrolloff=5
 
 command! Reload call VimSetup()
-
-exec("source " . g:home . "/.vim/current-projects.vim")
 
 " **********************   End Quick Config   ********************************** "
 endfunction
