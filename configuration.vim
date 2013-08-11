@@ -31,6 +31,12 @@ set guioptions-=m
 " Remove toolbar
 set guioptions-=T
 
+" Display a statusline always
+set laststatus=2
+set statusline=%10f:        " Filename (padded to 10 characters)
+set statusline+=\ %4l/%.4L  " Current line / Total lines (padded to 4 chars)
+set statusline+=\ -\ %2c    " Current character number
+
 " Automatically swith directories per tab
 set autochdir
 
@@ -50,6 +56,11 @@ Bundle 'hynek/vim-python-pep8-indent'
 Bundle 'gaving/vim-textobj-argument'
 Bundle 'kchmck/vim-coffee-script'
 
+Bundle 'Floobits/floobits-vim'
+Bundle "MarcWeber/vim-addon-mw-utils"
+Bundle "tomtom/tlib_vim"
+Bundle "garbas/vim-snipmate"
+Bundle 'honza/vim-snippets'
 " Ctrl-P file finder
 Bundle 'kien/ctrlp.vim'
 let g:ctrlp_extensions = ['line', 'mixed']
@@ -61,6 +72,8 @@ imap <c-b> <ESC><c-/>
 let g:ctrlp_prompt_mappings = {
     \ 'AcceptSelection("h")': ['<c-g>'],
     \ }
+
+Bundle 'tpope/vim-markdown'
 
 " Syntastic configurations - open error window automatically with size 4
 Bundle 'Syntastic'
@@ -76,6 +89,7 @@ map gN :ll<Space>\|<Space>lprev<CR>
 " Haskell mode
 Bundle 'Haskell-Conceal'
 Bundle 'indenthaskell.vim'
+Bundle 'bitc/vim-hdevtools'
 Bundle 'lukerandall/haskellmode-vim'
 let g:haddock_indexfiledir=g:home."/.vim/resources/haskell/"
 let g:haddock_docdir="/home/silver/.cabal/share/doc"
@@ -123,7 +137,7 @@ autocmd GUIEnter * set visualbell t_vb=
 
 " Custom language settings "
 au! BufEnter,BufNewFile,BufRead *.java so ~/.vim/languages/Java.vim
-au! BufEnter,BufNewFile,BufRead *.tex so ~/.vim/languages/Latex.vim
+"au! BufEnter,BufNewFile,BufRead *.tex so ~/.vim/languages/Latex.vim
 au! BufEnter,BufNewFile,BufRead *.hs so ~/.vim/languages/Haskell.vim
 au! BufEnter,BufNewFile,BufRead *.py so ~/.vim/languages/Python.vim
 au! BufEnter,BufNewFile,BufRead *.html so ~/.vim/languages/Html.vim
@@ -151,12 +165,19 @@ noremap <S-u> <C-a>
 " Heresy
 imap <C-e> <ESC>$a
 imap <C-a> <ESC>^i
-map  <C-e>  <ESC>$
-map  <C-a> <ESC>^
-map <C-k> D
 imap <C-k> <ESC>Da
+
+nmap  <C-e>  <ESC>$
+nmap  <C-a> <ESC>^
+nmap <C-k> D
+
 vmap <C-a> ^
 vmap <C-e> $
+
+cmap <C-a> <C-b>
+cmap <C-n> <Down>
+cmap <C-p> <Up>
+cmap <C-r><C-r> <C-r>"
 
 " Tabs "
 map <C-t> <ESC>:tabnew 
@@ -170,8 +191,6 @@ imap <C-l> <ESC>:tabn<CR>
 set scrolloff=5
 
 command! Reload call VimSetup()
-
-exec("source " . g:home . "/.vim/current-projects.vim")
 
 " **********************   End Quick Config   ********************************** "
 endfunction

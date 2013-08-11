@@ -24,3 +24,5 @@ c.AliasManager.user_aliases = [
     ('l', 'ls'),
     ('ll', 'ls -a'),
 ]
+
+c.NotebookApp.password = u'sha1:880288ed0368:cee8874161a811eae4473131d107fe131fbe984a'

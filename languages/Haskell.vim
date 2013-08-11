@@ -14,3 +14,6 @@ imap <F3> <ESC><F3>
 
 set foldmethod=marker
 set foldmarker={,}
+
+nnoremap <buffer> <D-1> :HdevtoolsType<CR>
+nnoremap <buffer> <silent> <D-2> :HdevtoolsClear<CR>
