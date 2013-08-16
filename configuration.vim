@@ -22,6 +22,9 @@ let g:ran_setup=1
 " Line numbers "
 set number
 
+" Give me a reasonable history
+set history=1000
+
 " Not compatible with Ex "
 set nocompatible
 
