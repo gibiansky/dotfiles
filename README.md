@@ -45,3 +45,13 @@ Shortcuts and Features
 - `C-[hjkl]`: move to left, down, up, and right panes, respectively
 - `M-[arrow key]`: resize the pane you're in (can be repeated quickly with many applications)
 - `:`: prompt
+
+Vim Bundles
+===========
+
+`gaving/vim-textobj-argument`:
+- Provides 'aa' and 'ia' for selecting arguments to functions as text objects.
+
+`michaeljsmith/vim-indent-object`:
+- Provides 'ii' and 'ai' for selecting indented blocks or blocks with the previous line, respectively.
+- Provides 'il' and 'al' for selecting indented blocks or blocks with the previous and next line, respectively.

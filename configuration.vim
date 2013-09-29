@@ -49,6 +49,8 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 Bundle 'gmarik/vundle'
 
+Bundle 'gibiansky/vim-latex-objects'
+
 " Include bundles "
 Bundle 'Raimondi/delimitMate'
 Bundle 'jnwhiteh/vim-golang'
@@ -58,8 +60,9 @@ Bundle 'tpope/vim-repeat'
 Bundle 'hynek/vim-python-pep8-indent'
 Bundle 'gaving/vim-textobj-argument'
 Bundle 'kchmck/vim-coffee-script'
+Bundle 'michaeljsmith/vim-indent-object'
 
-Bundle 'Floobits/floobits-vim'
+"Bundle 'Floobits/floobits-vim'
 Bundle "MarcWeber/vim-addon-mw-utils"
 Bundle "tomtom/tlib_vim"
 Bundle "garbas/vim-snipmate"
@@ -90,10 +93,12 @@ map gn :ll<Space>\|<Space>lnext<CR>
 map gN :ll<Space>\|<Space>lprev<CR>
 
 " Haskell mode
-Bundle 'Haskell-Conceal'
-Bundle 'indenthaskell.vim'
+Bundle 'Twinside/vim-haskellConceal'
 Bundle 'bitc/vim-hdevtools'
 Bundle 'lukerandall/haskellmode-vim'
+Bundle 'dag/vim2hs'
+"Bundle 'kana/vim-filetype-haskell'
+"Bundle 'indenthaskell.vim'
 let g:haddock_indexfiledir=g:home."/.vim/resources/haskell/"
 let g:haddock_docdir="/home/silver/.cabal/share/doc"
 let g:haddock_browser="/usr/bin/firefox"
@@ -140,7 +145,7 @@ autocmd GUIEnter * set visualbell t_vb=
 
 " Custom language settings "
 au! BufEnter,BufNewFile,BufRead *.java so ~/.vim/languages/Java.vim
-"au! BufEnter,BufNewFile,BufRead *.tex so ~/.vim/languages/Latex.vim
+au! BufEnter,BufNewFile,BufRead *.tex so ~/.vim/languages/Latex.vim
 au! BufEnter,BufNewFile,BufRead *.hs so ~/.vim/languages/Haskell.vim
 au! BufEnter,BufNewFile,BufRead *.py so ~/.vim/languages/Python.vim
 au! BufEnter,BufNewFile,BufRead *.html so ~/.vim/languages/Html.vim
@@ -150,7 +155,7 @@ au! BufWritePost *.tex call Tex_CompileMultipleTimes()
 au! BufUnload *.tex !latexclean
 
 " Ignore these files with these extensions when auto-completing files "
-set wildignore=*.o,*.obj,*.exe,*.jpg,*.gif,*.png,*.class,*.hi
+set wildignore=*.o,*.obj,*.exe,*.jpg,*.gif,*.png,*.class,*.hi,*.pdf,*.pyc
 
 " Use shell-like autocompletion "
 set wildmode=longest:list
@@ -247,7 +252,7 @@ function! DisableArrowKeys()
     imap <Right> <Nop>
     imap <Left> <Nop>
 
-    map <S-j> 10j
+    map <C-Enter> 10j
     map <S-k> 10k
     map <S-h> 10h
     map <S-l> 10l

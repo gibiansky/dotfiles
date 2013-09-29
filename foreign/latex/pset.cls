@@ -356,3 +356,10 @@
 \DeclareMathOperator{\range}{range}
 \DeclareMathOperator{\nullspace}{null}
 \DeclareMathOperator{\Tr}{Tr}
+
+% Nice vector hack
+\usepackage{harpoon}
+\makeatletter
+\newcommand{\oset}[2]{{\mathop{#2}\limits^{\vbox to -.5\ex@{\kern-\tw@\ex@\hbox{\scriptsize $#1$}\vss}}}}
+\makeatother
+\renewcommand{\v}[1]{\oset{\rightharpoonup}#1}

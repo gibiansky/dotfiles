@@ -13,3 +13,6 @@ function! WC()
 endfunction
 
 command! WC call WC()
+
+call IMAP('`w', '\omega', 'tex')
+call IMAP('`o', '\theta', 'tex')
