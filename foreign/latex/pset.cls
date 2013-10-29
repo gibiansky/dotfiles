@@ -23,6 +23,7 @@
 \RequirePackage{etoolbox}
 \RequirePackage{fancybox}
 \RequirePackage{environ}
+\RequirePackage{changepage}
 
 % Forcefully disable the 'minted' package
 \newbool{allowminted}
@@ -100,7 +101,7 @@
 \newcommand{\startproblemlist}{%
     \newcounter{problemcounter}%
     \setcounter{problemcounter}{1}%
-    \global\edef\pset@currentsection{}%
+    \global\edef\pset@currentsection{}
 }
 
 % End the list of problems:
@@ -238,14 +239,19 @@
         \fi%
 %
         % Enclose the subpart problem text in a fancy box
-        \ovalbox{\textbf{(\alph{subpartcounter})} \subparttext}\\\\
+        \ovalbox{\textbf{(\alph{subpartcounter})} \subparttext}\\
 %
         % Include the subpart answer
-        \indent \begin{minipage}[t]{0.9\textwidth}
+        %\indent \begin{minipage}[t]{0.9\textwidth}
+        %    \setlength{\parindent}{0.6cm}
+        %    \setlength{\parskip}{0.3cm}
+        %    #1\\
+        %\end{minipage}
+        \begin{adjustwidth}{0.05\textwidth}{0.05\textwidth}
             \setlength{\parindent}{0.6cm}
             \setlength{\parskip}{0.3cm}
             #1\\
-        \end{minipage}
+        \end{adjustwidth}
 
     }{%
         % Inside problem environment

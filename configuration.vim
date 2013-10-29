@@ -22,6 +22,8 @@ let g:ran_setup=1
 " Line numbers "
 set number
 
+set backspace=indent,start
+
 " Give me a reasonable history
 set history=1000
 
@@ -62,11 +64,14 @@ Bundle 'gaving/vim-textobj-argument'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'michaeljsmith/vim-indent-object'
 
-"Bundle 'Floobits/floobits-vim'
 Bundle "MarcWeber/vim-addon-mw-utils"
 Bundle "tomtom/tlib_vim"
-Bundle "garbas/vim-snipmate"
-Bundle 'honza/vim-snippets'
+
+Bundle 'SirVer/ultisnips'
+let g:UltiSnipsExpandTrigger = '<c-j>'
+
+Bundle 'Valloric/YouCompleteMe'
+
 " Ctrl-P file finder
 Bundle 'kien/ctrlp.vim'
 let g:ctrlp_extensions = ['line', 'mixed']
@@ -80,14 +85,19 @@ let g:ctrlp_prompt_mappings = {
     \ }
 
 Bundle 'tpope/vim-markdown'
+Bundle 'scrooloose/nerdcommenter'
 
 " Syntastic configurations - open error window automatically with size 4
-Bundle 'Syntastic'
+Bundle 'scrooloose/syntastic'
 let g:syntastic_auto_loc_list=1
 let g:syntastic_loc_list_height=4
 let g:syntastic_check_on_open=1
 let g:syntastic_python_checker="flake8"
 let g:syntastic_always_populate_loc_list=1
+let g:syntastic_haskell_checkers=['hlint', 'ghc_mod', 'hdevtools']
+let g:syntastic_haskell_ghc_mod_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans"
+let g:syntastic_haskell_hdevtools_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans"
+let g:syntastic_tex_checkers=['chktex']
 
 map gn :ll<Space>\|<Space>lnext<CR>
 map gN :ll<Space>\|<Space>lprev<CR>
@@ -96,9 +106,9 @@ map gN :ll<Space>\|<Space>lprev<CR>
 Bundle 'Twinside/vim-haskellConceal'
 Bundle 'bitc/vim-hdevtools'
 Bundle 'lukerandall/haskellmode-vim'
+set shiftwidth=2
 Bundle 'dag/vim2hs'
-"Bundle 'kana/vim-filetype-haskell'
-"Bundle 'indenthaskell.vim'
+Bundle 'Twinside/vim-haskellFold'
 let g:haddock_indexfiledir=g:home."/.vim/resources/haskell/"
 let g:haddock_docdir="/home/silver/.cabal/share/doc"
 let g:haddock_browser="/usr/bin/firefox"

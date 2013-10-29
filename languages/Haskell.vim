@@ -17,3 +17,8 @@ set foldmarker={,}
 
 nnoremap <buffer> <F1> :HdevtoolsType<CR>
 nnoremap <buffer> <silent> <F2> :HdevtoolsClear<CR>
+setlocal noautochdir
+
+silent! iunmap <buffer> <s-tab>
+imap <S-tab> <ESC><<gi
+set backspace=indent,start
