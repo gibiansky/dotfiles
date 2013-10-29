@@ -52,6 +52,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 Bundle 'gibiansky/vim-latex-objects'
+Bundle 'jcf/vim-latex'
 
 " Include bundles "
 Bundle 'Raimondi/delimitMate'
