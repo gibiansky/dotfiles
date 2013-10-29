@@ -16,3 +16,6 @@ command! WC call WC()
 
 call IMAP('`w', '\omega', 'tex')
 call IMAP('`o', '\theta', 'tex')
+
+set conceallevel=2
+hi! link Conceal Operator
