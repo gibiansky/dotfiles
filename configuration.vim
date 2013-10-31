@@ -123,6 +123,11 @@ let g:Tex_DefaultTargetFormat='pdf'
 let g:tex_flavor='latex'
 let g:Tex_CompileRule_pdf='pdflatex -shell-escape -interaction=nonstopmode $*'
 
+if has('macunix')
+    let g:Tex_ViewRule_pdf='Skim'
+endif
+
+
 " Tab = Four Spaces "
 call TabBehaviour()
 
