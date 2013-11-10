@@ -77,7 +77,7 @@ Bundle 'Valloric/YouCompleteMe'
 Bundle 'kien/ctrlp.vim'
 let g:ctrlp_extensions = ['line', 'mixed']
 let g:ctrlp_map = '<c-n>'
-let g:ctrlp_cmd = 'CtrlPMixed'
+let g:ctrlp_cmd = 'CtrlP /users/silver'
 map <c-b> :CtrlPLine<CR>
 imap <c-b> <ESC><c-/>
 
@@ -122,6 +122,7 @@ set grepprg=grep\ -nH\ $*
 let g:Tex_DefaultTargetFormat='pdf'
 let g:tex_flavor='latex'
 let g:Tex_CompileRule_pdf='pdflatex -shell-escape -interaction=nonstopmode $*'
+let g:Imap_UsePlaceHolders = 0
 
 if has('macunix')
     let g:Tex_ViewRule_pdf='Skim'
