@@ -99,6 +99,7 @@ let g:syntastic_haskell_checkers=['hlint', 'ghc_mod', 'hdevtools']
 let g:syntastic_haskell_ghc_mod_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans"
 let g:syntastic_haskell_hdevtools_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans"
 let g:syntastic_tex_checkers=['chktex']
+let g:syntastic_tex_chktex_args='-n 1'
 
 map gn :ll<Space>\|<Space>lnext<CR>
 map gN :ll<Space>\|<Space>lprev<CR>

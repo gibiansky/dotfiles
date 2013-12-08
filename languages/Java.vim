@@ -121,7 +121,7 @@ if !exists("g:java_editing_init_done")
     imap <F6> <ESC><F6>
     imap <S-F6> <ESC><S-F6>
 
-    exec("source " . g:home . "/.vim/current-projects.vim")
+    "exec("source " . g:home . "/.vim/current-projects.vim")
 
     " Logcat 
     map <F7> :exec("!adb logcat '" . g:android_logcat_filter ."'")<CR>
