@@ -77,13 +77,18 @@ Bundle 'Valloric/YouCompleteMe'
 Bundle 'kien/ctrlp.vim'
 let g:ctrlp_extensions = ['line', 'mixed']
 let g:ctrlp_map = '<c-n>'
-let g:ctrlp_cmd = 'CtrlP /users/silver'
-map <c-b> :CtrlPLine<CR>
-imap <c-b> <ESC><c-/>
-
+let g:ctrlp_cmd = 'CtrlP /Users/silver'
+let g:ctrlp_working_path_mode=0
+let g:ctrlp_show_hidden=1
 let g:ctrlp_prompt_mappings = {
     \ 'AcceptSelection("h")': ['<c-g>'],
     \ }
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[/](\.git|\.hg|\.svn|music|dev|bundle|tmp|Library|downloads)$',
+  \ 'file': '\v\.(exe|so|dll|swp|swo)$',
+  \ }
+map <c-b> :CtrlPLine<CR>
+imap <c-b> <ESC><c-/>
 
 Bundle 'tpope/vim-markdown'
 Bundle 'scrooloose/nerdcommenter'
@@ -95,9 +100,9 @@ let g:syntastic_loc_list_height=4
 let g:syntastic_check_on_open=1
 let g:syntastic_python_checker="flake8"
 let g:syntastic_always_populate_loc_list=1
-let g:syntastic_haskell_checkers=['hlint', 'ghc_mod', 'hdevtools']
-let g:syntastic_haskell_ghc_mod_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans"
-let g:syntastic_haskell_hdevtools_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans"
+let g:syntastic_haskell_checkers=['hdevtools', 'hlint']
+let g:syntastic_haskell_ghc_mod_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans -g -fobject-code"
+let g:syntastic_haskell_hdevtools_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans -g -fobject-code"
 let g:syntastic_tex_checkers=['chktex']
 let g:syntastic_tex_chktex_args='-n 1'
 
