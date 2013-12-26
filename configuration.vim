@@ -72,6 +72,10 @@ Bundle 'SirVer/ultisnips'
 let g:UltiSnipsExpandTrigger = '<c-j>'
 
 Bundle 'Valloric/YouCompleteMe'
+let g:ycm_allow_changing_updatetime = 0
+
+Bundle 'Floobits/floobits-vim'
+set updatetime=100
 
 " Ctrl-P file finder
 Bundle 'kien/ctrlp.vim'
