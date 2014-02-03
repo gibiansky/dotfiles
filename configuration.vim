@@ -20,7 +20,8 @@ let g:home=system("printf $HOME")
 let g:ran_setup=1
 
 " Line numbers "
-set number
+set number           " Required to have current line number not be just zero
+set relativenumber
 
 set backspace=indent,start
 
@@ -95,6 +96,7 @@ map <c-b> :CtrlPLine<CR>
 imap <c-b> <ESC><c-/>
 
 Bundle 'tpope/vim-markdown'
+Bundle 'petRUShka/vim-opencl'
 Bundle 'scrooloose/nerdcommenter'
 
 " Syntastic configurations - open error window automatically with size 4
@@ -138,6 +140,9 @@ if has('macunix')
     let g:Tex_ViewRule_pdf='Skim'
 endif
 
+" Recompile LaTeX files every time I save
+au! BufWritePost *.tex call Tex_CompileMultipleTimes()
+au! BufUnload *.tex !latexclean
 
 " Tab = Four Spaces "
 call TabBehaviour()
@@ -171,15 +176,12 @@ set vb t_vb=
 autocmd GUIEnter * set visualbell t_vb=
 
 " Custom language settings "
-au! BufEnter,BufNewFile,BufRead *.java so ~/.vim/languages/Java.vim
-au! BufEnter,BufNewFile,BufRead *.tex so ~/.vim/languages/Latex.vim
-au! BufEnter,BufNewFile,BufRead *.hs so ~/.vim/languages/Haskell.vim
-au! BufEnter,BufNewFile,BufRead *.py so ~/.vim/languages/Python.vim
-au! BufEnter,BufNewFile,BufRead *.html so ~/.vim/languages/Html.vim
-
-" Recompile LaTeX files every time I save
-au! BufWritePost *.tex call Tex_CompileMultipleTimes()
-au! BufUnload *.tex !latexclean
+au! BufEnter,BufNewFile,BufRead *.java  so ~/.vim/languages/Java.vim
+au! BufEnter,BufNewFile,BufRead *.tex   so ~/.vim/languages/Latex.vim
+au! BufEnter,BufNewFile,BufRead *.hs    so ~/.vim/languages/Haskell.vim
+au! BufEnter,BufNewFile,BufRead *.py    so ~/.vim/languages/Python.vim
+au! BufEnter,BufNewFile,BufRead *.html  so ~/.vim/languages/Html.vim
+au! BufEnter,BufNewFile,BufRead *.cl  setf opencl
 
 " Ignore these files with these extensions when auto-completing files "
 set wildignore=*.o,*.obj,*.exe,*.jpg,*.gif,*.png,*.class,*.hi,*.pdf,*.pyc
@@ -187,11 +189,29 @@ set wildignore=*.o,*.obj,*.exe,*.jpg,*.gif,*.png,*.class,*.hi,*.pdf,*.pyc
 " Use shell-like autocompletion "
 set wildmode=longest:list
 
+" Have a useful title? "
+set title
+
 " Mappings "
 
+" Configure many useful mappings using the space key"
+let g:mapleader=' '
+map <Leader><Leader> :
+map <Leader>w :w<CR>:echo "Written at " . strftime("%c")<CR><ESC>
+map <Leader>q :q<CR>
+map <Leader>x :wq<CR>
+map <Leader>e :e 
+map <Leader>s :%s//cg<Left><Left><Left>
+vmap <Leader>s :s//cg<Left><Left><Left>
+map <Leader>t :SyntasticToggleMode<CR>
+map <Leader>i :set invpaste<CR>
+map <Leader>v :vs 
+map <Leader>g :sp 
+vmap <Leader>y "*y
+
 " Press space to enter ex command mode "
-map <Space> :
-imap <Nop> <ESC>hli
+"map <Space> :
+"imap <Nop> <ESC>hli
 
 map ' `
 

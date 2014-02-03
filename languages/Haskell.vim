@@ -22,3 +22,10 @@ setlocal noautochdir
 silent! iunmap <buffer> <s-tab>
 imap <S-tab> <ESC><<gi
 set backspace=indent,start
+
+" Hack for IHaskell
+if getcwd() =~ "/src"
+   let args = "-g -fno-warn-name-shadowing -g -fno-warn-orphans -g -fobject-code -g -optP-include -g -optP../dist/build/autogen/cabal_macros.h"
+   let g:syntastic_haskell_ghc_mod_args=args
+   let g:syntastic_haskell_hdevtools_args=args
+endif
