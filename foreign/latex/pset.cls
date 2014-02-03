@@ -36,11 +36,11 @@
 \ProcessOptions\relax
 
 % Document margins and widths
-\setlength{\textwidth}{20cm}
+\setlength{\textwidth}{19.3cm}
 
 % Header, footer, and page layout
 \pagestyle{fancy}
-\geometry{left=0.5cm,right=1.4cm,top=2cm,bottom=1.5cm}
+\geometry{left=1.2cm,right=1.4cm,top=2cm,bottom=1.5cm}
 \geometry{letterpaper}
 \setlength{\oddsidemargin}{-40pt}
 \lhead{\pset@name}
