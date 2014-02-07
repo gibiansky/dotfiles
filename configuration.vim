@@ -144,6 +144,11 @@ endif
 au! BufWritePost *.tex call Tex_CompileMultipleTimes()
 au! BufUnload *.tex !latexclean
 
+" Set shell to be reasonable in GUI vim
+if has("gui_running")
+    set shell=/usr/local/bin/zsh\ -il
+endif
+
 " Tab = Four Spaces "
 call TabBehaviour()
 
@@ -208,10 +213,6 @@ map <Leader>i :set invpaste<CR>
 map <Leader>v :vs 
 map <Leader>g :sp 
 vmap <Leader>y "*y
-
-" Press space to enter ex command mode "
-"map <Space> :
-"imap <Nop> <ESC>hli
 
 map ' `
 
@@ -288,21 +289,16 @@ endfunction
 " Arrow Keys: Disable arrow keys for movement, use hjkl instead"
 function! DisableArrowKeys()
     " Normal mode " 
-    map <Down> <Nop>
-    map <Up> <Nop>
-    map <Right> <Nop>
-    map <Left> <Nop>
+    map <Down> 10k
+    map <Up> 10j
+    map <Right> 10l
+    map <Left> 10h
 
     " Insert mode "
     imap <Down> <Nop> 
     imap <Up> <Nop>
     imap <Right> <Nop>
     imap <Left> <Nop>
-
-    map <C-Enter> 10j
-    map <S-k> 10k
-    map <S-h> 10h
-    map <S-l> 10l
 endfunction
 
 
