@@ -107,7 +107,6 @@ let g:ctrlp_custom_ignore = {
   \ 'dir': '\v[/]('.join(ignore_dirs, '|').')$',
   \ 'file': '\v\.('.join(ignore_exts, '|').')$',
   \ }
-echo g:ctrlp_custom_ignore
 let g:ctrlp_cache_dir = g:home."/.vim/tmp/ctrlp"
 map <c-b> :CtrlPLine<CR>
 imap <c-b> <ESC><c-/>
