@@ -88,10 +88,27 @@ let g:ctrlp_show_hidden=1
 let g:ctrlp_prompt_mappings = {
     \ 'AcceptSelection("h")': ['<c-g>'],
     \ }
+
+" Places for Ctrl-P to ignore
+let ignore_dirs = ["\\.git", "\\.hg", "\\.svn", "\\.cache", "\\.ghc", "\\.gem",
+                  \"\\.cabal", "\\.ipynb_checkpoints", "stuff", "\\.matlab", "\\.ipynb_checkpoints",
+                  \"\\.julia", "\\.Trash", "music", "Documents", "Movies", "dist", "ace", "ace-builds",
+                  \"\\.ihaskell", "dev", "bundle", "tmp", "Pictures", "\\.store", "env", "Metadata", "weights",
+                  \"Library", "downloads", "archive", "Public", "default", "\\.ipython", "*\\.pages",
+                  \"\\.cups", "\\.subversion", "security", "\\.sass-cache", "gen", "bootstrap"]
+let ignore_exts = ["exe", "so", "dll", "doc", "svg", "mp4", "mp3", "hi", "a", "p_hi", "p_o",  "Xauthority",
+                   \"swp", "swo", "DS_store", "docx", "ipynb", "npy", "avi", "jar", "min.js", "htoprc",
+                   \"bash_history", "lesshst", "pyg", "tar", "tga", "ttf", "plist", "zcompdump",
+                   \"histfile", "haskeline", "log", "zip", "bib", "out", "toc", "ppt", "mat",
+                   \"fasd", "floorc", "rnd", "aux", "nb", "xml", "bcf", "lof", "blg", "lot", "jpeg",
+                   \"viminfo", "gitconfig", "serverauth*", "nav"]
+
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[/](\.git|\.hg|\.svn|music|dev|bundle|tmp|Library|downloads)$',
-  \ 'file': '\v\.(exe|so|dll|swp|swo)$',
+  \ 'dir': '\v[/]('.join(ignore_dirs, '|').')$',
+  \ 'file': '\v\.('.join(ignore_exts, '|').')$',
   \ }
+echo g:ctrlp_custom_ignore
+let g:ctrlp_cache_dir = g:home."/.vim/tmp/ctrlp"
 map <c-b> :CtrlPLine<CR>
 imap <c-b> <ESC><c-/>
 
@@ -118,6 +135,11 @@ map gN :ll<Space>\|<Space>lprev<CR>
 " Haskell mode
 Bundle 'Twinside/vim-haskellConceal'
 Bundle 'bitc/vim-hdevtools'
+set concealcursor=nci
+
+au FileType haskell nnoremap <buffer> <D-1> :HdevtoolsType<CR>
+au FileType haskell nnoremap <buffer> <silent> <D-2> :HdevtoolsClear<CR>
+
 Bundle 'lukerandall/haskellmode-vim'
 set shiftwidth=2
 Bundle 'dag/vim2hs'
@@ -189,7 +211,7 @@ au! BufEnter,BufNewFile,BufRead *.html  so ~/.vim/languages/Html.vim
 au! BufEnter,BufNewFile,BufRead *.cl  setf opencl
 
 " Ignore these files with these extensions when auto-completing files "
-set wildignore=*.o,*.obj,*.exe,*.jpg,*.gif,*.png,*.class,*.hi,*.pdf,*.pyc
+set wildignore=*.o,*.obj,*.exe,*.jpg,*.gif,*.png,*.class,*.hi,*.pdf,*.pyc,*.jpeg,*.gz,*.cache
 
 " Use shell-like autocompletion "
 set wildmode=longest:list
@@ -217,6 +239,11 @@ vmap <Leader>y "*y
 map ' `
 
 noremap <S-u> <C-a>
+
+" Move <C-e> to something else
+noremap <C-z> <C-e>
+inoremap <C-z> <C-e>
+
 
 " Heresy
 imap <C-e> <ESC>$a
