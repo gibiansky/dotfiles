@@ -19,6 +19,9 @@ let g:home=system("printf $HOME")
 " Already ran setup "
 let g:ran_setup=1
 
+" Allow modelines "
+set modeline
+
 " Line numbers "
 set number           " Required to have current line number not be just zero
 set relativenumber
@@ -70,6 +73,7 @@ Bundle "MarcWeber/vim-addon-mw-utils"
 Bundle "tomtom/tlib_vim"
 
 Bundle 'SirVer/ultisnips'
+Bundle 'honza/vim-snippets'
 let g:UltiSnipsExpandTrigger = '<c-j>'
 
 Bundle 'Valloric/YouCompleteMe'
@@ -88,18 +92,20 @@ let g:ctrlp_show_hidden=1
 let g:ctrlp_prompt_mappings = {
     \ 'AcceptSelection("h")': ['<c-g>'],
     \ }
+" Don't regenerate the cache every time
+let g:ctrlp_clear_cache_on_exit = 0
 
 " Places for Ctrl-P to ignore
-let ignore_dirs = ["\\.git", "\\.hg", "\\.svn", "\\.cache", "\\.ghc", "\\.gem",
-                  \"\\.cabal", "\\.ipynb_checkpoints", "stuff", "\\.matlab", "\\.ipynb_checkpoints",
-                  \"\\.julia", "\\.Trash", "music", "Documents", "Movies", "dist", "ace", "ace-builds",
+let ignore_dirs = ["\\.git", "\\.hg", "\\.svn", "\\.cache", "\\.ghc", "\\.gem", "\\.shelly", "\\.text",
+                  \"\\.cabal", "\\.ipynb_checkpoints", "stuff", "\\.matlab", "\\.ipynb_checkpoints", "\\.ssh",
+                  \"\\.julia", "\\.Trash", "music", "Documents", "Movies", "dist", "ace", "ace-builds", "\\.mplayer",
                   \"\\.ihaskell", "dev", "bundle", "tmp", "Pictures", "\\.store", "env", "Metadata", "weights",
                   \"Library", "downloads", "archive", "Public", "default", "\\.ipython", "*\\.pages",
                   \"\\.cups", "\\.subversion", "security", "\\.sass-cache", "gen", "bootstrap"]
 let ignore_exts = ["exe", "so", "dll", "doc", "svg", "mp4", "mp3", "hi", "a", "p_hi", "p_o",  "Xauthority",
                    \"swp", "swo", "DS_store", "docx", "ipynb", "npy", "avi", "jar", "min.js", "htoprc",
-                   \"bash_history", "lesshst", "pyg", "tar", "tga", "ttf", "plist", "zcompdump",
-                   \"histfile", "haskeline", "log", "zip", "bib", "out", "toc", "ppt", "mat",
+                   \"bash_history", "lesshst", "pyg", "tar", "tga", "ttf", "plist", "zcompdump", "julia_history",
+                   \"histfile", "haskeline", "log", "zip", "bib", "out", "toc", "ppt", "mat", "sh_history",
                    \"fasd", "floorc", "rnd", "aux", "nb", "xml", "bcf", "lof", "blg", "lot", "jpeg",
                    \"viminfo", "gitconfig", "serverauth*", "nav"]
 
@@ -113,6 +119,7 @@ imap <c-b> <ESC><c-/>
 
 Bundle 'tpope/vim-markdown'
 Bundle 'petRUShka/vim-opencl'
+Bundle 'JuliaLang/julia-vim'
 Bundle 'scrooloose/nerdcommenter'
 
 " Syntastic configurations - open error window automatically with size 4
@@ -134,7 +141,6 @@ map gN :ll<Space>\|<Space>lprev<CR>
 " Haskell mode
 Bundle 'Twinside/vim-haskellConceal'
 Bundle 'bitc/vim-hdevtools'
-set concealcursor=nci
 
 au FileType haskell nnoremap <buffer> <D-1> :HdevtoolsType<CR>
 au FileType haskell nnoremap <buffer> <silent> <D-2> :HdevtoolsClear<CR>
