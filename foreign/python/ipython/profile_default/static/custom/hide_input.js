@@ -68,16 +68,19 @@ var hideInputCellExtension = (function(){
     var updateCellVisibility = function(cell, visible) {
         cell.metadata.hidden = visible;
         if(cell.metadata.hidden) {
-            var editor = cell.code_mirror;
-            var nLines = editor.lineCount();
-            var firstLineLen = editor.getLine(0).length;
-            var lastLineLen = editor.getLine(nLines - 1).length;
-            var mark = editor.markText(Pos(0, firstLineLen), Pos(nLines, lastLineLen + 1), {
-                replacedWith: createHiding(),
-            });
-            cell.mark = mark;
+            if (cell.mark === undefined) {
+                var editor = cell.code_mirror;
+                var nLines = editor.lineCount();
+                var firstLineLen = editor.getLine(0).length;
+                var lastLineLen = editor.getLine(nLines - 1).length;
+                var mark = editor.markText(Pos(0, firstLineLen), Pos(nLines, lastLineLen + 1), {
+                    replacedWith: createHiding(),
+                });
+                cell.mark = mark;
+            }
         } else if (cell.mark !== undefined) {
             cell.mark.clear();
+            cell.mark = undefined;
         }
 
         cell.hide_button.attr('value', textToShow(cell));

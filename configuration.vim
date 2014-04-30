@@ -63,7 +63,6 @@ Bundle 'Raimondi/delimitMate'
 Bundle 'jnwhiteh/vim-golang'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-repeat'
-
 Bundle 'hynek/vim-python-pep8-indent'
 Bundle 'gaving/vim-textobj-argument'
 Bundle 'kchmck/vim-coffee-script'
@@ -78,6 +77,12 @@ let g:UltiSnipsExpandTrigger = '<c-j>'
 
 Bundle 'Valloric/YouCompleteMe'
 let g:ycm_allow_changing_updatetime = 0
+
+Bundle 'godlygeek/tabular'
+function! InputChar()
+    let c = getchar()
+    return type(c) == type(0) ? nr2char(c) : c
+endfunction
 
 Bundle 'Floobits/floobits-vim'
 set updatetime=100
