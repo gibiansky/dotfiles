@@ -77,12 +77,18 @@ let g:UltiSnipsExpandTrigger = '<c-j>'
 
 Bundle 'Valloric/YouCompleteMe'
 let g:ycm_allow_changing_updatetime = 0
+let g:ycm_confirm_extra_conf=0
+let g:ycm_filetype_specific_completion_to_disable = {'objc': 'unimportant'}
 
-Bundle 'godlygeek/tabular'
-function! InputChar()
-    let c = getchar()
-    return type(c) == type(0) ? nr2char(c) : c
-endfunction
+Bundle 'Rip-Rip/clang_complete'
+let g:clang_library_path = '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib'
+let g:clang_make_default_keymappings=0
+
+"Bundle 'godlygeek/tabular'
+"function! InputChar()
+"    let c = getchar()
+"    return type(c) == type(0) ? nr2char(c) : c
+"endfunction
 
 Bundle 'Floobits/floobits-vim'
 set updatetime=100
@@ -101,7 +107,7 @@ let g:ctrlp_prompt_mappings = {
 let g:ctrlp_clear_cache_on_exit = 0
 
 " Places for Ctrl-P to ignore
-let ignore_dirs = ["\\.git", "\\.hg", "\\.svn", "\\.cache", "\\.ghc", "\\.gem", "\\.shelly", "\\.text",
+let ignore_dirs = ["\\.git", "\\.hg", "\\.svn", "\\.cache", "\\.ghc", "\\.gem", "\\.shelly", "\\.text", "\\.theano",
                   \"\\.cabal", "\\.ipynb_checkpoints", "stuff", "\\.matlab", "\\.ipynb_checkpoints", "\\.ssh",
                   \"\\.julia", "\\.Trash", "music", "Documents", "Movies", "dist", "ace", "ace-builds", "\\.mplayer",
                   \"\\.ihaskell", "dev", "bundle", "tmp", "Pictures", "\\.store", "env", "Metadata", "weights",
@@ -218,7 +224,20 @@ au! BufEnter,BufNewFile,BufRead *.tex   so ~/.vim/languages/Latex.vim
 au! BufEnter,BufNewFile,BufRead *.hs    so ~/.vim/languages/Haskell.vim
 au! BufEnter,BufNewFile,BufRead *.py    so ~/.vim/languages/Python.vim
 au! BufEnter,BufNewFile,BufRead *.html  so ~/.vim/languages/Html.vim
-au! BufEnter,BufNewFile,BufRead *.cl  setf opencl
+au! BufEnter,BufNewFile,BufRead,BufWrite *.m     call SetupObjC()
+au! BufEnter,BufNewFile,BufRead *.cl    setf opencl
+
+function! SetupObjC()
+    normal mp
+    let result = search("#import")
+    normal `p
+    if result > 0
+        setf objc
+        source ~/.vim/languages/ObjC.vim
+        let g:syntastic_objc_checkers=['gcc']
+        let g:syntastic_objc_gcc_args=['-F/Users/silver/code/ihaskell-app/Frameworks', '-framework', 'ChromiumTabs']
+    end
+endfunction
 
 " Ignore these files with these extensions when auto-completing files "
 set wildignore=*.o,*.obj,*.exe,*.jpg,*.gif,*.png,*.class,*.hi,*.pdf,*.pyc,*.jpeg,*.gz,*.cache
@@ -283,7 +302,7 @@ imap <C-l> <ESC>:tabn<CR>
 " Always keep a few lines above/below the cursor for context "
 set scrolloff=5
 
-command! Reload call VimSetup()
+command! Reload source ~/.vimrc | call VimSetup()
 
 " **********************   End Quick Config   ********************************** "
 endfunction
@@ -365,7 +384,7 @@ function! SyntaxHighlighting()
 
     " Use a colorscheme so that not everything has to be hand-set "
     if has("gui_running")
-        source ~/.vim/rdark.vim
+        colorscheme rdark
     else
         colorscheme darkblue
     endif
