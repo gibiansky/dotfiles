@@ -68,6 +68,13 @@ Bundle 'gaving/vim-textobj-argument'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'michaeljsmith/vim-indent-object'
 Bundle 'christoomey/vim-tmux-navigator'
+let g:tmux_navigator_no_mappings = 1
+
+nnoremap <silent> <C-w>h :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-w>j :TmuxNavigateDown<cr>
+nnoremap <silent> <C-w>k :TmuxNavigateUp<cr>
+nnoremap <silent> <C-w>l :TmuxNavigateRight<cr>
+nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
 
 Bundle "MarcWeber/vim-addon-mw-utils"
 Bundle "tomtom/tlib_vim"
@@ -308,10 +315,10 @@ cmap <C-r><C-r> <C-r>"
 " Tabs "
 map <C-t> <ESC>:tabnew 
 imap <C-t> <ESC>:tabnew 
-map ˙ <ESC>:tabp<CR>
-imap ˙ <ESC>:tabp<CR>
-map ¬ <ESC>:tabn<CR>
-imap ¬ <ESC>:tabn<CR>
+map <C-h> <ESC>:tabp<CR>
+imap <C-h> <ESC>:tabp<CR>
+map <C-l> <ESC>:tabn<CR>
+imap <C-l> <ESC>:tabn<CR>
 
 " Always keep a few lines above/below the cursor for context "
 set scrolloff=5
