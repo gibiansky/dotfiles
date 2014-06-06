@@ -67,6 +67,7 @@ Bundle 'hynek/vim-python-pep8-indent'
 Bundle 'gaving/vim-textobj-argument'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'michaeljsmith/vim-indent-object'
+Bundle 'christoomey/vim-tmux-navigator'
 
 Bundle "MarcWeber/vim-addon-mw-utils"
 Bundle "tomtom/tlib_vim"
@@ -307,10 +308,10 @@ cmap <C-r><C-r> <C-r>"
 " Tabs "
 map <C-t> <ESC>:tabnew 
 imap <C-t> <ESC>:tabnew 
-map <C-h> <ESC>:tabp<CR>
-imap <C-h> <ESC>:tabp<CR>
-map <C-l> <ESC>:tabn<CR>
-imap <C-l> <ESC>:tabn<CR>
+map ˙ <ESC>:tabp<CR>
+imap ˙ <ESC>:tabp<CR>
+map ¬ <ESC>:tabn<CR>
+imap ¬ <ESC>:tabn<CR>
 
 " Always keep a few lines above/below the cursor for context "
 set scrolloff=5
