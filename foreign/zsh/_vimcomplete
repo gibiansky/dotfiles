@@ -1,0 +1,7 @@
+#compdef vim
+
+typeset -A opt_args
+local context state line
+local fontdir
+
+# vim: set filetype=zsh:
