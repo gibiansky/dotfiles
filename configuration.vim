@@ -67,6 +67,14 @@ Bundle 'hynek/vim-python-pep8-indent'
 Bundle 'gaving/vim-textobj-argument'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'michaeljsmith/vim-indent-object'
+Bundle 'christoomey/vim-tmux-navigator'
+let g:tmux_navigator_no_mappings = 1
+
+nnoremap <silent> <C-w>h :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-w>j :TmuxNavigateDown<cr>
+nnoremap <silent> <C-w>k :TmuxNavigateUp<cr>
+nnoremap <silent> <C-w>l :TmuxNavigateRight<cr>
+nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
 
 Bundle "MarcWeber/vim-addon-mw-utils"
 Bundle "tomtom/tlib_vim"
@@ -90,14 +98,14 @@ let g:clang_make_default_keymappings=0
 "    return type(c) == type(0) ? nr2char(c) : c
 "endfunction
 
-Bundle 'Floobits/floobits-vim'
-set updatetime=100
+"Bundle 'Floobits/floobits-vim'
+"set updatetime=100
 
 " Ctrl-P file finder
 Bundle 'kien/ctrlp.vim'
 let g:ctrlp_extensions = ['line', 'mixed']
 let g:ctrlp_map = '<c-n>'
-let g:ctrlp_cmd = 'CtrlP /Users/silver'
+let g:ctrlp_cmd = 'CtrlP ' . g:home
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_show_hidden=1
 let g:ctrlp_prompt_mappings = {
@@ -128,6 +136,12 @@ let g:ctrlp_cache_dir = g:home."/.vim/tmp/ctrlp"
 map <c-b> :CtrlPLine<CR>
 imap <c-b> <ESC><c-/>
 
+let g:mapleader=' '
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map , <Plug>(easymotion-prefix)
+Bundle 'Lokaltog/vim-easymotion'
+
 Bundle 'tpope/vim-markdown'
 Bundle 'petRUShka/vim-opencl'
 Bundle 'JuliaLang/julia-vim'
@@ -138,7 +152,7 @@ Bundle 'scrooloose/syntastic'
 let g:syntastic_auto_loc_list=1
 let g:syntastic_loc_list_height=4
 let g:syntastic_check_on_open=1
-let g:syntastic_python_checker="flake8"
+let g:syntastic_python_checkers=["flake8"]
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_haskell_checkers=['hdevtools', 'hlint']
 let g:syntastic_haskell_ghc_mod_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans -g -fobject-code"
@@ -226,6 +240,8 @@ au! BufEnter,BufNewFile,BufRead *.py    so ~/.vim/languages/Python.vim
 au! BufEnter,BufNewFile,BufRead *.html  so ~/.vim/languages/Html.vim
 au! BufEnter,BufNewFile,BufRead,BufWrite *.m     call SetupObjC()
 au! BufEnter,BufNewFile,BufRead *.cl    setf opencl
+au! BufEnter,BufNewFile,BufRead,BufWrite *.dna   so ~/.vim/languages/Dna.vim
+au! BufEnter,BufRead  * if @% == "" | so ~/.vim/languages/Dna.vim
 
 function! SetupObjC()
     normal mp
@@ -264,6 +280,11 @@ map <Leader>i :set invpaste<CR>
 map <Leader>v :vs 
 map <Leader>g :sp 
 vmap <Leader>y "*y
+
+map + :vertical resize +5<CR>
+map - :vertical resize -5<CR>
+map  :resize +5<CR>
+map – :resize -5<CR>
 
 map ' `
 
@@ -345,8 +366,8 @@ endfunction
 " Arrow Keys: Disable arrow keys for movement, use hjkl instead"
 function! DisableArrowKeys()
     " Normal mode " 
-    map <Down> 10k
-    map <Up> 10j
+    map <Down> 10j
+    map <Up> 10k
     map <Right> 10l
     map <Left> 10h
 
