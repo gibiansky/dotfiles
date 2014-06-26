@@ -281,10 +281,10 @@ map <Leader>v :vs
 map <Leader>g :sp 
 vmap <Leader>y "*y
 
-map + :vertical resize +5<CR>
-map - :vertical resize -5<CR>
-map  :resize +5<CR>
-map – :resize -5<CR>
+map <Leader><Right> :vertical resize +5<CR>
+map <Leader><Left> :vertical resize -5<CR>
+map <Leader><Down> :resize +5<CR>
+map <Leader><Up> :resize -5<CR>
 
 map ' `
 
