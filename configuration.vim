@@ -294,6 +294,8 @@ noremap <S-u> <C-a>
 noremap <C-z> <C-e>
 inoremap <C-z> <C-e>
 
+" Use C-y to insert a whole word
+inoremap <expr> <c-y> matchstr(getline(line('.')-1), '\%' . virtcol('.') . 'v\%(\k\+\\|.\)')
 
 " Heresy
 imap <C-e> <ESC>$a
