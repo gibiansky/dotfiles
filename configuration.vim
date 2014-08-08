@@ -271,6 +271,7 @@ let g:mapleader=' '
 map <Leader><Leader> :
 map <Leader>w :w<CR>:echo "Written at " . strftime("%c")<CR><ESC>
 map <Leader>q :q<CR>
+map <Leader>! :q!<CR>
 map <Leader>x :wq<CR>
 map <Leader>e :e 
 map <Leader>s :%s//cg<Left><Left><Left>
