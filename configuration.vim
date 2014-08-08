@@ -152,7 +152,7 @@ Bundle 'scrooloose/syntastic'
 let g:syntastic_auto_loc_list=1
 let g:syntastic_loc_list_height=4
 let g:syntastic_check_on_open=1
-let g:syntastic_python_checkers=["flake8"]
+let g:syntastic_python_checkers=["flake8", "pep8", "flake8", "pyflakes", "pylint"]
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_haskell_checkers=['hdevtools', 'hlint']
 let g:syntastic_haskell_ghc_mod_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans -g -fobject-code"
@@ -295,6 +295,8 @@ noremap <S-u> <C-a>
 noremap <C-z> <C-e>
 inoremap <C-z> <C-e>
 
+" Use C-y to insert a whole word
+inoremap <expr> <c-y> matchstr(getline(line('.')-1), '\%' . virtcol('.') . 'v\%(\k\+\\|.\)')
 
 " Heresy
 imap <C-e> <ESC>$a
