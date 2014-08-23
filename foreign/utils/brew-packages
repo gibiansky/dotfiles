@@ -31,6 +31,8 @@ installed = set(cmd("brew list").split())
 unnecessary = installed - dependencies
 missing = dependencies - installed
 
-print 'brew install %s' % " ".join(sorted(missing))
-print 'brew remove %s' % " ".join(sorted(unnecessary))
-print 'brew clean --force -s'
+if missing:
+    print 'brew install %s' % " ".join(sorted(missing))
+if unnecessary:
+    print 'brew remove %s' % " ".join(sorted(unnecessary))
+print 'brew cleanup --force -s'
