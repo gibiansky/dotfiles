@@ -56,6 +56,9 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 Bundle 'gibiansky/vim-latex-objects'
+
+let g:Tex_Leader = '`tex'
+let g:Tex_SmartKeyDot = 0
 Bundle 'jcf/vim-latex'
 
 " Include bundles "
@@ -143,6 +146,8 @@ map , <Plug>(easymotion-prefix)
 Bundle 'Lokaltog/vim-easymotion'
 
 Bundle 'tpope/vim-markdown'
+Bundle 'dahu/vim-asciidoc'
+Bundle 'SyntaxRange'
 Bundle 'petRUShka/vim-opencl'
 Bundle 'JuliaLang/julia-vim'
 Bundle 'scrooloose/nerdcommenter'
@@ -242,6 +247,9 @@ au! BufEnter,BufNewFile,BufRead,BufWrite *.m     call SetupObjC()
 au! BufEnter,BufNewFile,BufRead *.cl    setf opencl
 au! BufEnter,BufNewFile,BufRead,BufWrite *.dna   so ~/.vim/languages/Dna.vim
 au! BufEnter,BufRead  * if @% == "" | so ~/.vim/languages/Dna.vim
+
+au BufWritePost *.adoc !asciidoctor -r ./fix-pygments.rb -r ./fix-double-colon.rb -r ./undo-replacements-extension.rb -a data-uri %
+au BufWritePost *.adoc so ~/.vim/languages/Asciidoc.vim
 
 function! SetupObjC()
     normal mp

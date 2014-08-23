@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+
+import sys
+import subprocess
+
+# Get all packages we need.
+package_file = sys.argv[1]
+with open(package_file, "r") as handle:
+    lines = list(handle)
+packages = [line.split(" ")[0].strip() for line in lines
+            if not line.startswith("#") and line.strip()]
+
+
+def pkg_names(packages):
+    packages = [pkg.split("/")[-1] for pkg in packages]
+    return set(packages)
+
+
+def cmd(command):
+    return subprocess.check_output(command, shell=True)
+
+try:
+    pkgs = " ".join(packages)
+    dependencies = set(cmd("brew deps --union %s" % pkgs).split())
+    dependencies = pkg_names(dependencies.union(packages))
+except:
+    sys.exit(1)
+
+installed = set(cmd("brew list").split())
+
+unnecessary = installed - dependencies
+missing = dependencies - installed
+
+print 'brew install %s' % " ".join(sorted(missing))
+print 'brew remove %s' % " ".join(sorted(unnecessary))
+print 'brew clean --force -s'

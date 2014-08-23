@@ -1,0 +1,31 @@
+cabal-install # Because ghc does not ship with cabal
+freeglut      # For OpenGL from Haskell
+gcc48         # To have real gcc instead of clang
+
+# For IHaskell and extensions
+zeromq
+cairo
+libmagic
+
+# Gnu Utils
+findutils
+gnu-sed
+htop-osx
+tmux
+mplayer
+zsh
+watch
+wget
+git
+coreutils
+
+# Programming languages
+go
+jq
+php55
+
+# Other executable tools
+graphviz
+highlight
+qemu
+samtools

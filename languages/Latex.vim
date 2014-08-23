@@ -14,8 +14,19 @@ endfunction
 
 command! WC call WC()
 
-call IMAP('`w', '\omega', 'tex')
-call IMAP('`o', '\theta', 'tex')
+"call IMAP('`w', '\omega', 'tex')
+"call IMAP('`o', '\theta', 'tex')
+
+call IMAP('()', '()', 'tex')
+call IMAP('{}', '{}', 'tex')
+call IMAP('[]', '[]', 'tex')
+call IMAP('::', '::', 'tex')
+call IMAP('{{', '{{', 'tex')
+call IMAP('((', '((', 'tex')
+call IMAP('[[', '[[', 'tex')
+call IMAP('$$', '$$', 'tex')
+call IMAP('==', '==', 'tex')
+
 
 set conceallevel=2
 hi! link Conceal Operator
