@@ -2,6 +2,7 @@ function! asciidoc#bundles()
 endfun
 
 function! asciidoc#enter()
+    setf asciidoc
     set syntax=asciidoc
     set textwidth=100
 

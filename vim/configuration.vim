@@ -63,7 +63,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'Raimondi/delimitMate'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
-Plugin "tomtom/tlib_vim"
+Plugin 'tomtom/tlib_vim'
 
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
@@ -77,10 +77,12 @@ call CtrlPSetup()
 call SyntasticSetup()
 
 " Language plugins
-let supported_languages=['haskell', 'latex', 'opencl', 'python', 'asciidoc']
-for language in g:supported_languages
+let supported_languages = split(globpath('~/.vim/languages', '*'), '\n')
+call map(supported_languages, 'split(v:val, "/")[-1]')
+call map(supported_languages, 'split(v:val, "\\.")[0]')
+for language in supported_languages
     " Include bundles for languages
-    exe 'source languages/' . language . '.vim'
+    exe 'source ~/.vim/languages/' . language . '.vim'
     exe 'call ' . language . '#bundles()'
 endfor
 
@@ -345,14 +347,16 @@ function! CtrlPSetup()
     " Places for Ctrl-P to ignore
     let ignore_dirs = ["\\.git", "\\.hg", "\\.svn", "\\.cache", "\\.ghc", "\\.gem", "\\.shelly", "\\.text", "\\.theano",
                     \"\\.cabal", "\\.ipynb_checkpoints", "stuff", "\\.matlab", "\\.ipynb_checkpoints", "\\.ssh",
+                    \"\\.gradle", "\\.asy", "\\.lein", "\\.boot2docker", "\\.m2", "\\.vagrant.d", "\\.android", "\\.idea",
                     \"\\.julia", "\\.Trash", "music", "Documents", "Movies", "dist", "ace", "ace-builds", "\\.mplayer",
-                    \"\\.ihaskell", "dev", "bundle", "tmp", "Pictures", "\\.store", "env", "Metadata", "weights",
-                    \"Library", "downloads", "archive", "Public", "default", "\\.ipython", "*\\.pages",
+                    \"\\.ihaskell", "dev", "bundle", "tmp", "Pictures", "\\.store", "env", "Metadata", "weights", "\\.cabal-sandbox",
+                    \"Library", "downloads", "archive", "Public", "default", "\\.ipython", "*\\.pages", "Applications",
                     \"\\.cups", "\\.subversion", "security", "\\.sass-cache", "gen", "bootstrap"]
     let ignore_exts = ["exe", "so", "dll", "doc", "svg", "mp4", "mp3", "hi", "a", "p_hi", "p_o",  "Xauthority",
                     \"swp", "swo", "DS_store", "docx", "ipynb", "npy", "avi", "jar", "min.js", "htoprc",
                     \"bash_history", "lesshst", "pyg", "tar", "tga", "ttf", "plist", "zcompdump", "julia_history",
                     \"histfile", "haskeline", "log", "zip", "bib", "out", "toc", "ppt", "mat", "sh_history",
+                    \"arcrc", "pearrc", "nviminfo", "ico", "cdr", "iml", "iso", "serverauth.2686", "clang_complete", "xcf", 
                     \"fasd", "floorc", "rnd", "aux", "nb", "xml", "bcf", "lof", "blg", "lot", "jpeg",
                     \"viminfo", "gitconfig", "serverauth*", "nav"]
 

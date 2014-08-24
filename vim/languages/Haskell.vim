@@ -3,6 +3,7 @@ function! haskell#bundles()
 endfun
 
 function! haskell#enter()
+    setf haskell
     " Required for Haskell mode
     compiler ghc
 

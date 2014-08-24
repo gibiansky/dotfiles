@@ -2,6 +2,7 @@ function! python#bundles()
 endfunction
 
 function! python#enter()
+    setf python
     set nosmartindent
     set foldmethod=indent
 

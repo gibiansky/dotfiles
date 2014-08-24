@@ -18,7 +18,7 @@ mkdir -p $HOME/.vim/tmp/backup
 echo 'source ~/.vim/configuration.vim' > ~/.vimrc
 
 # Install Vundle.
-git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 # Make sure we're using zsh, not bash.
 # Assume Homebrew provides zsh.

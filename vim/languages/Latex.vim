@@ -7,6 +7,7 @@ function! latex#bundles()
 endfun
 
 function! latex#enter()
+    setf latex
     set spell
     set foldmethod=indent
     set foldminlines=2
