@@ -8,8 +8,7 @@ FILES="vim tmux.conf vimperatorrc zsh zshrc slate pythonrc.py"
 
 # Aliases for files.
 for FILE in $FILES; do
-    rm -f $HOME/.$FILE;
-    ln -s $HOME/.$FILE $HOME/code/dotfiles/$FILE;
+    ln -s $HOME/code/dotfiles/$FILE $HOME/.$FILE;
 done
 
 # Make place for temp files and backup for vim.
