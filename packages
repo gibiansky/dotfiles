@@ -2,6 +2,7 @@ freeglut      # For OpenGL from Haskell
 gcc48         # To have real gcc instead of clang
 brew-cask
 
+
 # For IHaskell and extensions
 zeromq
 cairo
@@ -12,6 +13,7 @@ findutils
 gnu-sed
 htop-osx
 tmux
+reattach-to-user-namespace
 mplayer
 zsh
 watch

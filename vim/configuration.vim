@@ -26,12 +26,16 @@ set modeline
 set number           " Required to have current line number not be just zero
 set relativenumber
 
+" Enable autoindent "
+set smartindent
+
 set backspace=indent,start
 
 " Give me a reasonable history
 set history=1000
 
-" Not compatible with Ex "
+" Not compatible with Ex.
+" Required for Vundle.
 set nocompatible
 
 " Remove menu bar
@@ -49,157 +53,51 @@ set statusline+=\ -\ %2c    " Current character number
 " Automatically swith directories per tab
 set autochdir
 
-" Vundle "
+" Vundle
 filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-Bundle 'gmarik/vundle'
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'gmarik/Vundle.vim'
 
-Bundle 'gibiansky/vim-latex-objects'
+" Load general plugins
+Plugin 'Raimondi/delimitMate'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
+Plugin "tomtom/tlib_vim"
 
-let g:Tex_Leader = '`tex'
-let g:Tex_SmartKeyDot = 0
-Bundle 'jcf/vim-latex'
-
-" Include bundles "
-Bundle 'Raimondi/delimitMate'
-Bundle 'jnwhiteh/vim-golang'
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-repeat'
-Bundle 'hynek/vim-python-pep8-indent'
-Bundle 'gaving/vim-textobj-argument'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'michaeljsmith/vim-indent-object'
-Bundle 'christoomey/vim-tmux-navigator'
-let g:tmux_navigator_no_mappings = 1
-
-nnoremap <silent> <C-w>h :TmuxNavigateLeft<cr>
-nnoremap <silent> <C-w>j :TmuxNavigateDown<cr>
-nnoremap <silent> <C-w>k :TmuxNavigateUp<cr>
-nnoremap <silent> <C-w>l :TmuxNavigateRight<cr>
-nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
-
-Bundle "MarcWeber/vim-addon-mw-utils"
-Bundle "tomtom/tlib_vim"
-
-Bundle 'SirVer/ultisnips'
-Bundle 'honza/vim-snippets'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 let g:UltiSnipsExpandTrigger = '<c-j>'
 
-Bundle 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 let g:ycm_allow_changing_updatetime = 0
 let g:ycm_confirm_extra_conf=0
-let g:ycm_filetype_specific_completion_to_disable = {'objc': 'unimportant'}
 
-Bundle 'Rip-Rip/clang_complete'
-let g:clang_library_path = '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib'
-let g:clang_make_default_keymappings=0
+call CtrlPSetup()
+call SyntasticSetup()
 
-"Bundle 'godlygeek/tabular'
-"function! InputChar()
-"    let c = getchar()
-"    return type(c) == type(0) ? nr2char(c) : c
-"endfunction
+" Language plugins
+let supported_languages=['haskell', 'latex', 'opencl', 'python', 'asciidoc']
+for language in g:supported_languages
+    " Include bundles for languages
+    exe 'source languages/' . language . '.vim'
+    exe 'call ' . language . '#bundles()'
+endfor
 
-"Bundle 'Floobits/floobits-vim'
-"set updatetime=100
-
-" Ctrl-P file finder
-Bundle 'kien/ctrlp.vim'
-let g:ctrlp_extensions = ['line', 'mixed']
-let g:ctrlp_map = '<c-n>'
-let g:ctrlp_cmd = 'CtrlP ' . g:home
-let g:ctrlp_working_path_mode=0
-let g:ctrlp_show_hidden=1
-let g:ctrlp_prompt_mappings = {
-    \ 'AcceptSelection("h")': ['<c-g>'],
-    \ }
-" Don't regenerate the cache every time
-let g:ctrlp_clear_cache_on_exit = 0
-
-" Places for Ctrl-P to ignore
-let ignore_dirs = ["\\.git", "\\.hg", "\\.svn", "\\.cache", "\\.ghc", "\\.gem", "\\.shelly", "\\.text", "\\.theano",
-                  \"\\.cabal", "\\.ipynb_checkpoints", "stuff", "\\.matlab", "\\.ipynb_checkpoints", "\\.ssh",
-                  \"\\.julia", "\\.Trash", "music", "Documents", "Movies", "dist", "ace", "ace-builds", "\\.mplayer",
-                  \"\\.ihaskell", "dev", "bundle", "tmp", "Pictures", "\\.store", "env", "Metadata", "weights",
-                  \"Library", "downloads", "archive", "Public", "default", "\\.ipython", "*\\.pages",
-                  \"\\.cups", "\\.subversion", "security", "\\.sass-cache", "gen", "bootstrap"]
-let ignore_exts = ["exe", "so", "dll", "doc", "svg", "mp4", "mp3", "hi", "a", "p_hi", "p_o",  "Xauthority",
-                   \"swp", "swo", "DS_store", "docx", "ipynb", "npy", "avi", "jar", "min.js", "htoprc",
-                   \"bash_history", "lesshst", "pyg", "tar", "tga", "ttf", "plist", "zcompdump", "julia_history",
-                   \"histfile", "haskeline", "log", "zip", "bib", "out", "toc", "ppt", "mat", "sh_history",
-                   \"fasd", "floorc", "rnd", "aux", "nb", "xml", "bcf", "lof", "blg", "lot", "jpeg",
-                   \"viminfo", "gitconfig", "serverauth*", "nav"]
-
-let g:ctrlp_custom_ignore = {
-  \ 'dir': '\v[/]('.join(ignore_dirs, '|').')$',
-  \ 'file': '\v\.('.join(ignore_exts, '|').')$',
-  \ }
-let g:ctrlp_cache_dir = g:home."/.vim/tmp/ctrlp"
-map <c-b> :CtrlPLine<CR>
-imap <c-b> <ESC><c-/>
-
-let g:mapleader=' '
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
-map , <Plug>(easymotion-prefix)
-Bundle 'Lokaltog/vim-easymotion'
-
-Bundle 'tpope/vim-markdown'
-Bundle 'dahu/vim-asciidoc'
-Bundle 'SyntaxRange'
-Bundle 'petRUShka/vim-opencl'
-Bundle 'JuliaLang/julia-vim'
-Bundle 'scrooloose/nerdcommenter'
-
-" Syntastic configurations - open error window automatically with size 4
-Bundle 'scrooloose/syntastic'
-let g:syntastic_auto_loc_list=1
-let g:syntastic_loc_list_height=4
-let g:syntastic_check_on_open=1
-let g:syntastic_python_checkers=["flake8", "pep8", "flake8", "pyflakes", "pylint"]
-let g:syntastic_always_populate_loc_list=1
-let g:syntastic_haskell_checkers=['hdevtools', 'hlint']
-let g:syntastic_haskell_ghc_mod_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans -g -fobject-code"
-let g:syntastic_haskell_hdevtools_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans -g -fobject-code"
-let g:syntastic_tex_checkers=['chktex']
-let g:syntastic_tex_chktex_args='-n 1'
-
-map gn :ll<Space>\|<Space>lnext<CR>
-map gN :ll<Space>\|<Space>lprev<CR>
-
-" Haskell mode
-Bundle 'Twinside/vim-haskellConceal'
-Bundle 'bitc/vim-hdevtools'
-
-au FileType haskell nnoremap <buffer> <D-1> :HdevtoolsType<CR>
-au FileType haskell nnoremap <buffer> <silent> <D-2> :HdevtoolsClear<CR>
-
-Bundle 'lukerandall/haskellmode-vim'
-set shiftwidth=2
-Bundle 'dag/vim2hs'
-Bundle 'Twinside/vim-haskellFold'
-let g:haddock_indexfiledir=g:home."/.vim/resources/haskell/"
-let g:haddock_docdir="/home/silver/.cabal/share/doc"
-let g:haddock_browser="/usr/bin/firefox"
-
-" Required for vundle "
-filetype plugin indent on
-
-" LaTeX stuff "
-set grepprg=grep\ -nH\ $*
-let g:Tex_DefaultTargetFormat='pdf'
-let g:tex_flavor='latex'
-let g:Tex_CompileRule_pdf='pdflatex -shell-escape -interaction=nonstopmode $*'
-let g:Imap_UsePlaceHolders = 0
-
-if has('macunix')
-    let g:Tex_ViewRule_pdf='Skim'
+" Detect whether we're in tmux
+if len($TMUX) != 0
+    Plugin 'christoomey/vim-tmux-navigator'
+    let g:tmux_navigator_no_mappings = 1
+    nnoremap <silent> <C-w>h :TmuxNavigateLeft<cr>
+    nnoremap <silent> <C-w>j :TmuxNavigateDown<cr>
+    nnoremap <silent> <C-w>k :TmuxNavigateUp<cr>
+    nnoremap <silent> <C-w>l :TmuxNavigateRight<cr>
+    nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
 endif
 
-" Recompile LaTeX files every time I save
-au! BufWritePost *.tex call Tex_CompileMultipleTimes()
-au! BufUnload *.tex !latexclean
+" Required for vundle
+call vundle#end()
+filetype plugin indent on
 
 " Set shell to be reasonable in GUI vim
 if has("gui_running")
@@ -209,14 +107,11 @@ endif
 " Tab = Four Spaces "
 call TabBehaviour()
 
-" Disable Arrow Keys and Add Useful Mappings
-call DisableArrowKeys()
+" Multiply Arrow Keys by 10
+call ArrowKeys()
 
 " Traditional search "
 call SearchBehaviour()
-
-" Do not use arrow keys for movement "
-call DisableArrowKeys()
 
 " Hide annoying files "
 call BackupAndSwapFiles()
@@ -230,38 +125,18 @@ call SyntaxHighlighting()
 " Enable code folding "
 call CodeFolding()
 
-" Enable autoindent "
-call AutoIndent()
-
 " No bell "
 set vb t_vb=
 autocmd GUIEnter * set visualbell t_vb=
 
-" Custom language settings "
-au! BufEnter,BufNewFile,BufRead *.java  so ~/.vim/languages/Java.vim
-au! BufEnter,BufNewFile,BufRead *.tex   so ~/.vim/languages/Latex.vim
-au! BufEnter,BufNewFile,BufRead *.hs    so ~/.vim/languages/Haskell.vim
-au! BufEnter,BufNewFile,BufRead *.py    so ~/.vim/languages/Python.vim
-au! BufEnter,BufNewFile,BufRead *.html  so ~/.vim/languages/Html.vim
-au! BufEnter,BufNewFile,BufRead,BufWrite *.m     call SetupObjC()
-au! BufEnter,BufNewFile,BufRead *.cl    setf opencl
-au! BufEnter,BufNewFile,BufRead,BufWrite *.dna   so ~/.vim/languages/Dna.vim
-au! BufEnter,BufRead  * if @% == "" | so ~/.vim/languages/Dna.vim
-
-au BufWritePost *.adoc !asciidoctor -r ./fix-pygments.rb -r ./fix-double-colon.rb -r ./undo-replacements-extension.rb -a data-uri %
-au BufWritePost *.adoc so ~/.vim/languages/Asciidoc.vim
-
-function! SetupObjC()
-    normal mp
-    let result = search("#import")
-    normal `p
-    if result > 0
-        setf objc
-        source ~/.vim/languages/ObjC.vim
-        let g:syntastic_objc_checkers=['gcc']
-        let g:syntastic_objc_gcc_args=['-F/Users/silver/code/ihaskell-app/Frameworks', '-framework', 'ChromiumTabs']
-    end
-endfunction
+" Language autodetect
+augroup filetypedetect
+    au! BufEnter,BufNewFile,BufRead *.tex  call latex#enter()
+    au! BufEnter,BufNewFile,BufRead *.hs   call haskell#enter()
+    au! BufEnter,BufNewFile,BufRead *.py   call python#enter()
+    au! BufEnter,BufNewFile,BufRead *.adoc call sciidoc#enter()
+    au! BufEnter,BufNewFile,BufRead *.cl   call opencl#enter()
+augroup END
 
 " Ignore these files with these extensions when auto-completing files "
 set wildignore=*.o,*.obj,*.exe,*.jpg,*.gif,*.png,*.class,*.hi,*.pdf,*.pyc,*.jpeg,*.gz,*.cache
@@ -334,8 +209,6 @@ imap <C-l> <ESC>:tabn<CR>
 " Always keep a few lines above/below the cursor for context "
 set scrolloff=5
 
-command! Reload source ~/.vimrc | call VimSetup()
-
 " **********************   End Quick Config   ********************************** "
 endfunction
 
@@ -374,8 +247,8 @@ function! SearchBehaviour()
 endfunction
 
 
-" Arrow Keys: Disable arrow keys for movement, use hjkl instead"
-function! DisableArrowKeys()
+" Arrow Keys: Disable arrow keys for normal movement, use hjkl instead"
+function! ArrowKeys()
     " Normal mode " 
     map <Down> 10j
     map <Up> 10k
@@ -383,10 +256,10 @@ function! DisableArrowKeys()
     map <Left> 10h
 
     " Insert mode "
-    imap <Down> <Nop> 
-    imap <Up> <Nop>
-    imap <Right> <Nop>
-    imap <Left> <Nop>
+    imap <Down> <ESC><Down>
+    imap <Up> <ESC><Up>
+    imap <Right> <ESC><Right>
+    imap <Left> <ESC><Left>
 endfunction
 
 
@@ -436,9 +309,60 @@ function! CodeFolding()
     set foldminlines=5
 endfunction
 
-" Autoindent: enable autoindentation for c and other languages "
-function! AutoIndent()
-    set smartindent
+" Syntastic configurations
+function! SyntasticSetup()
+    Plugin 'scrooloose/syntastic'
+    let g:syntastic_auto_loc_list=1 " open error window automatically with size 4
+    let g:syntastic_loc_list_height=4
+    let g:syntastic_check_on_open=1
+    let g:syntastic_python_checkers=["flake8", "pep8", "flake8", "pyflakes", "pylint"]
+    let g:syntastic_always_populate_loc_list=1
+    let g:syntastic_haskell_checkers=['hdevtools', 'hlint']
+    let g:syntastic_haskell_ghc_mod_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans -g -fobject-code"
+    let g:syntastic_haskell_hdevtools_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans -g -fobject-code"
+    let g:syntastic_tex_checkers=['chktex']
+    let g:syntastic_tex_chktex_args='-n 1'
+
+    map gn :ll<Space>\|<Space>lnext<CR>
+    map gN :ll<Space>\|<Space>lprev<CR>
+endfunction
+
+" Ctrl-P file finder
+function! CtrlPSetup()
+    Plugin 'kien/ctrlp.vim'
+
+    let g:ctrlp_extensions = ['line', 'mixed']
+    let g:ctrlp_map = '<c-n>'
+    let g:ctrlp_cmd = 'CtrlP ' . g:home
+    let g:ctrlp_working_path_mode=0
+    let g:ctrlp_show_hidden=1
+    let g:ctrlp_prompt_mappings = {
+        \ 'AcceptSelection("h")': ['<c-g>'],
+        \ }
+    " Don't regenerate the cache every time
+    let g:ctrlp_clear_cache_on_exit = 0
+
+    " Places for Ctrl-P to ignore
+    let ignore_dirs = ["\\.git", "\\.hg", "\\.svn", "\\.cache", "\\.ghc", "\\.gem", "\\.shelly", "\\.text", "\\.theano",
+                    \"\\.cabal", "\\.ipynb_checkpoints", "stuff", "\\.matlab", "\\.ipynb_checkpoints", "\\.ssh",
+                    \"\\.julia", "\\.Trash", "music", "Documents", "Movies", "dist", "ace", "ace-builds", "\\.mplayer",
+                    \"\\.ihaskell", "dev", "bundle", "tmp", "Pictures", "\\.store", "env", "Metadata", "weights",
+                    \"Library", "downloads", "archive", "Public", "default", "\\.ipython", "*\\.pages",
+                    \"\\.cups", "\\.subversion", "security", "\\.sass-cache", "gen", "bootstrap"]
+    let ignore_exts = ["exe", "so", "dll", "doc", "svg", "mp4", "mp3", "hi", "a", "p_hi", "p_o",  "Xauthority",
+                    \"swp", "swo", "DS_store", "docx", "ipynb", "npy", "avi", "jar", "min.js", "htoprc",
+                    \"bash_history", "lesshst", "pyg", "tar", "tga", "ttf", "plist", "zcompdump", "julia_history",
+                    \"histfile", "haskeline", "log", "zip", "bib", "out", "toc", "ppt", "mat", "sh_history",
+                    \"fasd", "floorc", "rnd", "aux", "nb", "xml", "bcf", "lof", "blg", "lot", "jpeg",
+                    \"viminfo", "gitconfig", "serverauth*", "nav"]
+
+    let g:ctrlp_custom_ignore = {
+    \ 'dir': '\v[/]('.join(ignore_dirs, '|').')$',
+    \ 'file': '\v\.('.join(ignore_exts, '|').')$',
+    \ }
+    let g:ctrlp_cache_dir = g:home."/.vim/tmp/ctrlp"
+    map <c-b> :CtrlPLine<CR>
+    imap <c-b> <ESC><c-/>
 endfunction
 
 " ************************   End Functions   ************************************ "

@@ -1,5 +1,10 @@
-set nosmartindent
-set foldmethod=indent
+function! python#bundles()
+endfunction
 
-setlocal textwidth=79
-setlocal colorcolumn=+1
+function! python#enter()
+    set nosmartindent
+    set foldmethod=indent
+
+    setlocal textwidth=79
+    setlocal colorcolumn=+1
+endfunction
