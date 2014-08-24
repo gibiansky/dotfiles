@@ -1,57 +1,14 @@
 Installation
 ============
 
-In order to make this setup functional on any Linux computer, download this repository and execute the following commands:
+In order to make this setup functional on any Linux or Mac computer, execute the following commands:
 
 ```bash
-# Rename to .vim
-mv dotfiles ~/.vim
+# I rely on things being in ~/code/dotfiles to make links.
+git clone http://www.github.com/gibiansky/dotfiles $HOME/code/dotfiles
 
-# Make links to the configuration files from your home folder
-echo 'source ~/.vim/configuration.vim' > ~/.vimrc
-ln -s ~/.vim/foreign/zsh.config ~/.zshrc
-
-# Switch to zsh instead of bash
-chsh -s zsh
-
-# Decompress Java resources
-cd ~/.vim/resources/java
-tar -xvf api.tar.gz
-cd
-
-# Install Vundle
-git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-
-# Create backup and swap file directories for Vim
-mkdir -p ~/.vim/tmp/backup
+# Run setup.
+$HOME/code/dotfiles/init.sh
 ```
 
 After that, make sure that when your .vimrc is being loaded, the HOME environment variable is defined, because vim uses it to find other files.
-
-If you prefer a different color scheme, replace ~/.vim/colorscheme.vim with one of your own choice.
-
-Shortcuts and Features
-=========
-
-`tmux` Features:
-- Use `C-x` as the prefix key
-- Use `vim` keybindings
-- Default to `/bin/zsh`
-
-`tmux` Shortcuts (prefixed by `C-x`):
-
-- `C-v`: vertical split
-- `C-s`: horizontal split
-- `C-[hjkl]`: move to left, down, up, and right panes, respectively
-- `M-[arrow key]`: resize the pane you're in (can be repeated quickly with many applications)
-- `:`: prompt
-
-Vim Bundles
-===========
-
-`gaving/vim-textobj-argument`:
-- Provides 'aa' and 'ia' for selecting arguments to functions as text objects.
-
-`michaeljsmith/vim-indent-object`:
-- Provides 'ii' and 'ai' for selecting indented blocks or blocks with the previous line, respectively.
-- Provides 'il' and 'al' for selecting indented blocks or blocks with the previous and next line, respectively.
