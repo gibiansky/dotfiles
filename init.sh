@@ -21,4 +21,5 @@ echo 'source ~/.vim/configuration.vim' > ~/.vimrc
 git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 
 # Make sure we're using zsh, not bash.
-chsh -s zsh
+# Assume Homebrew provides zsh.
+chsh -s /usr/local/bin/zsh

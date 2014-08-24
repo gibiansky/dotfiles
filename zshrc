@@ -115,7 +115,7 @@ path=(
     $HOME/bin
 
     # fasd.
-    $HOME/.vim/foreign/zsh/fasd
+    $HOME/.zsh/fasd
 
     # Mac.
     $HOME/dev/*/bin
@@ -468,7 +468,7 @@ toggle-predict() {
     fi
     zle reset-prompt
 
-    source ~/.vim/foreign/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 }
 zle -N toggle-predict
 bindkey -M viins '^z' toggle-predict
@@ -583,7 +583,7 @@ __git_files () {
 }
 
 # Let LaTeX use my custom installs and classes.
-export TEXINPUTS=$TEXINPUTS:/Users/silver/.vim/foreign/latex
+export TEXINPUTS=$TEXINPUTS:/Users/silver/code/dotfiles/latex
 
 # Python startup files.
 export PYTHONSTARTUP=$HOME/.pythonrc.py
@@ -607,9 +607,9 @@ function text-me {
 
 ### Foreign modules ###
 ### {
-source ~/.vim/foreign/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.vim/foreign/zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
-source ~/.vim/foreign/zsh/zle_vi_visual.zsh
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
+source ~/.zsh/zle_vi_visual.zsh
 
 # Load fasd and my fasd shortcuts.
 eval "$(fasd --init posix-alias zsh-hook zsh-wcomp zsh-wcomp-install)"
