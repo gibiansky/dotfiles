@@ -1,2 +1,4 @@
-tmp/*
+vim/tmp/*
+vim/bundle
 *.sqlite
+
