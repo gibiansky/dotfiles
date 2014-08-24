@@ -1,4 +1,3 @@
-cabal-install # Because ghc does not ship with cabal
 freeglut      # For OpenGL from Haskell
 gcc48         # To have real gcc instead of clang
 brew-cask
