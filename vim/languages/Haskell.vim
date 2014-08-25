@@ -1,38 +1,33 @@
 function! haskell#bundles()
+    Plugin 'godlygeek/tabular'
+    Plugin 'travitch/hasksyn'
 
+    Plugin 'Shougo/neocomplete.vim'
+    let g:neocomplete#enable_at_startup = 1
+
+    Plugin 'eagletmt/neco-ghc'
+    let  g:necoghc_enable_detailed_browse = 1
+    setlocal omnifunc=necoghc#omnifunc
 endfun
 
 function! haskell#enter()
     setf haskell
-    " Required for Haskell mode
-    compiler ghc
 
-    set makeprg=ghc\ -odir\ tmp\ -hidir\ tmp\ %
+    " Use two-space indentation
+    setlocal shiftwidth=2
+    setlocal tabstop=2
+    setlocal softtabstop=2
 
-    set shiftwidth=2
-    set tabstop=2
-    set softtabstop=2
+    " Create tabularize mappings for aligning type signatures
+    AddTabularPattern! hs_type_sig / \?\(->\|::\|=>\)/l0r1
+    inoremap -> -><ESC>:Tab hs_type_sig<CR>A 
+    inoremap => =><ESC>:Tab hs_type_sig<CR>A 
 
-    map <F2> <ESC>:make<CR>
-    imap <F2> <ESC><F2>
-    map <F3> <ESC>:!./Main<Space>
-    imap <F3> <ESC><F3>
+    " ...for aligning comments.
+    AddTabularPattern! hs_comment / \?--/l0r1
+    inoremap -- --<ESC>:Tab hs_comment<CR>A 
 
-    set foldmethod=marker
-    set foldmarker={,}
-
-    nnoremap <buffer> <F1> :HdevtoolsType<CR>
-    nnoremap <buffer> <silent> <F2> :HdevtoolsClear<CR>
-    setlocal noautochdir
-
-    silent! iunmap <buffer> <s-tab>
-    imap <S-tab> <ESC><<gi
-    set backspace=indent,start
-
-    " Hack for IHaskell
-    if getcwd() =~ "/src"
-    let args = "-g -fno-warn-name-shadowing -g -fno-warn-orphans -g -fobject-code -g -optP-include -g -optP../dist/build/autogen/cabal_macros.h"
-    let g:syntastic_haskell_ghc_mod_args=args
-    let g:syntastic_haskell_hdevtools_args=args
-    endif
+    " ...for aligning comments.
+    AddTabularPattern! hs_comment / \?--/l0r1
+    inoremap -- --<ESC>:Tab hs_comment<CR>A 
 endfun

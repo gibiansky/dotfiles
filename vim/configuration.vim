@@ -72,6 +72,8 @@ let g:UltiSnipsExpandTrigger = '<c-j>'
 Plugin 'Valloric/YouCompleteMe'
 let g:ycm_allow_changing_updatetime = 0
 let g:ycm_confirm_extra_conf=0
+let g:ycm_semantic_triggers = {'haskell' : ['.', '(']}
+let g:ycm_filetype_blacklist = {'haskell': 1}
 
 call CtrlPSetup()
 call SyntasticSetup()
@@ -319,9 +321,11 @@ function! SyntasticSetup()
     let g:syntastic_check_on_open=1
     let g:syntastic_python_checkers=["flake8", "pep8", "flake8", "pyflakes", "pylint"]
     let g:syntastic_always_populate_loc_list=1
-    let g:syntastic_haskell_checkers=['hdevtools', 'hlint']
-    let g:syntastic_haskell_ghc_mod_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans -g -fobject-code"
-    let g:syntastic_haskell_hdevtools_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans -g -fobject-code"
+
+    let g:syntastic_haskell_checkers=['ghc_mod', 'hlint']
+    let g:syntastic_haskell_ghc_mod_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans -g -fobject-code -g -fno-warn-type-defaults"
+    let g:syntastic_haskell_hdevtools_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans -g -fobject-code -g -fno-warn-type-defaults"
+
     let g:syntastic_tex_checkers=['chktex']
     let g:syntastic_tex_chktex_args='-n 1'
 
