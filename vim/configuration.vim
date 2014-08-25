@@ -85,7 +85,9 @@ call map(supported_languages, 'split(v:val, "\\.")[0]')
 for language in supported_languages
     " Include bundles for languages
     exe 'source ~/.vim/languages/' . language . '.vim'
-    exe 'call ' . language . '#bundles()'
+    if exists('*' . language . '#bundles')
+        exe 'call ' . language . '#bundles()'
+    endif
 endfor
 
 " Detect whether we're in tmux
@@ -135,11 +137,21 @@ autocmd GUIEnter * set visualbell t_vb=
 
 " Language autodetect
 augroup filetypedetect
-    au! BufEnter,BufNewFile,BufRead *.tex  call latex#enter()
-    au! BufEnter,BufNewFile,BufRead *.hs   call haskell#enter()
-    au! BufEnter,BufNewFile,BufRead *.py   call python#enter()
-    au! BufEnter,BufNewFile,BufRead *.adoc call sciidoc#enter()
-    au! BufEnter,BufNewFile,BufRead *.cl   call opencl#enter()
+    let language_extensions = {
+        \ "haskell":   "hs",
+        \ "latex":     "tex",
+        \ "python":    "py",
+        \ "asciidoc":  "adoc",
+        \ "opencl":    "cl"
+        \ }
+    for [lang, ext] in items(language_extensions)
+        if exists('*' . lang . '#enter')
+            exe 'au! BufEnter,BufNewFile *.' . ext . ' call ' . lang . '#enter()'
+        endif
+        if exists('*' . lang . '#leave')
+            exe 'au! BufLeave,BufUnload,BufDelete *.' . ext . ' call ' . lang . '#leave()'
+        endif
+    endfor
 augroup END
 
 " Ignore these files with these extensions when auto-completing files "
@@ -322,9 +334,6 @@ function! SyntasticSetup()
     let g:syntastic_python_checkers=["flake8", "pep8", "flake8", "pyflakes", "pylint"]
     let g:syntastic_always_populate_loc_list=1
 
-    let g:syntastic_haskell_checkers=['ghc_mod', 'hlint']
-    let g:syntastic_haskell_ghc_mod_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans -g -fobject-code -g -fno-warn-type-defaults"
-    let g:syntastic_haskell_hdevtools_args="-g -fno-warn-name-shadowing -g -fno-warn-orphans -g -fobject-code -g -fno-warn-type-defaults"
 
     let g:syntastic_tex_checkers=['chktex']
     let g:syntastic_tex_chktex_args='-n 1'
