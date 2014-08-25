@@ -574,6 +574,9 @@ alias cm='=git commit'
 alias pu='=git push origin'
 alias pull='=git pull origin'
 
+# Shortcut to screenshots.
+export SC=/Users/silver/downloads/screenshots
+
 # Make pip work on mavericks.
 export ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
 
