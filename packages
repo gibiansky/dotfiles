@@ -1,5 +1,6 @@
 freeglut      # For OpenGL from Haskell
 gcc48         # To have real gcc instead of clang
+gcc           # For gfortran for scipy
 brew-cask
 
 
@@ -20,11 +21,13 @@ watch
 wget
 git
 coreutils
+cmake
 
 # Programming languages
 go
 jq
 php55
+julia
 
 # Other executable tools
 graphviz
