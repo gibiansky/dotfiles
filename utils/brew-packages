@@ -21,7 +21,7 @@ def cmd(command):
 
 try:
     pkgs = " ".join(packages)
-    dependencies = set(cmd("brew deps --union %s" % pkgs).split())
+    dependencies = set(cmd("brew deps --union --skip-optional %s" % pkgs).split())
     dependencies = pkg_names(dependencies.union(packages))
 except:
     sys.exit(1)

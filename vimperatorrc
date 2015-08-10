@@ -45,7 +45,8 @@ map l :tabn<CR>
 set tabnumbers
 
 ignorekeys add 127\\.0\\.0\\.1:..../notebooks/*
+ignorekeys add localhost:..../notebooks/*
 ignorekeys add -except=h,l,: mail\\.google\\.com
-ignorekeys add -except=h,l,: drive\\.google\\.com
-ignorekeys add -except=h,l,: docs\\.google\\.com
-ignorekeys add -except=h,l,: play\\.google\\.com
+ignorekeys add -except=g,h,l,: drive\\.google\\.com
+ignorekeys add docs\\.google\\.com
+ignorekeys add -except=g,h,l,: play\\.google\\.com

@@ -1,4 +1,6 @@
 vim/tmp/*
+vim/.netrwhist
+vim/spell
 vim/bundle
 *.sqlite
 

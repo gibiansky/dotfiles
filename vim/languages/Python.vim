@@ -1,4 +1,5 @@
 function! python#bundles()
+    Plugin 'hynek/vim-python-pep8-indent'
 endfunction
 
 function! python#enter()

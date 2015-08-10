@@ -66,6 +66,7 @@ bind c:${unmodal} focus "Calendar"
 bind y:${unmodal} focus "Colloquy"
 bind r:${unmodal} focus "Preview"
 bind t:${unmodal} focus "Reminders"
+bind a:${unmodal} focus "Anki"
 
 alias select-buddies '/usr/bin/osascript /users/silver/dev/utils/buddies.applescript'
 bind b:${unmodal} shell path:~/ ${select-buddies}

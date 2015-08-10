@@ -3,11 +3,19 @@ gcc48         # To have real gcc instead of clang
 gcc           # For gfortran for scipy
 brew-cask
 
+# Karius things
+apache-spark
+awscli
+
+imagemagick
+neovim
 
 # For IHaskell and extensions
 zeromq
 cairo
 libmagic
+llvm
+pango
 
 # Gnu Utils
 findutils
@@ -16,6 +24,7 @@ htop-osx
 tmux
 reattach-to-user-namespace
 mplayer
+ffmpeg
 zsh
 watch
 wget
@@ -27,11 +36,12 @@ cmake
 go
 jq
 php55
-julia
+sbt
+scala
+rust
 
 # Other executable tools
 graphviz
 highlight
-qemu
 samtools
 macvim

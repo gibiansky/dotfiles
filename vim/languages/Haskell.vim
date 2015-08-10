@@ -1,12 +1,47 @@
 function! haskell#bundles()
     Plugin 'godlygeek/tabular'
     Plugin 'travitch/hasksyn'
+
     Plugin 'Shougo/neocomplete.vim'
+    let g:neocomplete#force_overwrite_completefunc=1 " Allow other completefuncs
+
     Plugin 'eagletmt/neco-ghc'
+    Plugin 'bitc/vim-hdevtools'
+    Plugin 'kana/vim-textobj-user'
+    Plugin 'gibiansky/vim-textobj-haskell'
+
+    " Configuration for syntastic
+    let g:syntastic_haskell_checkers=['hlint', 'hdevtools']
 endfun
+
+function! SigAlign()
+    let aline = getline(".")
+    if aline =~ '^\s*(=|where|let|\$)'
+        return -1
+    else
+        Tab hs_type_sig
+    endif
+endfunction
+
+function! FormatHaskell()
+    if !empty(v:char)
+        return 1
+    else
+        let l:filter = "hindent --style gibiansky"
+        let l:command = v:lnum.','.(v:lnum+v:count-1).'!'.l:filter
+        execute l:command
+    endif
+endfunction
 
 function! haskell#enter()
     setf haskell
+    setlocal softtabstop=2
+
+    nnoremap <buffer> <silent> <Leader>h :HdevtoolsType<CR>
+    nnoremap <buffer> <silent> <Leader>c :HdevtoolsClear<CR>
+
+    setlocal formatexpr=FormatHaskell()
+    nnoremap <buffer> <silent> <Leader>r mp:normal vahgq<CR>'p
 
     " Autocompletion
     NeoCompleteEnable
@@ -18,17 +53,6 @@ function! haskell#enter()
     setlocal tabstop=2
     setlocal softtabstop=2
 
-    " Create tabularize mappings for aligning type signatures
-    AddTabularPattern! hs_type_sig / \?\(->\|::\|=>\)/l0r1
-    inoremap -> -><ESC>:Tab hs_type_sig<CR>A 
-    inoremap => =><ESC>:Tab hs_type_sig<CR>A 
-
-    " ...for aligning comments.
-    AddTabularPattern! hs_comment / \?--/l0r1
-    inoremap -- --<ESC>:Tab hs_comment<CR>A 
-
-    " Configuration for syntastic
-    let g:syntastic_haskell_checkers=['ghc_mod', 'hlint']
 
     let ghc_args = ["fno-warn-name-shadowing", "fno-warn-orphans", "fobject-code", "fno-warn-type-defaults"]
     let sandbox = s:get_cabal_sandbox()
@@ -45,7 +69,7 @@ function! haskell#enter()
 endfun
 
 function! haskell#leave()
-    NeoCompleteDisable
+    silent! NeoCompleteDisable
 endfun
 
 function! s:get_cabal_sandbox()

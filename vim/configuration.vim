@@ -50,8 +50,6 @@ set statusline=%10f:        " Filename (padded to 10 characters)
 set statusline+=\ %4l/%.4L  " Current line / Total lines (padded to 4 chars)
 set statusline+=\ -\ %2c    " Current character number
 
-" Automatically swith directories per tab
-set autochdir
 
 " Vundle
 filetype off
@@ -72,8 +70,9 @@ let g:UltiSnipsExpandTrigger = '<c-j>'
 Plugin 'Valloric/YouCompleteMe'
 let g:ycm_allow_changing_updatetime = 0
 let g:ycm_confirm_extra_conf=0
-let g:ycm_semantic_triggers = {'haskell' : ['.', '(']}
+" let g:ycm_semantic_triggers = {'haskell' : ['.', '(']}
 let g:ycm_filetype_blacklist = {'haskell': 1}
+let g:ycm_autoclose_preview_window_after_completion=1
 
 call CtrlPSetup()
 call SyntasticSetup()
@@ -142,7 +141,9 @@ augroup filetypedetect
         \ "latex":     "tex",
         \ "python":    "py",
         \ "asciidoc":  "adoc",
-        \ "opencl":    "cl"
+        \ "opencl":    "cl",
+        \ "cuda":      "cu",
+        \ "rust":      "rs"
         \ }
     for [lang, ext] in items(language_extensions)
         if exists('*' . lang . '#enter')
@@ -180,6 +181,9 @@ map <Leader>i :set invpaste<CR>
 map <Leader>v :vs 
 map <Leader>g :sp 
 vmap <Leader>y "*y
+
+" Switch directories to current file instead of autochdir
+map <Leader>d :lcd %:p:h<CR>
 
 map <Leader><Right> :vertical resize +5<CR>
 map <Leader><Left> :vertical resize -5<CR>
@@ -331,7 +335,7 @@ function! SyntasticSetup()
     let g:syntastic_auto_loc_list=1 " open error window automatically with size 4
     let g:syntastic_loc_list_height=4
     let g:syntastic_check_on_open=1
-    let g:syntastic_python_checkers=["flake8", "pep8", "flake8", "pyflakes", "pylint"]
+    let g:syntastic_python_checkers=["flake8", "pylint"]
     let g:syntastic_always_populate_loc_list=1
 
 
@@ -359,7 +363,7 @@ function! CtrlPSetup()
 
     " Places for Ctrl-P to ignore
     let ignore_dirs = ["\\.git", "\\.hg", "\\.svn", "\\.cache", "\\.ghc", "\\.gem", "\\.shelly", "\\.text", "\\.theano",
-                    \"\\.cabal", "\\.ipynb_checkpoints", "stuff", "\\.matlab", "\\.ipynb_checkpoints", "\\.ssh",
+                    \"\\.cabal", "\\.ipynb_checkpoints", "stuff", "\\.matlab", "\\.ipynb_checkpoints", "\\.ssh", "\\.antigen",
                     \"\\.gradle", "\\.asy", "\\.lein", "\\.boot2docker", "\\.m2", "\\.vagrant.d", "\\.android", "\\.idea",
                     \"\\.julia", "\\.Trash", "music", "Documents", "Movies", "dist", "ace", "ace-builds", "\\.mplayer",
                     \"\\.ihaskell", "dev", "bundle", "tmp", "Pictures", "\\.store", "env", "Metadata", "weights", "\\.cabal-sandbox",

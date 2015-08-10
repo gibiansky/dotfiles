@@ -120,7 +120,9 @@ path=(
     # Mac.
     $HOME/dev/*/bin
     /usr/texbin
-    /Applications/MATLAB_R2013a.app/bin
+    /Applications/MATLAB_*.app/bin
+    /Developer/NVIDIA/CUDA-6.5/bin
+    $HOME/.stack/programs/x86_64-osx/*/bin
 
     $HOME/.cabal/bin
 
@@ -150,6 +152,7 @@ typeset -U path
 
 # Remove entries that don't exist on the filesystem.
 rationalize-path path
+export PATH=./.cabal-sandbox/bin:$PATH
 
 ### }
 
@@ -218,7 +221,7 @@ function working_dir {
 
     # If the unshortened directories are all of them, don't bother with the rest.
     if [[ `echo $DIRS | wc -l` -le $UNSHORTENED ]]; then
-        echo $UNSHORTENED_DIRS | head -c-1 | tr '\n' '/'
+        echo -n $UNSHORTENED_DIRS | tr '\n' '/'
         return
     fi
 
@@ -474,17 +477,75 @@ zle -N toggle-predict
 bindkey -M viins '^z' toggle-predict
 bindkey -M vicmd '^z' toggle-predict
 
+# Disable prediction on Ctrl-a or h.
+no-predict() {
+    zle predict-off
+    NEXT_PREDICT_STATE="predict-on"
+    zle reset-prompt
+    source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+}
+yes-predict() {
+    zle predict-on
+    NEXT_PREDICT_STATE="predict-off"
+    zle reset-prompt
+    source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+}
+
+go-back-letter() {
+    zle vi-backward-char
+    no-predict
+}
+go-back-word() {
+    zle vi-backward-word
+    no-predict
+}
+go-back-line() {
+    zle vi-beginning-of-line
+    no-predict
+}
+go-forward-line() {
+    zle vi-end-of-line
+    yes-predict
+}
+
+zle -N go-back-letter
+zle -N go-back-word
+zle -N go-back-line
+zle -N go-forward-line
+
+bindkey -M vicmd 'h' go-back-letter
+bindkey -M vicmd 'b' go-back-word
+bindkey -M vicmd '^a' go-back-line
+bindkey -M viins '^a' go-back-line
+bindkey -M vicmd '^e' go-forward-line
+bindkey -M viins '^e' go-forward-line
 ### }
 
 ### Aliases and miscellaneous ###
 ### {
 
-# Fix Macs.
-alias is-mac='test `uname` "==" "Darwin"'
-if is-mac; then
+# Computer specific customizations.
+if test `uname -n` "==" "vortex"; then
+    ###################
+    #### Home Mac. ####
+    ###################
+
+    # Get rid of undeleteable directories.
     alias l='gls --color --hide=Documents  --hide=Movies  --hide=Music  --hide=Pictures  --hide=Public --hide=Library --hide=Desktop --hide=Applications'
     alias ls='gls --color --hide=Documents  --hide=Movies  --hide=Music  --hide=Pictures  --hide=Public --hide=Library --hide=Desktop --hide=Applications'
     alias lp='gls --color=none --hide=Documents  --hide=Movies  --hide=Music  --hide=Pictures  --hide=Public --hide=Library --hide=Desktop --hide=Applications'
+
+    export MANPATH="/Users/silver/dev/homebrew/opt/coreutils/libexec/gnuman:$MANPATH"
+
+    # Shortcut to screenshots.
+    export SC=/Users/silver/downloads/screenshots
+    alias mvsc='mv $SC/*.png'
+
+    # Make pip work on mavericks.
+    export ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
+
+    # Let LaTeX use my custom installs and classes.
+    export TEXINPUTS=$TEXINPUTS:/Users/silver/code/dotfiles/latex
 else
     eval `dircolors -b`
     alias ls='=ls --color'
@@ -493,12 +554,6 @@ else
 fi
 alias la='l -a'
 alias ll='l -l'
-
-export MANPATH="/Users/silver/dev/homebrew/opt/coreutils/libexec/gnuman:$MANPATH"
-
-# Other servers.
-alias knuth='ssh knuth'
-alias purves='ssh purves'
 
 # I always type this!
 alias duh='du -h --summarize'
@@ -545,12 +600,6 @@ function activate {
     source $1/bin/activate
 }
 
-# Activate a GHC sandbox.
-function choose-ghc {
-    rm /Users/silver/dev/ghc/active
-    ln -s /Users/silver/dev/ghc/ghc-$1 /Users/silver/dev/ghc/active 
-}
-
 # If there is anv 'env' in my home, go ahead and load it.
 if [[ -d ~/env ]]; then
     activate ~/env
@@ -565,28 +614,17 @@ alias -g %t=' | tail'
 
 alias untar='tar -xvvf'
 alias grep='grep --color=auto'
-alias py='ipython'
-alias ipy='ipython notebook'
-alias ijulia='ipython notebook --profile=julia'
 alias br='=git branch'
 alias sw='=git checkout'
 alias cm='=git commit'
 alias pu='=git push origin'
 alias pull='=git pull origin'
-
-# Shortcut to screenshots.
-export SC=/Users/silver/downloads/screenshots
-
-# Make pip work on mavericks.
-export ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
+alias mplayer='=mplayer -af scaletempo'
 
 # Make git autocompletion of branches not-painfully-slow.
 __git_files () { 
     _wanted files expl 'local files' _files 
 }
-
-# Let LaTeX use my custom installs and classes.
-export TEXINPUTS=$TEXINPUTS:/Users/silver/code/dotfiles/latex
 
 # Python startup files.
 export PYTHONSTARTUP=$HOME/.pythonrc.py
