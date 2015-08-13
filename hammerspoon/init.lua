@@ -70,7 +70,25 @@ function mode:entered() badge:show() end
 function mode:exited()  badge:hide() end
 
 -- Directions for windows.
-mode:bind({}, "h", function()
-    hs.alert.show("what")
-end)
+function direct(key, fun) 
+    mode:bind({}, key, function()
+        local win = hs.window.focusedWindow()
+        local screen = win:screen()
+        local screenMode = screen:currentMode()
+        local w = screenMode.w
+        local h = screenMode.h
+        win:setFrame(fun(w, h), 0)
+    end)
+end
 
+direct("a", function(w, h) return {x = 0, y = 0, w = w/2, h = h} end)
+direct("d", function(w, h) return {x = w/2, y = 0, w = w/2, h = h} end)
+direct("w", function(w, h) return {x = 0, y = 0, w = w, h = h/2} end)
+direct("s", function(w, h) return {x = 0, y = h/2, w = w, h = h/2} end)
+
+direct("q", function(w, h) return {x = 0, y = 0, w = w/2, h = h/2} end)
+direct("e", function(w, h) return {x = w/2, y = 0, w = w/2, h = h/2} end)
+direct("z", function(w, h) return {x = 0, y = h/2, w = w/2, h = h/2} end)
+direct("c", function(w, h) return {x = w/2, y = h/2, w = w/2, h = h/2} end)
+
+direct("x", function(w, h) return {x = 0, y = h, w = w, h = h} end)
