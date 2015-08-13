@@ -20,6 +20,5 @@ echo 'source ~/.vim/configuration.vim' > ~/.vimrc
 # Install Vundle.
 git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
-# Make sure we're using zsh, not bash.
-# Assume Homebrew provides zsh.
-chsh -s /usr/local/bin/zsh
+# Install all Vundle plugins.
+vim +PluginInstall +qall

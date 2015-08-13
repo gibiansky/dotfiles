@@ -1,5 +1,6 @@
 # Be xterm, since that's more or less the standard.
-TERM=xterm
+export TERM=xterm
+export EDITOR=vim
 
 ### Miscellaneous options via [un]setopt ###
 ### {
@@ -456,6 +457,9 @@ run-line () {
     else
         zle accept-line
     fi
+
+    # Turn on prediction after each command.
+    yes-predict
 }
 zle -N run-line
 bindkey '^M' run-line
@@ -477,7 +481,8 @@ zle -N toggle-predict
 bindkey -M viins '^z' toggle-predict
 bindkey -M vicmd '^z' toggle-predict
 
-# Disable prediction on Ctrl-a or h.
+# Disable prediction on Ctrl-a or h or b.
+# Re-enable with Ctrl-e.
 no-predict() {
     zle predict-off
     NEXT_PREDICT_STATE="predict-on"
@@ -546,6 +551,9 @@ if test `uname -n` "==" "vortex"; then
 
     # Let LaTeX use my custom installs and classes.
     export TEXINPUTS=$TEXINPUTS:/Users/silver/code/dotfiles/latex
+
+    # Brew provisioning: run this to get a list of commands
+    alias brew-provision='~/code/dotfiles/utils/brew-packages ~/code/dotfiles/packages ~/code/dotfiles/casks'
 else
     eval `dircolors -b`
     alias ls='=ls --color'

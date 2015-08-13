@@ -21,7 +21,8 @@ def cmd(command):
 
 try:
     pkgs = " ".join(packages)
-    dependencies = set(cmd("brew deps --union --skip-optional %s" % pkgs).split())
+    command = "brew deps --union --skip-optional %s"
+    dependencies = set(cmd(command % pkgs).split())
     dependencies = pkg_names(dependencies.union(packages))
 except:
     sys.exit(1)
@@ -36,3 +37,25 @@ if missing:
 if unnecessary:
     print 'brew remove %s' % " ".join(sorted(unnecessary))
 print 'brew cleanup --force -s'
+
+# Next, deal with casks.
+cask_file = sys.argv[2]
+with open(cask_file, "r") as handle:
+    lines = list(handle)
+casks = set([line.split(" ")[0].strip() for line in lines
+             if not line.startswith("#") and line.strip()])
+
+installed_casks = set(cmd("brew cask list").split())
+
+print
+
+# Install missing casks
+for cask in casks - installed_casks:
+    print 'brew cask install %s' % cask
+
+# Remove unnecessary casks
+for cask in installed_casks - casks:
+    print 'brew cask uninstall %s' % cask
+    print 'brew cask zap %s' % cask
+
+print 'brew cask cleanup'
