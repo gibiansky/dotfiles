@@ -119,6 +119,7 @@ path=(
     $HOME/.zsh/fasd
 
     # Mac.
+    $HOME/.local/bin/
     $HOME/dev/*/bin
     /usr/texbin
     /Applications/MATLAB_*.app/bin
