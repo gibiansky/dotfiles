@@ -74,33 +74,110 @@ badge:bringToFront(true)
 function mode:entered() badge:show() end
 function mode:exited()  badge:hide() end
 
--- Directions for windows.
-function direct(key, fun) 
+-- Control whether we're in 3x3 or 4x3 mode.
+local quarters = false
+mode:bind({}, "1", function() quarters = false end)
+mode:bind({}, "2", function() quarters = true end)
+
+-- Remember whether we're setting the top left or bottom right.
+local topLeft = nil
+
+-- Points that keys represent
+key_points = {
+    -- quarters = true
+    [false] = {
+        q = {x = 0   , y = 0}   ,
+        w = {x = 1/3 , y = 0}   ,
+        e = {x = 2/3 , y = 0}   ,
+        a = {x = 0   , y = 1/3} ,
+        s = {x = 1/3 , y = 1/3} ,
+        d = {x = 2/3 , y = 1/3} ,
+        z = {x = 0   , y = 2/3} ,
+        x = {x = 1/3 , y = 2/3} ,
+        c = {x = 2/3 , y = 2/3} ,
+    },
+    -- quarters = false
+    [true] = {
+        q = {x = 0   , y = 0}   ,
+        w = {x = 1/4 , y = 0}   ,
+        e = {x = 2/4 , y = 0}   ,
+        r = {x = 3/4 , y = 0}   ,
+        a = {x = 0   , y = 1/3} ,
+        s = {x = 1/4 , y = 1/3} ,
+        d = {x = 2/4 , y = 1/3} ,
+        f = {x = 3/4 , y = 1/3} ,
+        z = {x = 0   , y = 2/3} ,
+        x = {x = 1/4 , y = 2/3} ,
+        c = {x = 2/4 , y = 2/3} ,
+        v = {x = 3/4 , y = 2/3} ,
+    },
+}
+
+function rect_from_corners(top_left, bottom_right)
+    if top_left.x <= bottom_right.x and top_left.y <= bottom_right.y then
+        if quarters then
+            return {x = top_left.x, y = top_left.y, w = bottom_right.x - top_left.x + 0.25, h = bottom_right.y - top_left.y + 0.25}
+        else
+            return {x = top_left.x, y = top_left.y, w = bottom_right.x - top_left.x + 1/3, h = bottom_right.y - top_left.y + 1/3}
+        end
+    else
+        return nil
+    end
+end
+
+locations = "qwerasdfzxcv"
+for i = 1, locations:len() do
+    local char = locations:sub(i, i)
+    mode:bind({"ctrl"}, char, function()
+        point = key_points[quarters][char]
+        if topLeft == nil then
+            topLeft = point
+        else
+            local win = hs.window.focusedWindow()
+            local rect = rect_from_corners(topLeft, point)
+            if rect ~= nil then
+                win:setFrame(unit_to_screen_rect(rect), 0)
+            end
+
+            topLeft = nil
+        end
+    end)
+end
+
+-- Scale a unit rect to a screen rect.
+function unit_to_screen_rect(frame)
+    -- Get current screen dimensions
+    local win = hs.window.focusedWindow()
+    local screen = win:screen()
+    local screenMode = screen:currentMode()
+    local w = screenMode.w
+    local h = screenMode.h
+    return {x = frame.x * w, w = frame.w * w, y = frame.y * h, h = frame.h * h}
+end
+
+-- Directions for windows. More standard movement!
+function direct(key, unit) 
     mode:bind({}, key, function()
         local win = hs.window.focusedWindow()
-        local screen = win:screen()
-        local screenMode = screen:currentMode()
-        local w = screenMode.w
-        local h = screenMode.h
-        win:setFrame(fun(w, h), 0)
+        win:setFrame(unit_to_screen_rect(unit), 0)
     end)
 end
 
 directions = {
-    a = function(w, h) return {x = 0, y = 0, w = w/2, h = h} end,
-    d = function(w, h) return {x = w/2, y = 0, w = w/2, h = h} end,
-    w = function(w, h) return {x = 0, y = 0, w = w, h = h/2} end,
-    s = function(w, h) return {x = 0, y = h/2, w = w, h = h/2} end,
+    a = {x = 0   , y = 0   , w = 0.5 , h = 1}   ,
+    d = {x = 0.5 , y = 0   , w = 0.5 , h = 1}   ,
+    w = {x = 0   , y = 0   , w = 1   , h = 0.5} ,
+    s = {x = 0   , y = 0.5 , w = 1   , h = 0.5} ,
 
-    q = function(w, h) return {x = 0, y = 0, w = w/2, h = h/2} end,
-    e = function(w, h) return {x = w/2, y = 0, w = w/2, h = h/2} end,
-    z = function(w, h) return {x = 0, y = h/2, w = w/2, h = h/2} end,
-    c = function(w, h) return {x = w/2, y = h/2, w = w/2, h = h/2} end,
+    q = {x = 0   , y = 0   , w = 0.5 , h = 0.5} ,
+    e = {x = 0.5 , y = 0   , w = 0.5 , h = 0.5} ,
+    z = {x = 0   , y = 0.5 , w = 0.5 , h = 0.5} ,
+    c = {x = 0.5 , y = 0.5 , w = 0.5 , h = 0.5} ,
 
-    x = function(w, h) return {x = 0, y = 0, w = w, h = h} end,
+    x = {x = 0   , y = 0   , w = 1   , h = 1}   ,
 }
 
-for key, fun in pairs(directions) do direct(key, fun) end
+for key, rect in pairs(directions) do direct(key, rect) end
 mode:bind({"shift"}, "x", function() 
     local win = hs.window.focusedWindow()
     win:toggleFullScreen()
@@ -202,44 +279,37 @@ function tmux_read_format(fmt)
     return out
 end
 
-function tmux(fun, target)
-    -- Get target name, whatever it is, and current directory
-    local target_out = tmux_read_format(target)
+function tmux(cmd)
     local cwd_out = tmux_read_format("#{pane_current_path}")
-    cwd_out = cwd_out:gsub("%s+", "")
+    cwd_out = cwd_out:gsub("%s+$", "")
 
-    local command = "env -i TMPDIR=" .. os.getenv("TMPDIR") .. " PWD=" .. cwd_out .. " " .. tmux_path .. " " .. fun() .. " -t " .. target_out
+    local cmd_out = tmux_read_format(cmd)
+    cmd_out = cmd_out:gsub("%s+$", "")
+
+    local command = "env -i TMPDIR=" .. os.getenv("TMPDIR") .. " PWD=" .. cwd_out .. " " .. tmux_path .. " " .. cmd_out
+    print(command)
     os.execute(command)
 end
 
 
-function tmux_bind(key, cmd, target)
-    tmux_mode:bind({}, key, function() tmux(function() return cmd end, target) end)
+function tmux_bind(mod, key, cmd)
+    tmux_mode:bind(mod, key, function() tmux(cmd) end)
 end
 
--- Lazy creation of commands
-function tmux_bind_fun(key, fun, target)
-    tmux_mode:bind({}, key, function() tmux(fun, target) end)
-end
-
-tmux_bind_fun("h", function()
-    local dir = tmux_read_format("#{pane_current_path}")
-    return "split-window -v -c " .. dir
-end, "#I")
-tmux_bind_fun("v", function()
-    local dir = tmux_read_format("#{pane_current_path}")
-    return "split-window -h -c " .. dir
-end, "#I")
-tmux_bind("h", "select-pane -L", "\\$#S")
-tmux_bind("j", "select-pane -D", "\\$#S")
-tmux_bind("k", "select-pane -U", "\\$#S")
-tmux_bind("l", "select-pane -R", "\\$#S")
-tmux_bind_fun("c", function()
-    local dir = tmux_read_format("#{pane_current_path}")
-    return "new-window -c " .. dir
-end, "#I")
-tmux_bind("n", "next-window", "\\$#S")
-tmux_bind("p", "previous-window", "\\$#S")
+tmux_bind({}, "g", "split-window -v -c #{pane_current_path} -t #I.")
+tmux_bind({}, "v", "split-window -h -c #{pane_current_path} -t #I.")
+tmux_bind({}, "h", "select-pane -L -t \\$#S")
+tmux_bind({}, "j", "select-pane -D -t \\$#S")
+tmux_bind({}, "k", "select-pane -U -t \\$#S")
+tmux_bind({}, "l", "select-pane -R -t \\$#S")
+tmux_bind({}, "c", "new-window -a -c #{pane_current_path} -t #I")
+tmux_bind({}, "n", "next-window -t \\$#S")
+tmux_bind({}, "p", "previous-window -t \\$#S")
+tmux_bind({}, "x", "kill-pane -t #I.")
+tmux_bind({"ctrl"}, "h", "resize-pane -L -t \\$#S 8")
+tmux_bind({"ctrl"}, "j", "resize-pane -D -t \\$#S 4")
+tmux_bind({"ctrl"}, "k", "resize-pane -U -t \\$#S 4")
+tmux_bind({"ctrl"}, "l", "resize-pane -R -t \\$#S 8")
 
 -------------------
 -------------------
@@ -378,15 +448,11 @@ for name, key in pairs(apps) do
         local app = focus_app(name)
         if app == nil then return end
 
-        -- Get current screen dimensions
-        local w = hs.screen.mainScreen():currentMode().w
-        local h = hs.screen.mainScreen():currentMode().h
-
         -- Collect unit rects for this app's windows
         local rects = {}
         for i, win in pairs(app:allWindows()) do
             local frame = win:frame()
-            local scaled = {x = frame["x"] / w, w = frame["w"] / w, y = frame["y"] / h, h = frame["h"] / h}
+            local scaled = unit_to_screen_rect(frame)
             table.insert(rects, scaled)
         end
 
