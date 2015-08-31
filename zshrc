@@ -1,6 +1,6 @@
 # Be xterm, since that's more or less the standard.
 export TERM=xterm
-export EDITOR=vim
+export EDITOR=nvim
 
 ### Miscellaneous options via [un]setopt ###
 ### {
@@ -573,6 +573,9 @@ alias history='history 0'
 # Have a global notes file.
 alias notes='vim ~/.notes'
 alias day='vim ~/.text/`date +%b-%d`'
+alias vim='nvim'
+alias vi='nvim'
+export NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 function hi {
     pbpaste | highlight -O rtf --syntax=$1 --style=edit-vim | pbcopy

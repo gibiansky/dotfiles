@@ -13,7 +13,7 @@ gimp
 google-chrome
 google-hangouts
 hammerspoon
-iterm2
+iterm2-nightly
 java
 mactex
 osxfuse
@@ -30,3 +30,4 @@ transmission
 vagrant
 virtualbox
 vlc
+soundflower

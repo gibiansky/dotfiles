@@ -16,6 +16,7 @@ mkdir -p $HOME/.vim/tmp/backup
 
 # Set up the ~/.vimrc to point to my configuration.
 echo 'source ~/.vim/configuration.vim' > ~/.vimrc
+echo 'source ~/.vim/configuration.vim' > ~/.nvimrc
 
 # Install Vundle.
 git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim

@@ -1,27 +1,11 @@
 function! haskell#bundles()
-    Plugin 'godlygeek/tabular'
     Plugin 'travitch/hasksyn'
 
-    Plugin 'Shougo/neocomplete.vim'
-    let g:neocomplete#force_overwrite_completefunc=1 " Allow other completefuncs
-
-    Plugin 'eagletmt/neco-ghc'
-    Plugin 'bitc/vim-hdevtools'
+    let g:syntastic_haskell_checkers=["hdevtools", "hlint"]
     Plugin 'kana/vim-textobj-user'
     Plugin 'gibiansky/vim-textobj-haskell'
-
-    " Configuration for syntastic
-    let g:syntastic_haskell_checkers=['hlint', 'hdevtools']
+    Plugin 'bitc/vim-hdevtools'
 endfun
-
-function! SigAlign()
-    let aline = getline(".")
-    if aline =~ '^\s*(=|where|let|\$)'
-        return -1
-    else
-        Tab hs_type_sig
-    endif
-endfunction
 
 function! FormatHaskell()
     if !empty(v:char)
@@ -42,11 +26,6 @@ function! haskell#enter()
 
     setlocal formatexpr=FormatHaskell()
     nnoremap <buffer> <silent> <Leader>r mp:normal vahgq<CR>'p
-
-    " Autocompletion
-    NeoCompleteEnable
-    let  g:necoghc_enable_detailed_browse = 1
-    setlocal omnifunc=necoghc#omnifunc
 
     " Use two-space indentation
     setlocal shiftwidth=2
@@ -69,7 +48,7 @@ function! haskell#enter()
 endfun
 
 function! haskell#leave()
-    silent! NeoCompleteDisable
+    "silent! NeoCompleteDisable
 endfun
 
 function! s:get_cabal_sandbox()

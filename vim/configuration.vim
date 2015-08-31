@@ -57,11 +57,19 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
+" Allow us to put remote plugins in ~/.vim/rplugin 
+set rtp+=~/.vim
+if has("nvim")
+    " No Haskell for now
+    " call rpcrequest(rpcstart(expand('$HOME/code/nvim-hs/nvim-hs-devel.sh')), "PingNvimhs")
+endif
+
 " Load general plugins
 Plugin 'Raimondi/delimitMate'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'tomtom/tlib_vim'
+Plugin 'godlygeek/tabular'
 
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
@@ -77,6 +85,7 @@ let g:ycm_autoclose_preview_window_after_completion=1
 call CtrlPSetup()
 call SyntasticSetup()
 
+
 " Language plugins
 let supported_languages = split(globpath('~/.vim/languages', '*'), '\n')
 call map(supported_languages, 'split(v:val, "/")[-1]')
@@ -90,15 +99,15 @@ for language in supported_languages
 endfor
 
 " Detect whether we're in tmux
-if len($TMUX) != 0
-    Plugin 'christoomey/vim-tmux-navigator'
-    let g:tmux_navigator_no_mappings = 1
-    nnoremap <silent> <C-w>h :TmuxNavigateLeft<cr>
-    nnoremap <silent> <C-w>j :TmuxNavigateDown<cr>
-    nnoremap <silent> <C-w>k :TmuxNavigateUp<cr>
-    nnoremap <silent> <C-w>l :TmuxNavigateRight<cr>
-    nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
-endif
+" Plugin 'christoomey/vim-tmux-navigator'
+" if len($TMUX) != 0
+"     let g:tmux_navigator_no_mappings = 1
+"     nnoremap <silent> <C-w>h :TmuxNavigateLeft<cr>
+"     nnoremap <silent> <C-w>j :TmuxNavigateDown<cr>
+"     nnoremap <silent> <C-w>k :TmuxNavigateUp<cr>
+"     nnoremap <silent> <C-w>l :TmuxNavigateRight<cr>
+"     nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
+" endif
 
 " Required for vundle
 call vundle#end()
@@ -219,12 +228,19 @@ cmap <C-p> <Up>
 cmap <C-r><C-r> <C-r>"
 
 " Tabs "
+" NeoVim is really dumb, doing a remapping in iTerm
+if has("nvim")
+  map <Char-0x89> <ESC>:tabp<CR>
+  imap <Char-0x89> <ESC>:tabp<CR>
+else
+  map <C-h> <ESC>:tabp<CR>
+  imap <C-h> <ESC>:tabp<CR>
+endif
 map <C-t> <ESC>:tabnew 
 imap <C-t> <ESC>:tabnew 
-map <C-h> <ESC>:tabp<CR>
-imap <C-h> <ESC>:tabp<CR>
 map <C-l> <ESC>:tabn<CR>
 imap <C-l> <ESC>:tabn<CR>
+
 
 " Always keep a few lines above/below the cursor for context "
 set scrolloff=5
@@ -307,9 +323,14 @@ function! SyntaxHighlighting()
     " Enable syntax highlighting "
     syntax on
 
+    Plugin 'freeo/vim-kalisi'
+
     " Use a colorscheme so that not everything has to be hand-set "
     if has("gui_running")
         colorscheme rdark
+    elseif has("nvim")
+        set background=dark
+        colorscheme kalisi
     else
         colorscheme darkblue
     endif
@@ -338,10 +359,6 @@ function! SyntasticSetup()
     let g:syntastic_python_checkers=["flake8", "pylint"]
     let g:syntastic_always_populate_loc_list=1
 
-
-    let g:syntastic_tex_checkers=['chktex']
-    let g:syntastic_tex_chktex_args='-n 1'
-
     map gn :ll<Space>\|<Space>lnext<CR>
     map gN :ll<Space>\|<Space>lprev<CR>
 endfunction
@@ -365,10 +382,11 @@ function! CtrlPSetup()
     let ignore_dirs = ["\\.git", "\\.hg", "\\.svn", "\\.cache", "\\.ghc", "\\.gem", "\\.shelly", "\\.text", "\\.theano",
                     \"\\.cabal", "\\.ipynb_checkpoints", "stuff", "\\.matlab", "\\.ipynb_checkpoints", "\\.ssh", "\\.antigen",
                     \"\\.gradle", "\\.asy", "\\.lein", "\\.boot2docker", "\\.m2", "\\.vagrant.d", "\\.android", "\\.idea",
-                    \"\\.julia", "\\.Trash", "music", "Documents", "Movies", "dist", "ace", "ace-builds", "\\.mplayer",
+                    \"\\.julia", "\\.Trash", "\\.stack", "music", "Documents", "Movies", "dist", "ace", "ace-builds", "\\.mplayer",
                     \"\\.ihaskell", "dev", "bundle", "tmp", "Pictures", "\\.store", "env", "Metadata", "weights", "\\.cabal-sandbox",
                     \"Library", "downloads", "archive", "Public", "default", "\\.ipython", "*\\.pages", "Applications",
-                    \"\\.cups", "\\.subversion", "security", "\\.sass-cache", "gen", "bootstrap"]
+                    \"\\.cups", "\\.subversion", "security", "\\.sass-cache", "gen", "bootstrap", "\\.local",
+                    \"\\.cargo", "\\.stack-work", "bin"]
     let ignore_exts = ["exe", "so", "dll", "doc", "svg", "mp4", "mp3", "hi", "a", "p_hi", "p_o",  "Xauthority",
                     \"swp", "swo", "DS_store", "docx", "ipynb", "npy", "avi", "jar", "min.js", "htoprc",
                     \"bash_history", "lesshst", "pyg", "tar", "tga", "ttf", "plist", "zcompdump", "julia_history",

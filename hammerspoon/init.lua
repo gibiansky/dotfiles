@@ -25,7 +25,7 @@ apps = {
  ["Google Chrome"] = "g",
  ["Colloquy"] = "y",
  ["Anki"] = "a",
- ["iTerm"] = "i",
+ ["iTerm2"] = "i",
 }
 
 function focus_app(name)
@@ -116,7 +116,7 @@ key_points = {
 function rect_from_corners(top_left, bottom_right)
     if top_left.x <= bottom_right.x and top_left.y <= bottom_right.y then
         if quarters then
-            return {x = top_left.x, y = top_left.y, w = bottom_right.x - top_left.x + 0.25, h = bottom_right.y - top_left.y + 0.25}
+            return {x = top_left.x, y = top_left.y, w = bottom_right.x - top_left.x + 1/4, h = bottom_right.y - top_left.y + 1/3}
         else
             return {x = top_left.x, y = top_left.y, w = bottom_right.x - top_left.x + 1/3, h = bottom_right.y - top_left.y + 1/3}
         end
@@ -152,7 +152,8 @@ function unit_to_screen_rect(frame)
     local screenMode = screen:currentMode()
     local w = screenMode.w
     local h = screenMode.h
-    return {x = frame.x * w, w = frame.w * w, y = frame.y * h, h = frame.h * h}
+    local s = screen:frame()
+    return {x = frame.x * w + s.x, w = frame.w * w + s.y, y = frame.y * h, h = frame.h * h}
 end
 
 -- Directions for windows. More standard movement!
@@ -181,6 +182,19 @@ for key, rect in pairs(directions) do direct(key, rect) end
 mode:bind({"shift"}, "x", function() 
     local win = hs.window.focusedWindow()
     win:toggleFullScreen()
+end)
+
+mode:bind({}, "left", function() 
+    local win = hs.window.focusedWindow()
+    local screen = win:screen()
+    local newScreen = screen:previous()
+    win:moveToScreen(newScreen, 0)
+end)
+mode:bind({}, "right", function() 
+    local win = hs.window.focusedWindow()
+    local screen = win:screen()
+    local newScreen = screen:next()
+    win:moveToScreen(newScreen, 0)
 end)
 
 function window_id_comparator(win1, win2)
@@ -244,7 +258,7 @@ end)
 --------------------
 
 -- Create tmux mode
-local tmux_mode = hs.hotkey.modal.new(nil, nil)
+local tmux_mode = hs.hotkey.modal.new({"shift"}, "escape")
 tmux_mode:bind({}, 'escape', function() tmux_mode:exit() end)
 
 -- Set up tmux badge
@@ -253,7 +267,8 @@ tmux_badge:bringToFront(true)
 
 -- Tmux mode switching from global mode
 function tmux_mode:entered()
-    focus_app("iTerm")
+    tmux_badge:show()
+    focus_app("iTerm2")
 end
 function tmux_mode:exited()  tmux_badge:hide() end
 mode:bind({}, "t", function()
@@ -264,7 +279,6 @@ mode:bind({}, "t", function()
     mode:exit()
 
     tmux_mode:enter()
-    tmux_badge:show()
 end)
 
 -- Create Environment
@@ -287,8 +301,12 @@ function tmux(cmd)
     cmd_out = cmd_out:gsub("%s+$", "")
 
     local command = "env -i TMPDIR=" .. os.getenv("TMPDIR") .. " PWD=" .. cwd_out .. " " .. tmux_path .. " " .. cmd_out
+
     print(command)
-    os.execute(command)
+    local handle = io.popen(command)
+    local out = handle:read("*a")
+    handle:close()
+    return out
 end
 
 
@@ -302,7 +320,7 @@ tmux_bind({}, "h", "select-pane -L -t \\$#S")
 tmux_bind({}, "j", "select-pane -D -t \\$#S")
 tmux_bind({}, "k", "select-pane -U -t \\$#S")
 tmux_bind({}, "l", "select-pane -R -t \\$#S")
-tmux_bind({}, "c", "new-window -a -c #{pane_current_path} -t #I")
+tmux_bind({}, "c", "new-window -a -c #{pane_current_path} -t #S:#I")
 tmux_bind({}, "n", "next-window -t \\$#S")
 tmux_bind({}, "p", "previous-window -t \\$#S")
 tmux_bind({}, "x", "kill-pane -t #I.")
@@ -310,6 +328,16 @@ tmux_bind({"ctrl"}, "h", "resize-pane -L -t \\$#S 8")
 tmux_bind({"ctrl"}, "j", "resize-pane -D -t \\$#S 4")
 tmux_bind({"ctrl"}, "k", "resize-pane -U -t \\$#S 4")
 tmux_bind({"ctrl"}, "l", "resize-pane -R -t \\$#S 8")
+
+tmux_mode:bind({}, "t", function()
+    local buffer = tmux("show-buffer")
+
+    local handle = io.popen("pbcopy", "w")
+    handle:write(buffer)
+    handle:close()
+
+    tmux_mode:exit()
+end)
 
 -------------------
 -------------------
@@ -369,16 +397,18 @@ function summon_layout(name)
 
         for app_name, rects in pairs(layout) do
             local app = focus_app(app_name)
-            local wins = app:allWindows()
-            for i, win in pairs(wins) do
-                local rect = rects[i]
-                if rect ~= nil then
-                    win:setFrame({
-                        x = rect["x"] * w,
-                        y = rect["y"] * h,
-                        w = rect["w"] * w,
-                        h = rect["h"] * h,
-                    }, 0)
+            if app ~= nil then
+                local wins = app:allWindows()
+                for i, win in pairs(wins) do
+                    local rect = rects[i]
+                    if rect ~= nil then
+                        win:setFrame({
+                            x = rect["x"] * w,
+                            y = rect["y"] * h,
+                            w = rect["w"] * w,
+                            h = rect["h"] * h,
+                        }, 0)
+                    end
                 end
             end
         end
