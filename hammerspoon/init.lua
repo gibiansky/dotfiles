@@ -186,15 +186,19 @@ end)
 
 mode:bind({}, "left", function() 
     local win = hs.window.focusedWindow()
-    local screen = win:screen()
-    local newScreen = screen:previous()
-    win:moveToScreen(newScreen, 0)
+    if win ~= nil then
+        local screen = win:screen()
+        local newScreen = screen:previous()
+        win:moveToScreen(newScreen, 0)
+    end
 end)
 mode:bind({}, "right", function() 
     local win = hs.window.focusedWindow()
-    local screen = win:screen()
-    local newScreen = screen:next()
-    win:moveToScreen(newScreen, 0)
+    if win ~= nil then
+        local screen = win:screen()
+        local newScreen = screen:next()
+        win:moveToScreen(newScreen, 0)
+    end
 end)
 
 function window_id_comparator(win1, win2)

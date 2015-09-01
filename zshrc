@@ -119,6 +119,7 @@ path=(
     $HOME/.zsh/fasd
 
     # Mac.
+    $HOME/dev/homebrew/opt/coreutils/libexec/gnubin
     $HOME/.local/bin/
     $HOME/dev/*/bin
     /usr/texbin
@@ -148,6 +149,7 @@ export PATH
 
 # Add gnu coreutils man pages to default.
 export MANPATH=/usr/local/opt/findutils/share/man:/usr/local/opt/coreutils/share/man:$MANPATH
+export MANPATH=$HOME/dev/homebrew/opt/coreutils/libexec/gnuman:$MANPATH
 
 # Only unique entries please.
 typeset -U path
@@ -531,10 +533,10 @@ bindkey -M viins '^e' go-forward-line
 ### {
 
 # Computer specific customizations.
-if test `uname -n` "==" "vortex"; then
-    ###################
-    #### Home Mac. ####
-    ###################
+if test `uname -n` "==" "vortex" "-o" `uname -n` "==" "sourcery.local"; then
+    ###########################
+    #### Home / Work Macs. ####
+    ###########################
 
     # Get rid of undeleteable directories.
     alias l='gls --color --hide=Documents  --hide=Movies  --hide=Music  --hide=Pictures  --hide=Public --hide=Library --hide=Desktop --hide=Applications'
@@ -560,6 +562,10 @@ else
     alias ls='=ls --color'
     alias lp='=ls --color=none'
     alias l='=ls --color'
+
+    if test "-f" "$HOME/.karius.sh"; then
+        source $HOME/.karius.sh
+    fi
 fi
 alias la='l -a'
 alias ll='l -l'

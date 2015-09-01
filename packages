@@ -1,7 +1,7 @@
 freeglut      # For OpenGL from Haskell
-gcc48         # To have real gcc instead of clang
 gcc           # For gfortran for scipy
 brew-cask
+python
 
 # Karius things
 apache-spark
@@ -44,4 +44,3 @@ rust
 graphviz
 highlight
 samtools
-macvim
