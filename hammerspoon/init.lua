@@ -493,3 +493,18 @@ for name, key in pairs(apps) do
         report_focus(name, rects)
     end)
 end
+
+--- Audio control ---
+mode:bind({}, "p", function()
+    local devices = hs.audiodevice.allOutputDevices()
+    local current = hs.audiodevice.current().name
+    for i, device in pairs(devices) do
+        if device:name() == current then
+            if i == #devices then
+                devices[1]:setDefaultOutputDevice()
+            else
+                devices[i + 1]:setDefaultOutputDevice()
+            end
+        end
+    end
+end)
