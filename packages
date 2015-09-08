@@ -6,6 +6,7 @@ python
 # Karius things
 apache-spark
 awscli
+libyaml
 
 imagemagick
 neovim

@@ -122,6 +122,7 @@ path=(
     $HOME/dev/homebrew/opt/coreutils/libexec/gnubin
     $HOME/.local/bin/
     $HOME/dev/*/bin
+    $HOME/karius/*/bin
     /usr/texbin
     /Applications/MATLAB_*.app/bin
     /Developer/NVIDIA/CUDA-6.5/bin
@@ -557,15 +558,16 @@ if test `uname -n` "==" "vortex" "-o" `uname -n` "==" "sourcery.local"; then
 
     # Brew provisioning: run this to get a list of commands
     alias brew-provision='~/code/dotfiles/utils/brew-packages ~/code/dotfiles/packages ~/code/dotfiles/casks'
-else
-    eval `dircolors -b`
-    alias ls='=ls --color'
-    alias lp='=ls --color=none'
-    alias l='=ls --color'
 
     if test "-f" "$HOME/.karius.sh"; then
         source $HOME/.karius.sh
     fi
+else
+    # Not a Mac!
+    eval `dircolors -b`
+    alias ls='=ls --color'
+    alias lp='=ls --color=none'
+    alias l='=ls --color'
 fi
 alias la='l -a'
 alias ll='l -l'
