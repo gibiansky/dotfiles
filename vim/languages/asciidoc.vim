@@ -8,6 +8,6 @@ function! asciidoc#enter()
 
     augroup asciidocsave
         autocmd!
-        au BufWritePost *.adoc !asciidoctor -r ./fix-pygments.rb -r ./fix-double-colon.rb -r ./undo-replacements-extension.rb -a data-uri %
+        au BufWritePost *.adoc !asciidoctor -r ~/code/old/hefty-haskell/fix-pygments.rb -r ~/code/old/hefty-haskell/fix-double-colon.rb -r ~/code/old/hefty-haskell/undo-replacements-extension.rb -a data-uri %
     augroup END
 endfun

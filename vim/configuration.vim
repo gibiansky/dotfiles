@@ -85,6 +85,7 @@ let g:ycm_autoclose_preview_window_after_completion=1
 call CtrlPSetup()
 call SyntasticSetup()
 
+Plugin 'derekwyatt/vim-scala'
 
 " Language plugins
 let supported_languages = split(globpath('~/.vim/languages', '*'), '\n')
@@ -386,7 +387,7 @@ function! CtrlPSetup()
                     \"\\.ihaskell", "dev", "bundle", "tmp", "Pictures", "\\.store", "env", "Metadata", "weights", "\\.cabal-sandbox",
                     \"Library", "downloads", "archive", "Public", "default", "\\.ipython", "*\\.pages", "Applications",
                     \"\\.cups", "\\.subversion", "security", "\\.sass-cache", "gen", "bootstrap", "\\.local",
-                    \"\\.cargo", "\\.stack-work", "bin"]
+                    \"\\.cargo", "\\.stack-work", "bin", "\\.npm", "\\.config"]
     let ignore_exts = ["exe", "so", "dll", "doc", "svg", "mp4", "mp3", "hi", "a", "p_hi", "p_o",  "Xauthority",
                     \"swp", "swo", "DS_store", "docx", "ipynb", "npy", "avi", "jar", "min.js", "htoprc",
                     \"bash_history", "lesshst", "pyg", "tar", "tga", "ttf", "plist", "zcompdump", "julia_history",
