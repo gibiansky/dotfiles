@@ -9,7 +9,7 @@ nvm
 # Karius things
 apache-spark
 awscli
-postgresql
+libyaml
 
 imagemagick
 neovim
