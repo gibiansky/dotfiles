@@ -333,6 +333,14 @@ tmux_bind({"ctrl"}, "j", "resize-pane -D -t \\$#S 4")
 tmux_bind({"ctrl"}, "k", "resize-pane -U -t \\$#S 4")
 tmux_bind({"ctrl"}, "l", "resize-pane -R -t \\$#S 8")
 
+-- Special priority for movement keys
+hs.hotkey.bind({"alt"}, "h", function() tmux("select-pane -L -t \\$#S") end)
+hs.hotkey.bind({"alt"}, "j", function() tmux("select-pane -D -t \\$#S") end)
+hs.hotkey.bind({"alt"}, "k", function() tmux("select-pane -U -t \\$#S") end)
+hs.hotkey.bind({"alt"}, "l", function() tmux("select-pane -R -t \\$#S") end)
+hs.hotkey.bind({"alt", "shift"}, "h", function() tmux("next-window -t \\$#S") end)
+hs.hotkey.bind({"alt", "shift"}, "l", function() tmux("previous-window -t \\$#S") end)
+
 tmux_mode:bind({}, "t", function()
     local buffer = tmux("show-buffer")
 

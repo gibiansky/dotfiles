@@ -60,8 +60,8 @@ Plugin 'gmarik/Vundle.vim'
 " Allow us to put remote plugins in ~/.vim/rplugin 
 set rtp+=~/.vim
 if has("nvim")
-    " No Haskell for now
-    " call rpcrequest(rpcstart(expand('$HOME/code/nvim-hs/nvim-hs-devel.sh')), "PingNvimhs")
+    " Set up :terminal mappings
+    tmap <Esc><Esc> <C-\><C-n>
 endif
 
 " Load general plugins
@@ -356,7 +356,7 @@ function! SyntasticSetup()
     let g:syntastic_auto_loc_list=1 " open error window automatically with size 4
     let g:syntastic_loc_list_height=4
     let g:syntastic_check_on_open=1
-    let g:syntastic_python_checkers=["flake8", "pylint"]
+    let g:syntastic_python_checkers=["pyflakes", "pep8", "pylint"]
     let g:syntastic_always_populate_loc_list=1
 
     map gn :ll<Space>\|<Space>lnext<CR>
