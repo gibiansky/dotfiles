@@ -1,7 +1,10 @@
 freeglut      # For OpenGL from Haskell
 gcc           # For gfortran for scipy
 brew-cask
-python
+
+# Javascript
+node
+nvm
 
 # Karius things
 apache-spark
@@ -33,13 +36,17 @@ git
 coreutils
 cmake
 
+# Compiling ghc
+docbook2x
+
 # Programming languages
 go
 jq
-php55
 sbt
 scala
 rust
+python
+python3
 
 # Other executable tools
 graphviz

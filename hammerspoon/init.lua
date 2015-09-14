@@ -64,15 +64,34 @@ local mode = hs.hotkey.modal.new(modal, "escape")
 mode:bind({}, 'escape', function() mode:exit() end)
 
 -- Set up badge for modal keybinding.
-local screen = hs.screen.allScreens()[1]
-local badge_size = 800
-local badge_rect = hs.geometry.rect(screen:currentMode().w / 2 - badge_size / 2, screen:currentMode().h / 2 - badge_size / 2, badge_size, badge_size)
-local badge = hs.drawing.image(badge_rect, "~/.hammerspoon/vortex.png")
-badge:bringToFront(true)
+local badge =      "~/.hammerspoon/vortex.png"
+local tmux_badge = "~/.hammerspoon/vortex2.png"
+local view_badge = "~/.hammerspoon/vortex3.png"
+local showing_badges = {}
+
+function show_badge(badge)
+    for i, screen in pairs(hs.screen.allScreens()) do
+        local badge_size = 800
+        local mode = screen:currentMode()
+        local frame = screen:frame()
+        local badge_rect = hs.geometry.rect(mode.w / 2 - badge_size / 2 + frame.x, mode.h / 2 - badge_size / 2 + frame.y, badge_size, badge_size)
+        local badge = hs.drawing.image(badge_rect, badge)
+        badge:bringToFront(true)
+        badge:show()
+        table.insert(showing_badges, badge)
+    end
+end
+
+function clear_badge()
+    for i, badge in pairs(showing_badges) do
+        badge:hide()
+    end
+    showing_badges = {}
+end
 
 -- Show badge when in mode.
-function mode:entered() badge:show() end
-function mode:exited()  badge:hide() end
+function mode:entered() show_badge(badge) end
+function mode:exited()  clear_badge()     end
 
 -- Control whether we're in 3x3 or 4x3 mode.
 local quarters = false
@@ -265,19 +284,15 @@ end)
 local tmux_mode = hs.hotkey.modal.new({"shift"}, "escape")
 tmux_mode:bind({}, 'escape', function() tmux_mode:exit() end)
 
--- Set up tmux badge
-local tmux_badge = hs.drawing.image(badge_rect, "~/.hammerspoon/vortex2.png")
-tmux_badge:bringToFront(true)
-
 -- Tmux mode switching from global mode
 function tmux_mode:entered()
-    tmux_badge:show()
+    show_badge(tmux_badge)
     focus_app("iTerm2")
 end
-function tmux_mode:exited()  tmux_badge:hide() end
+function tmux_mode:exited()  clear_badge() end
 mode:bind({}, "t", function()
     -- Avoid flash
-    tmux_badge:show()
+    show_badge(tmux_badge)
 
     -- Must exit mode before next mode can be activated
     mode:exit()
@@ -443,13 +458,9 @@ view_mode_aux:bind({}, 'return', function()
     view_mode_aux:exit()
 end)
 
--- Set up view mode badge
-local view_badge = hs.drawing.image(badge_rect, "~/.hammerspoon/vortex3.png")
-view_badge:bringToFront(true)
-
 -- View control mode switching from global mode
-function view_mode:entered() view_badge:show() end
-function view_mode:exited()  view_badge:hide() end
+function view_mode:entered() show_badge(view_badge) end
+function view_mode:exited()  clear_badge() end
 function view_mode_aux:exited()
     view_name = nil
     view_apps = {}
