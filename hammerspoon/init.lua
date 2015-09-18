@@ -349,10 +349,24 @@ tmux_bind({"ctrl"}, "k", "resize-pane -U -t \\$#S 4")
 tmux_bind({"ctrl"}, "l", "resize-pane -R -t \\$#S 8")
 
 -- Special priority for movement keys
-hs.hotkey.bind({"alt"}, "h", function() tmux("select-pane -L -t \\$#S") end)
-hs.hotkey.bind({"alt"}, "j", function() tmux("select-pane -D -t \\$#S") end)
-hs.hotkey.bind({"alt"}, "k", function() tmux("select-pane -U -t \\$#S") end)
-hs.hotkey.bind({"alt"}, "l", function() tmux("select-pane -R -t \\$#S") end)
+function tmux_move(tmux_direction, vim_keys)
+    local current_cmd = tmux_read_format("#{pane_current_command}")
+    if current_cmd:sub(1, 4) == "nvim" then
+        tmux("send-keys C-w")
+        tmux("send-keys " .. vim_keys)
+    else
+        tmux("select-pane " .. tmux_direction .. " -t \\$#S")
+    end
+end
+
+--hs.hotkey.bind({"alt"}, "h", function() tmux("select-pane -L -t \\$#S") end)
+--hs.hotkey.bind({"alt"}, "j", function() tmux("select-pane -D -t \\$#S") end)
+--hs.hotkey.bind({"alt"}, "k", function() tmux("select-pane -U -t \\$#S") end)
+--hs.hotkey.bind({"alt"}, "l", function() tmux("select-pane -R -t \\$#S") end)
+hs.hotkey.bind({"alt"}, "h", function() tmux_move("-L", "h") end)
+hs.hotkey.bind({"alt"}, "j", function() tmux_move("-D", "j") end)
+hs.hotkey.bind({"alt"}, "k", function() tmux_move("-U", "k") end)
+hs.hotkey.bind({"alt"}, "l", function() tmux_move("-R", "l") end)
 hs.hotkey.bind({"alt", "shift"}, "l", function() tmux("next-window -t \\$#S") end)
 hs.hotkey.bind({"alt", "shift"}, "h", function() tmux("previous-window -t \\$#S") end)
 
