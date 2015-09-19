@@ -385,8 +385,8 @@ function! CtrlPSetup()
                     \"\\.gradle", "\\.asy", "\\.lein", "\\.boot2docker", "\\.m2", "\\.vagrant.d", "\\.android", "\\.idea",
                     \"\\.julia", "\\.Trash", "\\.stack", "music", "Documents", "Movies", "dist", "ace", "ace-builds", "\\.mplayer",
                     \"\\.ihaskell", "dev", "bundle", "tmp", "Pictures", "\\.store", "env", "Metadata", "weights", "\\.cabal-sandbox",
-                    \"Library", "downloads", "archive", "Public", "default", "\\.ipython", "*\\.pages", "Applications",
-                    \"\\.cups", "\\.subversion", "security", "\\.sass-cache", "gen", "bootstrap", "\\.local",
+                    \"Library", "downloads", "archive", "Public", "default", "\\.ipython", "*\\.pages", "Applications", "old", "ghc",
+                    \"\\.cups", "\\.subversion", "security", "\\.sass-cache", "gen", "bootstrap", "\\.local", "\\.ivy2", "nofib",
                     \"\\.cargo", "\\.stack-work", "bin", "\\.npm", "\\.config"]
     let ignore_exts = ["exe", "so", "dll", "doc", "svg", "mp4", "mp3", "hi", "a", "p_hi", "p_o",  "Xauthority",
                     \"swp", "swo", "DS_store", "docx", "ipynb", "npy", "avi", "jar", "min.js", "htoprc",
