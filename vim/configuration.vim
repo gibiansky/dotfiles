@@ -64,6 +64,20 @@ if has("nvim")
     tmap <Esc><Esc> <C-\><C-n>
 endif
 
+" Check if we're running in tmux, and if so, enable tmux-specific navigation
+let g:tmux = system("printf $TMUX")
+if len(g:tmux) != 0
+    let g:tmux_navigator_no_mappings = 1
+
+    nnoremap <silent> <C-w>h :TmuxNavigateLeft<cr>
+    nnoremap <silent> <C-w>j :TmuxNavigateDown<cr>
+    nnoremap <silent> <C-w>k :TmuxNavigateUp<cr>
+    nnoremap <silent> <C-w>l :TmuxNavigateRight<cr>
+    nnoremap <silent> <C-w><C-w> :TmuxNavigatePrevious<cr>
+
+    Plugin 'christoomey/vim-tmux-navigator'
+endif
+
 " Load general plugins
 Plugin 'Raimondi/delimitMate'
 Plugin 'tpope/vim-surround'
