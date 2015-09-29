@@ -562,6 +562,10 @@ if test `uname -n` "==" "vortex" "-o" `uname -n` "==" "sourcery.local"; then
     if test "-f" "$HOME/.karius.sh"; then
         source $HOME/.karius.sh
     fi
+
+    function meme {
+        open `memegen $1 "$2" "$3"`
+    }
 else
     # Not a Mac!
     eval `dircolors -b`
