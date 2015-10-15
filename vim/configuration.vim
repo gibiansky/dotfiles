@@ -175,6 +175,9 @@ augroup filetypedetect
         if exists('*' . lang . '#enter')
             exe 'au! BufEnter,BufNewFile *.' . ext . ' call ' . lang . '#enter()'
         endif
+        if exists('*' . lang . '#enter')
+            exe 'au! FileType ' . lang . ' call ' . lang . '#enter()'
+        endif
         if exists('*' . lang . '#leave')
             exe 'au! BufLeave,BufUnload,BufDelete *.' . ext . ' call ' . lang . '#leave()'
         endif
@@ -373,7 +376,7 @@ function! SyntasticSetup()
     let g:syntastic_auto_loc_list=1 " open error window automatically with size 4
     let g:syntastic_loc_list_height=4
     let g:syntastic_check_on_open=1
-    let g:syntastic_python_checkers=["pyflakes", "pep8", "pylint"]
+    let g:syntastic_python_checkers=["flake8", "pylint"]
     let g:syntastic_always_populate_loc_list=1
 
     map gn :ll<Space>\|<Space>lnext<CR>
