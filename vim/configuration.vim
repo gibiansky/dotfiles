@@ -79,6 +79,7 @@ if len(g:tmux) != 0
 endif
 
 " Load general plugins
+Plugin 'wellle/targets.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 Plugin 'Raimondi/delimitMate'

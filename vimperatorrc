@@ -50,3 +50,5 @@ ignorekeys add -except=h,l,: mail\\.google\\.com
 ignorekeys add -except=g,h,l,: drive\\.google\\.com
 ignorekeys add docs\\.google\\.com
 ignorekeys add -except=g,h,l,: play\\.google\\.com
+
+map <C-z><C-z> <S-Esc>
