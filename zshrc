@@ -583,6 +583,13 @@ alias duh='du -h --summarize'
 # Extended history viewing.
 alias history='history 0'
 
+# Docker shortcuts.
+function remachine {
+    eval `docker-machine env $1`
+}
+alias first-container="docker ps | cut -f1 -d' ' | grep -v CONTAINER | head -n 1"
+alias docker-bash='docker exec -it `first-container` /bin/bash'
+
 # Have a global notes file.
 alias notes='vim ~/.notes'
 alias day='vim ~/.text/`date +%b-%d`'

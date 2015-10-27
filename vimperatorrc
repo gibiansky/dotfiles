@@ -29,7 +29,7 @@ map <C-/> :tabopen google
 
 map <space> :
 
-set hintchars="123!@#"
+set hintchars="ASDFJK"
 set complete=sltSf
 
 map J 10j
