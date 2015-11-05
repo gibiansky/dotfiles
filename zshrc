@@ -593,9 +593,14 @@ alias docker-bash='docker exec -it `first-container` /bin/bash'
 # Have a global notes file.
 alias notes='vim ~/.notes'
 alias day='vim ~/.text/`date +%b-%d`'
-alias vim='nvim'
-alias vi='nvim'
-export NVIM_TUI_ENABLE_TRUE_COLOR=1
+
+which nvim &>/dev/null
+if [[ $? -eq 0 ]]; then
+    alias vim='nvim'
+    alias vi='nvim'
+    export NVIM_TUI_ENABLE_TRUE_COLOR=1
+    alias e='python ~/code/dotfiles/utils/vim-edit.py'
+fi
 
 function hi {
     pbpaste | highlight -O rtf --syntax=$1 --style=edit-vim | pbcopy

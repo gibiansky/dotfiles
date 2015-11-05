@@ -79,6 +79,9 @@ if len(g:tmux) != 0
 endif
 
 " Load general plugins
+Plugin 'easymotion/vim-easymotion'
+map \ <Plug>(easymotion-prefix)
+
 Plugin 'wellle/targets.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
@@ -352,6 +355,7 @@ function! SyntaxHighlighting()
     elseif has("nvim")
         set background=dark
         colorscheme kalisi
+        highlight Normal guibg=black
     else
         colorscheme darkblue
     endif
