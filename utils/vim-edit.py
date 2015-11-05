@@ -16,7 +16,10 @@ def main():
     # Edit in new vim or parent vim?
     address = os.environ.get("NVIM_LISTEN_ADDRESS", None)
     if address is None:
-        os.system("/bin/bash -c 'vim \"{0}\"'".format(fullpath))
+        if "NVIM_TUI_ENABLE_TRUE_COLOR" in os.environ:
+            os.system("nvim \"{0}\"".format(fullpath))
+        else:
+            os.system("vim \"{0}\"".format(fullpath))
     else:
         nvim = attach('socket', path=os.environ["NVIM_LISTEN_ADDRESS"])
         nvim.input("<ESC><ESC>:e {0}<CR>".format(fullpath))
