@@ -79,6 +79,7 @@ if len(g:tmux) != 0
 endif
 
 " Load general plugins
+Plugin 'tpope/vim-fugitive'
 Plugin 'easymotion/vim-easymotion'
 map \ <Plug>(easymotion-prefix)
 
