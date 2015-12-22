@@ -314,7 +314,7 @@ function all_tmux_hosts()
     for line in io.lines(home .. "/.ssh/config") do
         print(line)
         print(string.sub(line, 1, 5))
-        if string.sub(line, 1, 5) == "Host " then
+        if string.sub(line, 1, 5) == "Host " and string.sub(line, 1, 6) ~= "Host *" then
             hosts[#hosts + 1] = string.sub(line, 6, #line)
         end
     end
