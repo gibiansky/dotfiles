@@ -312,8 +312,6 @@ function all_tmux_hosts()
     hosts[1] = "localhost"
 
     for line in io.lines(home .. "/.ssh/config") do
-        print(line)
-        print(string.sub(line, 1, 5))
         if string.sub(line, 1, 5) == "Host " and string.sub(line, 1, 6) ~= "Host *" then
             hosts[#hosts + 1] = string.sub(line, 6, #line)
         end
@@ -382,6 +380,22 @@ tmux_mode:bind({}, "s", function()
 
     tmux_host = next_host
     hs.alert.show("Controlling " .. next_host .. " tmux.", 0.8)
+end)
+
+tmux_mode:bind({"shift"}, "s", function()
+    local hosts = all_tmux_hosts()
+    local host_index = current_tmux_host()
+
+    -- Get the next tmux session
+    local prev_host
+    if host_index == 1 then
+        prev_host = hosts[#hosts]
+    else
+        prev_host = hosts[host_index - 1]
+    end
+
+    tmux_host = prev_host
+    hs.alert.show("Controlling " .. prev_host .. " tmux.", 0.8)
 end)
 
 
