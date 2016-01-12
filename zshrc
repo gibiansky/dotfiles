@@ -604,6 +604,7 @@ else
     export EDITOR=vim
 fi
 export NVIM_TUI_ENABLE_TRUE_COLOR=1
+alias e='python ~/code/dotfiles/utils/vim-edit.py'
 
 function hi {
     pbpaste | highlight -O rtf --syntax=$1 --style=edit-vim | pbcopy
@@ -656,7 +657,10 @@ alias untar='tar -xvvf'
 alias grep='grep --color=auto'
 alias br='=git branch'
 alias sw='=git checkout'
+alias gd='=git diff'
 alias cm='=git commit'
+alias st='=git status'
+alias lg='=git log'
 alias pu='=git push origin'
 alias pull='=git pull origin'
 alias mplayer='=mplayer -af scaletempo'

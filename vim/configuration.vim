@@ -79,6 +79,10 @@ if len(g:tmux) != 0
 endif
 
 " Load general plugins
+Plugin 'tpope/vim-fugitive'
+Plugin 'easymotion/vim-easymotion'
+map , <Plug>(easymotion-prefix)
+
 Plugin 'wellle/targets.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
@@ -115,17 +119,6 @@ for language in supported_languages
         exe 'call ' . language . '#bundles()'
     endif
 endfor
-
-" Detect whether we're in tmux
-" Plugin 'christoomey/vim-tmux-navigator'
-" if len($TMUX) != 0
-"     let g:tmux_navigator_no_mappings = 1
-"     nnoremap <silent> <C-w>h :TmuxNavigateLeft<cr>
-"     nnoremap <silent> <C-w>j :TmuxNavigateDown<cr>
-"     nnoremap <silent> <C-w>k :TmuxNavigateUp<cr>
-"     nnoremap <silent> <C-w>l :TmuxNavigateRight<cr>
-"     nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
-" endif
 
 " Required for vundle
 call vundle#end()
@@ -352,6 +345,7 @@ function! SyntaxHighlighting()
     elseif has("nvim")
         set background=dark
         colorscheme kalisi
+        highlight Normal guibg=black
     else
         colorscheme darkblue
     endif
@@ -407,7 +401,7 @@ function! CtrlPSetup()
                     \"\\.ihaskell", "dev", "bundle", "tmp", "Pictures", "\\.store", "env", "Metadata", "weights", "\\.cabal-sandbox",
                     \"Library", "downloads", "archive", "Public", "default", "\\.ipython", "*\\.pages", "Applications", "old", "ghc",
                     \"\\.cups", "\\.subversion", "security", "\\.sass-cache", "gen", "bootstrap", "\\.local", "\\.ivy2", "nofib",
-                    \"\\.cargo", "\\.stack-work", "bin", "\\.npm", "\\.config"]
+                    \"\\.cargo", "\\.stack-work", "bin", "\\.npm", "\\.config", "\\.pylint.d", "node_modules", "\\.js"]
     let ignore_exts = ["exe", "so", "dll", "doc", "svg", "mp4", "mp3", "hi", "a", "p_hi", "p_o",  "Xauthority",
                     \"swp", "swo", "DS_store", "docx", "ipynb", "npy", "avi", "jar", "min.js", "htoprc",
                     \"bash_history", "lesshst", "pyg", "tar", "tga", "ttf", "plist", "zcompdump", "julia_history",

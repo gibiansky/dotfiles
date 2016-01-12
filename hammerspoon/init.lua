@@ -71,10 +71,10 @@ local showing_badges = {}
 
 function show_badge(badge)
     for i, screen in pairs(hs.screen.allScreens()) do
-        local badge_size = 800
+        local badge_size = 400
         local mode = screen:currentMode()
         local frame = screen:frame()
-        local badge_rect = hs.geometry.rect(mode.w / 2 - badge_size / 2 + frame.x, mode.h / 2 - badge_size / 2 + frame.y, badge_size, badge_size)
+        local badge_rect = hs.geometry.rect(mode.w * 0.95 - badge_size / 2 + frame.x, mode.h * 0.1 - badge_size / 2 + frame.y, badge_size, badge_size)
         local badge = hs.drawing.image(badge_rect, badge)
         badge:bringToFront(true)
         badge:show()
@@ -103,7 +103,7 @@ local topLeft = nil
 
 -- Points that keys represent
 key_points = {
-    -- quarters = true
+    -- quarters = false
     [false] = {
         q = {x = 0   , y = 0}   ,
         w = {x = 1/3 , y = 0}   ,
@@ -115,7 +115,7 @@ key_points = {
         x = {x = 1/3 , y = 2/3} ,
         c = {x = 2/3 , y = 2/3} ,
     },
-    -- quarters = false
+    -- quarters = true
     [true] = {
         q = {x = 0   , y = 0}   ,
         w = {x = 1/4 , y = 0}   ,
@@ -284,6 +284,9 @@ end)
 local tmux_mode = hs.hotkey.modal.new({"shift"}, "escape")
 tmux_mode:bind({}, 'escape', function() tmux_mode:exit() end)
 
+-- Which tmux session are we controlling?
+tmux_host = "localhost"
+
 -- Tmux mode switching from global mode
 function tmux_mode:entered()
     show_badge(tmux_badge)
@@ -304,9 +307,39 @@ end)
 home = os.getenv("HOME")
 tmux_path = home .. "/dev/homebrew/bin/tmux"
 
+function all_tmux_hosts()
+    hosts = {}
+    hosts[1] = "localhost"
+
+    for line in io.lines(home .. "/.ssh/config") do
+        if string.sub(line, 1, 5) == "Host " and string.sub(line, 1, 6) ~= "Host *" then
+            hosts[#hosts + 1] = string.sub(line, 6, #line)
+        end
+    end
+    return hosts
+end
+
+function current_tmux_host()
+    hosts = all_tmux_hosts()
+    for i, host in pairs(hosts) do
+        if host == tmux_host then
+            return i
+        end
+    end
+end
+
 -- Read variables from tmux using display-message
 function tmux_read_format(fmt)
-    local handle = io.popen(tmux_path .. " display-message -p '" .. fmt .. "'")
+    local host = tmux_host
+
+    -- Check if this is a remote session
+    local handle
+    if host == "localhost" then
+        handle = io.popen(tmux_path .. " display-message -p '" .. fmt .. "'")
+    else
+        handle = io.popen("ssh " .. host .. " /usr/bin/tmux display-message -p \"'" .. fmt .. "'\"")
+        print("ssh " .. host .. " /usr/bin/tmux display-message -p \"'" .. fmt .. "'\"")
+    end
     local out = handle:read("*a")
     handle:close()
     return out
@@ -319,7 +352,12 @@ function tmux(cmd)
     local cmd_out = tmux_read_format(cmd)
     cmd_out = cmd_out:gsub("%s+$", "")
 
-    local command = "env -i TMPDIR=" .. os.getenv("TMPDIR") .. " PWD=" .. cwd_out .. " " .. tmux_path .. " " .. cmd_out
+    local command
+    if tmux_host == "localhost" then
+        command = "env -i TMPDIR=" .. os.getenv("TMPDIR") .. " PWD=" .. cwd_out .. " " .. tmux_path .. " " .. cmd_out
+    else
+        command = "ssh " .. tmux_host .. " env -i PWD=" .. cwd_out .. " /usr/bin/tmux " .. cmd_out
+    end
 
     print(command)
     local handle = io.popen(command)
@@ -328,25 +366,57 @@ function tmux(cmd)
     return out
 end
 
+tmux_mode:bind({}, "s", function()
+    local hosts = all_tmux_hosts()
+    local host_index = current_tmux_host()
+
+    -- Get the next tmux session
+    local next_host
+    if host_index == #hosts then
+        next_host = hosts[1]
+    else
+        next_host = hosts[host_index + 1]
+    end
+
+    tmux_host = next_host
+    hs.alert.show("Controlling " .. next_host .. " tmux.", 0.8)
+end)
+
+tmux_mode:bind({"shift"}, "s", function()
+    local hosts = all_tmux_hosts()
+    local host_index = current_tmux_host()
+
+    -- Get the next tmux session
+    local prev_host
+    if host_index == 1 then
+        prev_host = hosts[#hosts]
+    else
+        prev_host = hosts[host_index - 1]
+    end
+
+    tmux_host = prev_host
+    hs.alert.show("Controlling " .. prev_host .. " tmux.", 0.8)
+end)
+
 
 function tmux_bind(mod, key, cmd)
     tmux_mode:bind(mod, key, function() tmux(cmd) end)
 end
 
-tmux_bind({}, "g", "split-window -v -c #{pane_current_path} -t #I.")
-tmux_bind({}, "v", "split-window -h -c #{pane_current_path} -t #I.")
-tmux_bind({}, "h", "select-pane -L -t \\$#S")
-tmux_bind({}, "j", "select-pane -D -t \\$#S")
-tmux_bind({}, "k", "select-pane -U -t \\$#S")
-tmux_bind({}, "l", "select-pane -R -t \\$#S")
+tmux_bind({}, "g", "split-window -v -c #{pane_current_path} -t #S:#I.")
+tmux_bind({}, "v", "split-window -h -c #{pane_current_path} -t #S:#I.")
+tmux_bind({}, "h", "select-pane -L -t #S:")
+tmux_bind({}, "j", "select-pane -D -t #S:")
+tmux_bind({}, "k", "select-pane -U -t #S:")
+tmux_bind({}, "l", "select-pane -R -t #S:")
 tmux_bind({}, "c", "new-window -a -c #{pane_current_path} -t #S:#I")
-tmux_bind({}, "n", "next-window -t \\$#S")
-tmux_bind({}, "p", "previous-window -t \\$#S")
+tmux_bind({}, "n", "next-window -t #S:")
+tmux_bind({}, "p", "previous-window -t #S:")
 tmux_bind({}, "x", "kill-pane -t #I.")
-tmux_bind({"ctrl"}, "h", "resize-pane -L -t \\$#S 8")
-tmux_bind({"ctrl"}, "j", "resize-pane -D -t \\$#S 4")
-tmux_bind({"ctrl"}, "k", "resize-pane -U -t \\$#S 4")
-tmux_bind({"ctrl"}, "l", "resize-pane -R -t \\$#S 8")
+tmux_bind({"ctrl"}, "h", "resize-pane -L -t #S: 8")
+tmux_bind({"ctrl"}, "j", "resize-pane -D -t #S: 4")
+tmux_bind({"ctrl"}, "k", "resize-pane -U -t #S: 4")
+tmux_bind({"ctrl"}, "l", "resize-pane -R -t #S: 8")
 
 -- Special priority for movement keys
 function tmux_move(tmux_direction, vim_keys)
@@ -355,20 +425,16 @@ function tmux_move(tmux_direction, vim_keys)
         tmux("send-keys C-w")
         tmux("send-keys " .. vim_keys)
     else
-        tmux("select-pane " .. tmux_direction .. " -t \\$#S")
+        tmux("select-pane " .. tmux_direction .. " -t #S:")
     end
 end
 
---hs.hotkey.bind({"alt"}, "h", function() tmux("select-pane -L -t \\$#S") end)
---hs.hotkey.bind({"alt"}, "j", function() tmux("select-pane -D -t \\$#S") end)
---hs.hotkey.bind({"alt"}, "k", function() tmux("select-pane -U -t \\$#S") end)
---hs.hotkey.bind({"alt"}, "l", function() tmux("select-pane -R -t \\$#S") end)
 hs.hotkey.bind({"alt"}, "h", function() tmux_move("-L", "h") end)
 hs.hotkey.bind({"alt"}, "j", function() tmux_move("-D", "j") end)
 hs.hotkey.bind({"alt"}, "k", function() tmux_move("-U", "k") end)
 hs.hotkey.bind({"alt"}, "l", function() tmux_move("-R", "l") end)
-hs.hotkey.bind({"alt", "shift"}, "l", function() tmux("next-window -t \\$#S") end)
-hs.hotkey.bind({"alt", "shift"}, "h", function() tmux("previous-window -t \\$#S") end)
+hs.hotkey.bind({"alt", "shift"}, "l", function() tmux("next-window -t #S:") end)
+hs.hotkey.bind({"alt", "shift"}, "h", function() tmux("previous-window -t #S:") end)
 
 tmux_mode:bind({}, "t", function()
     local buffer = tmux("show-buffer")
