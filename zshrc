@@ -1,6 +1,5 @@
 # Be xterm, since that's more or less the standard.
 export TERM=xterm
-export EDITOR=nvim
 
 ### Miscellaneous options via [un]setopt ###
 ### {
@@ -127,8 +126,10 @@ path=(
     /Applications/MATLAB_*.app/bin
     /Developer/NVIDIA/CUDA-6.5/bin
     $HOME/.stack/programs/x86_64-osx/*/bin
-
+    $HOME/code/*/bin
     $HOME/.cabal/bin
+    ~karius/sw/bin
+    ~karius/sw/bin/*
 
     # User-local packages. 
     $HOME/.cabal/bin
@@ -593,8 +594,15 @@ alias docker-bash='docker exec -it `first-container` /bin/bash'
 # Have a global notes file.
 alias notes='vim ~/.notes'
 alias day='vim ~/.text/`date +%b-%d`'
-alias vim='nvim'
-alias vi='nvim'
+
+which nvim &>/dev/null
+if [[ $? -eq 0 ]]; then
+    alias vim='nvim'
+    alias vi='nvim'
+    export EDITOR=nvim
+else
+    export EDITOR=vim
+fi
 export NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 function hi {
