@@ -315,55 +315,6 @@ function preexec() {
 }
 ### }
 
-### File system mark-jump ###
-### {
-export MARKPATH=$HOME/.marks
-function jump { 
-    cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
-}
-function mark { 
-    mkdir -p "$MARKPATH"; ln -s "$(pwd)" "$MARKPATH/$1"
-}
-function unmark { 
-    rm -i "$MARKPATH/$1"
-}
-function marks {
-    ls -l "$MARKPATH" | tail -n +2 | sed 's/  / /g' | cut -d' ' -f9- | awk -F ' -> ' '{printf "%-10s -> %s\n", $1, $2}'
-}
-
-create-mark () {
-    # Create a new mark in this directory.
-    read -k MARK_NAME
-    mark $MARK_NAME
-}
-zle -N create-mark
-
-jump-to-mark () {
-    # Jump to the mark.
-    read -k MARK_NAME
-    jump $MARK_NAME
-    zle reset-prompt
-}
-zle -N jump-to-mark
-
-up-one-dir () {
-    builtin cd ..
-    zle reset-prompt
-    POSTDISPLAY=`echo && lp -C`
-}
-zle -N up-one-dir
-
-show-contents () {
-    POSTDISPLAY=`echo && lp -C`
-}
-zle -N show-contents
-
-bindkey -M vicmd 'm' create-mark
-bindkey -M vicmd "'" jump-to-mark
-bindkey -M vicmd 'u' up-one-dir
-bindkey -M vicmd 's' show-contents
-###}
-
 ### Keybindings ###
 ### {
 
