@@ -483,6 +483,18 @@ bindkey -M vicmd '^e' go-forward-line
 bindkey -M viins '^e' go-forward-line
 ### }
 
+
+### Automatic aliasing ###
+### {
+autoload -U add-zsh-hook
+preexec_hook() {
+  if [[ -f $HOME/code/dotfiles/utils/autoalias.py ]]; then
+      eval $(python3 $HOME/code/dotfiles/utils/autoalias.py "$1")
+  fi
+}
+add-zsh-hook preexec preexec_hook
+### }
+
 ### Aliases and miscellaneous ###
 ### {
 
