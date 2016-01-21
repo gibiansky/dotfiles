@@ -537,6 +537,10 @@ else
     alias ls='=ls --color'
     alias lp='=ls --color=none'
     alias l='=ls --color'
+
+    function kh {
+        cd /opt/karius/services/$(ls --color=none /opt/karius/services | head -n 1)
+    }
 fi
 alias la='l -a'
 alias ll='l -l'
