@@ -107,6 +107,7 @@ call CtrlPSetup()
 call SyntasticSetup()
 
 Plugin 'derekwyatt/vim-scala'
+Plugin 'rodjek/vim-puppet'
 
 " Language plugins
 let supported_languages = split(globpath('~/.vim/languages', '*'), '\n')
