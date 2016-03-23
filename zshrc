@@ -121,15 +121,12 @@ path=(
     $HOME/dev/homebrew/opt/coreutils/libexec/gnubin
     $HOME/.local/bin/
     $HOME/dev/*/bin
-    $HOME/karius/*/bin
     /usr/texbin
     /Applications/MATLAB_*.app/bin
     /Developer/NVIDIA/CUDA-6.5/bin
     $HOME/.stack/programs/x86_64-osx/*/bin
     $HOME/code/*/bin
     $HOME/.cabal/bin
-    ~karius/sw/bin
-    ~karius/sw/bin/*
 
     # User-local packages. 
     $HOME/.cabal/bin
@@ -524,10 +521,6 @@ if test `uname -n` "==" "vortex" "-o" `uname -n` "==" "sourcery.local"; then
     # Brew provisioning: run this to get a list of commands
     alias brew-provision='~/code/dotfiles/utils/brew-packages ~/code/dotfiles/packages ~/code/dotfiles/casks'
 
-    if test "-f" "$HOME/.karius.sh"; then
-        source $HOME/.karius.sh
-    fi
-
     function meme {
         open `memegen $1 "$2" "$3"`
     }
@@ -537,10 +530,6 @@ else
     alias ls='=ls --color'
     alias lp='=ls --color=none'
     alias l='=ls --color'
-
-    function kh {
-        cd /opt/karius/services/$(ls --color=none /opt/karius/services | head -n 1)
-    }
 fi
 alias la='l -a'
 alias ll='l -l'
