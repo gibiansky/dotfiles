@@ -122,6 +122,7 @@ path=(
     $HOME/.local/bin/
     $HOME/dev/*/bin
     /usr/texbin
+    /Library/TeX/Distributions/Programs/texbin
     /Applications/MATLAB_*.app/bin
     /Developer/NVIDIA/CUDA-6.5/bin
     $HOME/.stack/programs/x86_64-osx/*/bin

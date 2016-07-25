@@ -84,8 +84,11 @@ Plugin 'easymotion/vim-easymotion'
 map , <Plug>(easymotion-prefix)
 
 Plugin 'wellle/targets.vim'
+
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
+let g:jsx_ext_required = 0
+
 Plugin 'Raimondi/delimitMate'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
@@ -164,7 +167,8 @@ augroup filetypedetect
         \ "asciidoc":  "adoc",
         \ "opencl":    "cl",
         \ "cuda":      "cu",
-        \ "rust":      "rs"
+        \ "rust":      "rs",
+        \ "markdown":  "md"
         \ }
     for [lang, ext] in items(language_extensions)
         if exists('*' . lang . '#enter')
