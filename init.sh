@@ -4,7 +4,7 @@
 set -u
 
 # All files we want to re-alias.
-FILES="vim tmux.conf vimperatorrc zsh zshrc slate pythonrc.py hammerspoon memegen"
+FILES="vim tmux.conf zsh zshrc pythonrc.py hammerspoon"
 
 # Aliases for files.
 for FILE in $FILES; do
