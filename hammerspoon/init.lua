@@ -4,7 +4,6 @@ package.path  = package.path  .. string.format(";%s/share/lua/5.2/?.lua", homebr
 package.cpath = package.cpath .. string.format(";%s/lib/lua/5.2/?.so", homebrew)
 
 require "os"
-local json = require("json")
 
 -- Global hotkey modifiers
 unmodal = {"shift", "alt"}
@@ -16,15 +15,9 @@ modal = {"alt"}
 
 -- Windows with letter bindings
 apps = {
- ["Firefox"] = "f",
- ["MacVim"] = "v",
  ["Slack"] = "s",
- ["Messages"] = "m",
- ["Mathematica"] = "w",
- ["Pandora"] = "p",
+ ["Spotify"] = "p",
  ["Google Chrome"] = "g",
- ["Colloquy"] = "y",
- ["Anki"] = "a",
  ["iTerm2"] = "i",
 }
 
@@ -66,7 +59,6 @@ mode:bind({}, 'escape', function() mode:exit() end)
 -- Set up badge for modal keybinding.
 local badge =      "~/.hammerspoon/vortex.png"
 local tmux_badge = "~/.hammerspoon/vortex2.png"
-local view_badge = "~/.hammerspoon/vortex3.png"
 local showing_badges = {}
 
 function show_badge(badge)
@@ -92,76 +84,6 @@ end
 -- Show badge when in mode.
 function mode:entered() show_badge(badge) end
 function mode:exited()  clear_badge()     end
-
--- Control whether we're in 3x3 or 4x3 mode.
-local quarters = false
-mode:bind({}, "1", function() quarters = false end)
-mode:bind({}, "2", function() quarters = true end)
-
--- Remember whether we're setting the top left or bottom right.
-local topLeft = nil
-
--- Points that keys represent
-key_points = {
-    -- quarters = false
-    [false] = {
-        q = {x = 0   , y = 0}   ,
-        w = {x = 1/3 , y = 0}   ,
-        e = {x = 2/3 , y = 0}   ,
-        a = {x = 0   , y = 1/3} ,
-        s = {x = 1/3 , y = 1/3} ,
-        d = {x = 2/3 , y = 1/3} ,
-        z = {x = 0   , y = 2/3} ,
-        x = {x = 1/3 , y = 2/3} ,
-        c = {x = 2/3 , y = 2/3} ,
-    },
-    -- quarters = true
-    [true] = {
-        q = {x = 0   , y = 0}   ,
-        w = {x = 1/4 , y = 0}   ,
-        e = {x = 2/4 , y = 0}   ,
-        r = {x = 3/4 , y = 0}   ,
-        a = {x = 0   , y = 1/3} ,
-        s = {x = 1/4 , y = 1/3} ,
-        d = {x = 2/4 , y = 1/3} ,
-        f = {x = 3/4 , y = 1/3} ,
-        z = {x = 0   , y = 2/3} ,
-        x = {x = 1/4 , y = 2/3} ,
-        c = {x = 2/4 , y = 2/3} ,
-        v = {x = 3/4 , y = 2/3} ,
-    },
-}
-
-function rect_from_corners(top_left, bottom_right)
-    if top_left.x <= bottom_right.x and top_left.y <= bottom_right.y then
-        if quarters then
-            return {x = top_left.x, y = top_left.y, w = bottom_right.x - top_left.x + 1/4, h = bottom_right.y - top_left.y + 1/3}
-        else
-            return {x = top_left.x, y = top_left.y, w = bottom_right.x - top_left.x + 1/3, h = bottom_right.y - top_left.y + 1/3}
-        end
-    else
-        return nil
-    end
-end
-
-locations = "qwerasdfzxcv"
-for i = 1, locations:len() do
-    local char = locations:sub(i, i)
-    mode:bind({"ctrl"}, char, function()
-        point = key_points[quarters][char]
-        if topLeft == nil then
-            topLeft = point
-        else
-            local win = hs.window.focusedWindow()
-            local rect = rect_from_corners(topLeft, point)
-            if rect ~= nil then
-                win:setFrame(unit_to_screen_rect(rect), 0)
-            end
-
-            topLeft = nil
-        end
-    end)
-end
 
 -- Scale a unit rect to a screen rect.
 function unit_to_screen_rect(frame)
@@ -223,54 +145,6 @@ end)
 function window_id_comparator(win1, win2)
     return win1:id() < win2:id()
 end
-
--- Switch which window is focused by using h and l in command mode.
-mode:bind({}, "h", function()
-    local win = hs.window.focusedWindow()
-    local wins = win:application():allWindows()
-    table.sort(wins, window_id_comparator)
-
-    -- Does not apply when only one window.
-    if #wins == 1 then
-        return
-    end
-
-    local target = nil
-    for i, w in pairs(wins) do
-        if win:id() == w:id() then
-            if i == 1 then
-                target = wins[#wins]
-            else
-                target = wins[i - 1]
-            end
-        end
-    end
-
-    target:focus()
-end)
-mode:bind({}, "l", function()
-    local win = hs.window.focusedWindow()
-    local wins = win:application():allWindows()
-    table.sort(wins, window_id_comparator)
-
-    -- Does not apply when only one window.
-    if #wins == 1 then
-        return
-    end
-
-    local target = nil
-    for i, w in pairs(wins) do
-        if win:id() == w:id() then
-            if i == #wins then
-                target = wins[1]
-            else
-                target = wins[i + 1]
-            end
-        end
-    end
-
-    target:focus()
-end)
 
 -----------------------
 -----------------------
@@ -449,149 +323,6 @@ end)
 -------------------
 -------------------
 -------------------
-
--------------------
--- View control ---
--------------------
-
--- View mode state
-local view_name = nil -- The view to create or summon (one letter name)
-local view_apps = {}  -- Apps in the current view and their window unit rects.
-
--- Where to store the layouts.
-layout_file = home .. "/.hammerspoon.layouts"
-
--- Read all the layouts from our layout file.
-function read_layouts()
-    local handle = io.open(layout_file, "r")
-    if handle == nil then
-        return {}
-    else
-        local data = handle:read("*a")
-        handle:close()
-        local layouts = json.decode(data)
-        if layouts == nil then
-            return {}
-        else
-            return layouts
-        end
-    end
-end
-
--- Write layouts to the layout file.
-function write_layouts(layouts)
-    local handle = io.open(layout_file, "w")
-    handle:write(json.encode(layouts))
-    handle:close()
-end
-
--- Add a layout to the layout file.
-function store_layout(name, apps) 
-    local layouts = read_layouts()
-    layouts[name] = apps
-    write_layouts(layouts)
-end
-
--- Load a layout from the layout file and move windows to fit it.
-function summon_layout(name)
-    local layouts = read_layouts()
-    local layout = layouts[name]
-
-    if layout ~= nil then
-        -- Get current screen dimensions
-        local w = hs.screen.mainScreen():currentMode().w
-        local h = hs.screen.mainScreen():currentMode().h
-
-        for app_name, rects in pairs(layout) do
-            local app = focus_app(app_name)
-            if app ~= nil then
-                local wins = app:allWindows()
-                for i, win in pairs(wins) do
-                    local rect = rects[i]
-                    if rect ~= nil then
-                        win:setFrame({
-                            x = rect["x"] * w,
-                            y = rect["y"] * h,
-                            w = rect["w"] * w,
-                            h = rect["h"] * h,
-                        }, 0)
-                    end
-                end
-            end
-        end
-    end
-end
-
--- Create view control and auxiliary modes
-local view_mode = hs.hotkey.modal.new(nil, nil)
-view_mode:bind({}, 'escape', function()
-    view_mode:exit()
-
-    view_name = nil
-    view_apps = {}
-end)
-
-local view_mode_aux = hs.hotkey.modal.new(nil, nil)
-view_mode_aux:bind({}, 'escape', function() view_mode_aux:exit() end)
-view_mode_aux:bind({}, 'return', function() 
-    store_layout(view_name, view_apps)
-    view_mode_aux:exit()
-end)
-
--- View control mode switching from global mode
-function view_mode:entered() show_badge(view_badge) end
-function view_mode:exited()  clear_badge() end
-function view_mode_aux:exited()
-    view_name = nil
-    view_apps = {}
-end
-mode:bind({}, "v", function() 
-    mode:exit() -- Must happen before next mode is entered
-    view_mode:enter()
-end)
-
-function make_view(char)
-    view_name = char
-    view_mode:exit()
-    view_mode_aux:enter()
-end
-
--- Start making a view after entering view mode by pressing the name of the new view.
-view_alphabet = "abcdefghijklmnopqrstuvwxyz"
-for i = 1, view_alphabet:len() do
-    local char = view_alphabet:sub(i, i)
-    view_mode:bind({}, char, function() make_view(char) end)
-end
-
--- Summon a view by using the Shift + View Name in command mode.
-for i = 1, view_alphabet:len() do
-    local char = view_alphabet:sub(i, i)
-    mode:bind({"shift"}, char, function()
-        summon_layout(char)
-        mode:exit()
-    end)
-end
-
-function report_focus(name, units)
-    view_apps[name] = units
-end
-
-for name, key in pairs(apps) do
-    view_mode_aux:bind({}, key, function()
-        local app = focus_app(name)
-        if app == nil then return end
-
-        -- Collect unit rects for this app's windows
-        local rects = {}
-        for i, win in pairs(app:allWindows()) do
-            local frame = win:frame()
-            local scaled = unit_to_screen_rect(frame)
-            table.insert(rects, scaled)
-        end
-
-        report_focus(name, rects)
-    end)
-end
 
 --- Audio control ---
 mode:bind({}, "p", function()
