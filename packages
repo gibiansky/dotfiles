@@ -1,55 +1,36 @@
-freeglut      # For OpenGL from Haskell
-gcc           # For gfortran for scipy
-brew-cask
-
-# Javascript
-node
-nvm
-
-# Karius things
-apache-spark
+# Random dev things
 awscli
-libyaml
-mobile-shell
-
 imagemagick
 neovim
 
 # For IHaskell and extensions
-zeromq
 cairo
 libmagic
 llvm
 pango
+zeromq
 
 # Gnu Utils
+cmake
+coreutils
+ffmpeg
 findutils
+git
 gnu-sed
 htop-osx
-tmux
-reattach-to-user-namespace
 mplayer
-ffmpeg
-zsh
+reattach-to-user-namespace
+tmux
 watch
 wget
-git
-coreutils
-cmake
-
-# Compiling ghc
-docbook2x
+zsh
 
 # Programming languages
+gcc
 go
 jq
-sbt
-scala
-rust
+node
 python
 python3
-
-# Other executable tools
+rust
 graphviz
-highlight
-samtools
