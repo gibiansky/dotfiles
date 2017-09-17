@@ -22,11 +22,7 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 # Tap relevant things
 brew tap caskroom/cask
 brew tap homebrew/versions
-brew tap homebrew/x11
-brew tap neovim/neovim
-brew tap homebrew/php
 brew tap homebrew/science
-brew tap caskroom/versions
 
 # Run all commands for brew provisioning
 brew-provision
@@ -40,13 +36,11 @@ chsh -s `brew --prefix`/bin/zsh
 
 More configurations:
 
-- **Seil:**
+- **Karabiner-Elements:**
     - Caps Lock should be set to Esc (keycode 53)
     - Right Command (Command_R) should be set to Alt (keycode 61)
-    - Escape should be set to F-10 (keycode 109)
+    - Escape should be set to Home (keycode 109)
 - **iTerm:**
-    - Deal with neovim's idiocy, though check if this is still necessary (neovim changes quickly). In `Profiles > Default > Keys`, add `^h` to `Send Hex Code: 0x89`
-- **Alfred:**
-    - Alfred Hotkey: Alt double tap
+    - Set the Hotkey Window to use Home
 
 After that, make sure that when your .vimrc is being loaded, the HOME environment variable is defined, because vim uses it to find other files.
