@@ -85,6 +85,12 @@ let g:UltiSnipsExpandTrigger = '<c-j>'
 
 Plugin 'dracula/vim' " My color scheme of choice
 
+" Asynchronous linting for many languages
+Plugin 'w0rp/ale'
+
+" Python vundle plugins
+Plugin 'Vimjas/vim-python-pep8-indent'
+
 " Required for vundle
 call vundle#end()
 filetype plugin indent on
@@ -109,6 +115,9 @@ call CodeFolding()
 
 " All sorts of miscellaneous custom mappings
 call MyMappings()
+
+" Language configurations and autocommands
+call LanguageConfigs()
 
 " **********************   End Quick Config   ********************************** "
 endfunction
@@ -254,6 +263,12 @@ function! MyMappings()
     imap <C-t> <ESC>:tabnew 
     map <C-l> <ESC>:tabn<CR>
     imap <C-l> <ESC>:tabn<CR>
+endfunction
+
+function! LanguageConfigs()
+    autocmd FileType python     set textwidth=79
+    autocmd FileType python     set colorcolumn=+1
+    autocmd FileType python     set nosmartindent
 endfunction
 
 " ************************   End Functions   ************************************ "

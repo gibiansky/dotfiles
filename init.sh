@@ -4,7 +4,7 @@
 set -u
 
 # All files we want to re-alias.
-FILES="vim tmux.conf zsh zshrc pythonrc.py hammerspoon"
+FILES="hushlogin vim tmux.conf zsh zshrc pythonrc.py hammerspoon"
 
 # Aliases for files.
 for FILE in $FILES; do
@@ -20,6 +20,12 @@ echo 'source ~/.vim/configuration.vim' > ~/.nvimrc
 
 # Install Vundle.
 git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+# Install Oh-My-Zsh
+git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+
+# Install Oh-My-Zsh custom plugins.
+git clone git://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 
 # Install all Vundle plugins.
 vim +PluginInstall +qall

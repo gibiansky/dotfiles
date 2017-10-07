@@ -294,13 +294,7 @@ tmux_bind({"ctrl"}, "l", "resize-pane -R -t #S: 8")
 
 -- Special priority for movement keys
 function tmux_move(tmux_direction, vim_keys)
-    local current_cmd = tmux_read_format("#{pane_current_command}")
-    if current_cmd:sub(1, 4) == "nvim" then
-        tmux("send-keys C-w")
-        tmux("send-keys " .. vim_keys)
-    else
-        tmux("select-pane " .. tmux_direction .. " -t #S:")
-    end
+    tmux("select-pane " .. tmux_direction .. " -t #S:")
 end
 
 hs.hotkey.bind({"alt"}, "h", function() tmux_move("-L", "h") end)
