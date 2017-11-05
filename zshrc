@@ -137,8 +137,10 @@ rationalize-path path
 ### Custom Aliases and Tweaks
 ### {
 
-# Do not show the default Mac directories.
-alias ls='gls --color --hide=Documents --hide=Movies --hide=Music --hide=Pictures --hide=Public --hide=Library --hide=Desktop --hide=Applications'
+if [[ `uname` == Darwin ]]; then
+    # Do not show the default Mac directories.
+    alias ls='gls --color --hide=Documents --hide=Movies --hide=Music --hide=Pictures --hide=Public --hide=Library --hide=Desktop --hide=Applications'
+fi
 
 # Go up directories easily.
 alias -g ...='../..'
