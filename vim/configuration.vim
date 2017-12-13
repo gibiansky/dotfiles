@@ -3,10 +3,9 @@
 " ****************************************************************************** "
 " Note: 
 "   This is my personal .vimrc file; copying the entire thing is a bad idea,
-"   as it might produce weird side effects. To make it more readable, the top
-"   section is restricted to easy to understand one-line configurations; 
-"   anything that takes more than that is separated into a function or separate
-"   source file. 
+"   as it might produce weird side effects. To make it more readable, it is
+"   somewhat split into different sections, each wrapped in a separate
+"   function. It calls VimSetup() to load the configuration at the end.
 " ****************************************************************************** "
 
 
@@ -66,6 +65,9 @@ set title
 " Always keep a few lines above/below the cursor for context "
 set scrolloff=3
 
+" Use space key for many mappings
+let g:mapleader=' '
+
 " Vundle
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -87,6 +89,15 @@ Plugin 'dracula/vim' " My color scheme of choice
 
 " Asynchronous linting for many languages
 Plugin 'w0rp/ale'
+let g:ale_fixers = {
+            \ 'python': [
+            \   'autopep8',
+            \   'isort',
+            \ ],
+            \}
+map <Leader>n :ALENextWrap<CR>
+map <Leader>p :ALEPreviousWrap<CR>
+map <Leader>f :ALEFix<CR>
 
 " Python vundle plugins
 Plugin 'Vimjas/vim-python-pep8-indent'
@@ -206,7 +217,6 @@ endfunction
 " Keyboard Mappings: Custom mappings I use often
 function! MyMappings()
     " Configure many useful mappings using the space key"
-    let g:mapleader=' '
     map <Leader><Leader> :
     map <Leader>w :w<CR>:echo "Written at " . strftime("%c")<CR><ESC>
     map <Leader>q :q<CR>

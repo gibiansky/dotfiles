@@ -15,9 +15,8 @@ modal = {"alt"}
 
 -- Windows with letter bindings
 apps = {
- ["Slack"] = "s",
  ["Spotify"] = "p",
- ["Google Chrome"] = "g",
+ ["Firefox"] = "g",
  ["iTerm2"] = "i",
 }
 
