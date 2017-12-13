@@ -154,15 +154,15 @@ export PYTHONSTARTUP=$HOME/.pythonrc.py
 # Shortcut for decompressing a tarball.
 alias untar='tar -xvvf'
 
-# If there is anv 'env' in my home, go ahead and load it.
-if [[ -d ~/env ]]; then
-    activate ~/env
-fi
-
 # Activate the virtualenv environment given.
 function activate {
     source $1/bin/activate
 }
+
+# If there is anv 'env' in my home, go ahead and load it.
+if [[ -d ~/env ]]; then
+    activate ~/env
+fi
 
 # Turn on `nvim` as the default editor if it exists.
 which nvim &>/dev/null
