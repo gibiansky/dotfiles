@@ -154,15 +154,15 @@ export PYTHONSTARTUP=$HOME/.pythonrc.py
 # Shortcut for decompressing a tarball.
 alias untar='tar -xvvf'
 
-# If there is anv 'env' in my home, go ahead and load it.
-if [[ -d ~/env ]]; then
-    activate ~/env
-fi
-
 # Activate the virtualenv environment given.
 function activate {
     source $1/bin/activate
 }
+
+# If there is anv 'env' in my home, go ahead and load it.
+if [[ -d ~/env ]]; then
+    activate ~/env
+fi
 
 # Turn on `nvim` as the default editor if it exists.
 which nvim &>/dev/null
@@ -191,5 +191,11 @@ bindkey '^ ' autosuggest-execute
 
 # Enable autojump.  The Oh-My-Zsh plugin doesn't work right now.
 [ -f /Users/silver/dev/homebrew/etc/profile.d/autojump.sh ] && . /Users/silver/dev/homebrew/etc/profile.d/autojump.sh
+
+# If there is a CUDA install, use it.
+export CUDA_HOME=/usr/local/cuda
+if [[ -d $CUDA_HOME ]]; then
+    export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+fi
 
 ### }
