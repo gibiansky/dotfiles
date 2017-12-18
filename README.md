@@ -10,6 +10,14 @@ git clone http://www.github.com/gibiansky/dotfiles $HOME/code/dotfiles
 
 # Run setup.
 $HOME/code/dotfiles/init.sh
+
+# Set up Oh-My-Zsh.
+git clone https://github.com/robbyrussell/oh-my-zsh $HOME/.oh-my-zsh
+source ~/.zshrc # Make sure $ZSH_CUSTOM is set
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
+     ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-autosuggestions \
+    $ZSH_CUSTOM/plugins/zsh-autosuggestions
 ```
 
 # Mac Configuration
