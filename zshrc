@@ -1,8 +1,41 @@
 ### Oh-My-Zsh configuration
 ### {
 
+export LC_ALL=C.UTF-8
+export LANG=C.UTF-8
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/nvidia/lib64
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/cuda/lib64
+export HOME=/home
+function new-experiment {
+    if [[ $# -lt 1 ]]; then
+        echo 'Need experiment name'
+        return
+    fi
+
+    cd ~/experiments
+    git clone git@github.com:tensorac/tts.git $1
+    cd $1
+    ln -s /home/data/VCTK-Corpus VCTK-Corpus
+    ln -s /home/data/LJC-Corpus LJC-Corpus
+    ln -s /home/data/NK-Corpus NK-Corpus
+    ln -s /home/data/HL-Corpus HL-Corpus
+    make
+}
+
+function tb {
+    if [[ $# -lt 2 ]]; then
+        echo 'Need PORT and EXPERIMENT_NAME'
+        return
+    fi
+
+    PORT="$1"
+    EXPERIMENT_NAME="$2"
+    tensorboard "--port=600${PORT}" "--logdir=/home/experiments/${EXPERIMENT_NAME}/runs"
+}
+
 # Path to oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
+export TERM=xterm-256color
 
 # Chosen oh-my-zsh theme.
 ZSH_THEME="flazz"
@@ -55,8 +88,10 @@ SAVEHIST=10000000
 # Store timestamps and time elapsed in history.
 set extendedhistory
 
-# Incrementally append to history, as soon as things are entered.
-setopt incappendhistory
+# Share history between terminals.
+setopt appendhistory
+unsetopt sharehistory
+unsetopt incappendhistory
 
 # Don't have duplicates in history.
 setopt histignoredups
@@ -105,7 +140,6 @@ path=(
     $HOME/.local/bin/
     $HOME/dev/*/bin
     $HOME/.stack/programs/x86_64-osx/*/bin
-    $HOME/code/*/bin
     $HOME/.cabal/bin
 
     # Homebrew.
@@ -119,6 +153,9 @@ path=(
     /sbin
     /bin
     /usr/games
+
+    /usr/local/nvidia/bin
+    /home/code/tts/bin
 )
 export PATH
 
@@ -197,5 +234,7 @@ export CUDA_HOME=/usr/local/cuda
 if [[ -d $CUDA_HOME ]]; then
     export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 fi
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/mkl/compilers_and_libraries/linux/mkl/lib/intel64_lin
 
 ### }

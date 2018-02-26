@@ -101,6 +101,8 @@ map <Leader>f :ALEFix<CR>
 
 " Python vundle plugins
 Plugin 'Vimjas/vim-python-pep8-indent'
+Plugin 'tmhedberg/SimpylFold'
+let g:SimpylFold_docstring_preview = 1
 
 " Required for vundle
 call vundle#end()
