@@ -3,8 +3,7 @@
 
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/nvidia/lib64
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/cuda/lib64
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
 export HOME=/home
 function new-experiment {
     if [[ $# -lt 1 ]]; then
@@ -13,13 +12,41 @@ function new-experiment {
     fi
 
     cd ~/experiments
-    git clone git@github.com:tensorac/tts.git $1
+    git clone git@github.com:voicery/tts.git $1
     cd $1
-    ln -s /home/data/VCTK-Corpus VCTK-Corpus
-    ln -s /home/data/LJC-Corpus LJC-Corpus
-    ln -s /home/data/NK-Corpus NK-Corpus
-    ln -s /home/data/HL-Corpus HL-Corpus
-    make
+}
+
+function new-audiobook-experiment {
+    if [[ $# -lt 1 ]]; then
+        echo 'Need experiment name'
+        return
+    fi
+
+    cd ~/experiments
+    git clone git@github.com:voicery/audiobook-studio.git $1
+    cd $1
+}
+
+function rm-old-checkpoints {
+    if [[ $# -lt 1 ]]; then
+        echo 'Need model dir'
+        return
+    fi
+
+    while [[ $# -gt 0 ]]; do
+        MODEL=$1
+        shift
+
+        LAST_CHECKPOINT=$(grep '^model_checkpoint_path:' $MODEL/checkpoint | cut -f2 '-d"')
+        echo "Keeping ${LAST_CHECKPOINT}. Deleting others."
+        for CHECKPOINT in $MODEL/checkpoint-*.index; do
+            CHECKPOINT_NAME=$(basename ${CHECKPOINT/.index/})
+            if [[ $CHECKPOINT_NAME != $LAST_CHECKPOINT ]]; then
+                echo Deleting $CHECKPOINT_NAME...
+                rm $CHECKPOINT ${CHECKPOINT/.index/.data-00000-of-00001}
+            fi
+        done
+    done
 }
 
 function tb {
@@ -132,7 +159,12 @@ rationalize-path () {
 
 BREWPREFIX="$HOME/dev/homebrew"
 path=(
+    ./bin
     .
+    $HOME/android/tools
+    $HOME/android/tools/bin
+    $HOME/bin/valgrind/bin
+    $HOME/bin/montreal-forced-aligner/bin
     $HOME/bin
 
     # Mac.
@@ -155,7 +187,9 @@ path=(
     /usr/games
 
     /usr/local/nvidia/bin
+    /usr/local/cuda/bin
     /home/code/tts/bin
+    /home/cuda/bin
 )
 export PATH
 
@@ -223,6 +257,10 @@ alias brew-provision='$HOME/code/dotfiles/utils/brew-packages $HOME/code/dotfile
 # A shorter shortcut to editing the current command-line.
 bindkey '^g' edit-command-line
 
+# Easier to reach than arrow keys.
+bindkey '^[j' down-line-or-history
+bindkey '^[k' up-line-or-history  
+
 # Use Ctrl-space to accept the current prediction suggestion.
 bindkey '^ ' autosuggest-execute
 
@@ -230,7 +268,7 @@ bindkey '^ ' autosuggest-execute
 [ -f /Users/silver/dev/homebrew/etc/profile.d/autojump.sh ] && . /Users/silver/dev/homebrew/etc/profile.d/autojump.sh
 
 # If there is a CUDA install, use it.
-export CUDA_HOME=/usr/local/cuda
+export CUDA_HOME=/home/cuda
 if [[ -d $CUDA_HOME ]]; then
     export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 fi
@@ -238,3 +276,33 @@ fi
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/mkl/compilers_and_libraries/linux/mkl/lib/intel64_lin
 
 ### }
+#
+export GOOGLE_APPLICATION_CREDENTIALS="/home/bin/google-cloud-asr-account-key.json"
+
+# Jake's custom aliases
+if [[ $(hostname) = "jake" ]]; then
+    odict() {
+        if [[ $# -eq 0 ]]; then
+            cat ~/data/odict.ru.sorted.txt
+        else
+            word="$1"; shift
+            if [[ "$word" = "-a" ]]; then
+                word="$1"; shift
+            elif [[ "$word" = "-p" ]]; then
+                word="^$1"; shift
+            else
+                word="^$word "
+            fi
+            cat ~/data/odict.ru.sorted.txt | grep $word $@
+        fi
+    }
+
+    alias lc="wc -l"
+fi
+
+function jb {
+    list | cut -f1 '-d ' | grep "^$1"
+}
+
+export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libhwloc.so
+alias  awksum="awk '{a += "'$1'";} END { print a }'"

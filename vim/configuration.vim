@@ -8,7 +8,6 @@
 "   function. It calls VimSetup() to load the configuration at the end.
 " ****************************************************************************** "
 
-
 function! VimSetup()
 " ************************   Quick Config   ************************************ "
 
@@ -74,6 +73,9 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
+Plugin 'ctrlpvim/ctrlp.vim'
+let g:ctrlp_custom_ignore = '\v[\/](\.git|\.hg|\.svn|env|build|__pycache__|venv|soon-to-be-deleted|test-results|scratch|runs)$'
+
 " Load general plugins
 Plugin 'Raimondi/delimitMate'   " Autocompletion for brackets
 Plugin 'tpope/vim-surround'     " Text object for brackets
@@ -81,7 +83,7 @@ Plugin 'tpope/vim-repeat'       " Use . with vim-surround
 Plugin 'tomtom/tlib_vim'
 Plugin 'godlygeek/tabular'      " Tabular formatting with :Tab
 
-Plugin 'SirVer/ultisnips'       " Vim snippets
+" Plugin 'SirVer/ultisnips'       " Vim snippets
 Plugin 'honza/vim-snippets'
 let g:UltiSnipsExpandTrigger = '<c-j>'
 
@@ -98,11 +100,18 @@ let g:ale_fixers = {
 map <Leader>n :ALENextWrap<CR>
 map <Leader>p :ALEPreviousWrap<CR>
 map <Leader>f :ALEFix<CR>
+let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_save = 1
 
 " Python vundle plugins
 Plugin 'Vimjas/vim-python-pep8-indent'
 Plugin 'tmhedberg/SimpylFold'
+Plugin 'Konfekt/FastFold'
 let g:SimpylFold_docstring_preview = 1
+
+" openCL support
+Plugin 'petRUShka/vim-opencl'
 
 " Required for vundle
 call vundle#end()
@@ -275,12 +284,22 @@ function! MyMappings()
     imap <C-t> <ESC>:tabnew 
     map <C-l> <ESC>:tabn<CR>
     imap <C-l> <ESC>:tabn<CR>
+
+    map <Leader>c "iyiw:s/<C-r>i//g<Left><Left>
 endfunction
 
 function! LanguageConfigs()
-    autocmd FileType python     set textwidth=79
-    autocmd FileType python     set colorcolumn=+1
     autocmd FileType python     set nosmartindent
+
+    " Python black formatter
+    Plugin 'ambv/black'
+    autocmd BufWritePre *.py execute ':Black'
+
+    Plugin 'rhysd/vim-clang-format'
+    autocmd BufWritePre *.cc execute ':ClangFormat'
+    autocmd BufWritePre *.cpp execute ':ClangFormat'
+    autocmd BufWritePre *.h execute ':ClangFormat'
+    autocmd BufWritePre *.cu execute ':ClangFormat'
 endfunction
 
 " ************************   End Functions   ************************************ "
