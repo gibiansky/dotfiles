@@ -39,11 +39,11 @@ function rm-old-checkpoints {
 
         LAST_CHECKPOINT=$(grep '^model_checkpoint_path:' $MODEL/checkpoint | cut -f2 '-d"')
         echo "Keeping ${LAST_CHECKPOINT}. Deleting others."
-        for CHECKPOINT in $MODEL/checkpoint-*.index; do
+        for CHECKPOINT in $MODEL/c*kp*t-*.index; do
             CHECKPOINT_NAME=$(basename ${CHECKPOINT/.index/})
             if [[ $CHECKPOINT_NAME != $LAST_CHECKPOINT ]]; then
                 echo Deleting $CHECKPOINT_NAME...
-                rm $CHECKPOINT ${CHECKPOINT/.index/.data-00000-of-00001}
+                rm $CHECKPOINT ${CHECKPOINT/.index/.data}-0000*-of-0000*
             fi
         done
     done
